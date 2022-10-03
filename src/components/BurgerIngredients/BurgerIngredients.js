@@ -4,9 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './BurgerIngredients.module.css';
 
-import data from '../../utils/data';
-
-const BurgerIngredients = () => {
+const BurgerIngredients = ({data, selectedIngredientsIds}) => {
     const [current, setCurrent] = useState("buns");
 
     const buns = data.filter(item => item.type === 'bun');
@@ -28,9 +26,9 @@ const BurgerIngredients = () => {
                 </Tab>
             </div>
             <div className={`${styles.ingredientsListContainer} custom-scroll mt-10`}>
-                <IngredientSection name="Булки" data={buns} />
-                <IngredientSection name="Соусы" data={sauces} />
-                <IngredientSection name="Начинки" data={mains} />
+                <IngredientSection name="Булки" data={buns} selectedIngredientsIds={selectedIngredientsIds} />
+                <IngredientSection name="Соусы" data={sauces} selectedIngredientsIds={selectedIngredientsIds} />
+                <IngredientSection name="Начинки" data={mains} selectedIngredientsIds={selectedIngredientsIds} />
             </div>
         </section>
     );

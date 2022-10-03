@@ -1,3 +1,21 @@
 .burgerConstructor {
     width: 600px;
+    height: calc(100vh - 300px);
+}
+
+.innerIngredientsListContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    max-height: 464px;
+    min-height: 82px;
+    height: calc(100vh - 600px);
+    overflow-y: auto;
+}
+
+.innerIngredientContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 8px;
 }
