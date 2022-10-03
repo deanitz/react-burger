@@ -1,4 +1,6 @@
 import {useState} from "react";
+import PropTypes from 'prop-types';
+import dataShape from "../../utils/dataShape";
 import IngredientSection from '../IngredientSection/IngredientSection'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -32,6 +34,11 @@ const BurgerIngredients = ({data, selectedIngredientsIds}) => {
             </div>
         </section>
     );
+}
+
+BurgerIngredients.propTypes = {
+    data: PropTypes.arrayOf(dataShape).isRequired,
+    selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default BurgerIngredients;

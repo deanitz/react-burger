@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+import dataShape from "../../utils/dataShape";
 import IngredientItem from '../IngredientItem/IngredientItem';
 
 import styles from './IngredientSection.module.css';
@@ -22,6 +24,12 @@ const IngredientSection = ({name, data, selectedIngredientsIds}) => {
             </div>
         </section>
     );
+}
+
+IngredientSection.propTypes = {
+    name: PropTypes.string.isRequired,
+    data: PropTypes.arrayOf(dataShape).isRequired,
+    selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default IngredientSection;

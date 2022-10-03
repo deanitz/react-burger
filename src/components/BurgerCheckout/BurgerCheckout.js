@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './BurgerCheckout.module.css';
@@ -9,11 +10,15 @@ const BurgerCheckout = ({total}) => {
                 <span className="mr-2">{total}</span>
                 <CurrencyIcon type="primary" />
             </p>
-            <Button type="primary" size="large">
+            <Button type="primary" htmlType="button" size="large">
                 Оформить заказ
             </Button>
         </div>
     );
+}
+
+BurgerCheckout.propTypes = {
+    total: PropTypes.number.isRequired,
 }
 
 export default BurgerCheckout;

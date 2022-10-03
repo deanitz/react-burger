@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './IngredientItem.module.css';
@@ -16,6 +17,13 @@ const IngredientItem = ({image, price, name, count}) => {
             {Boolean(count) && (<Counter count={count} size="default" />)}
         </div>
     );
+}
+
+IngredientItem.propTypes = {
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired
 }
 
 export default IngredientItem;

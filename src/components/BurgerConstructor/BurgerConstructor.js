@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+import dataShape from "../../utils/dataShape";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerCheckout from '../BurgerCheckout/BurgerCheckout';
 
@@ -43,6 +45,11 @@ const BurgerConstructor = ({bun, innerIngredients}) => {
             <BurgerCheckout total={getBurgerTotalPrice()} />
         </section>
     );
+}
+
+BurgerConstructor.propTypes = {
+    bun: dataShape.isRequired,
+    innerIngredients: PropTypes.arrayOf(dataShape).isRequired,
 }
 
 export default BurgerConstructor;
