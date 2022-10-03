@@ -1,15 +1,15 @@
 .menuContainer {
-    list-style-type: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    column-gap: calc(var(--offset-base-size)  * 2);
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  column-gap: calc(var(--offset-base-size) * 2);
 }
 
 .right {
-    justify-self: flex-end;
+  justify-self: flex-end;
 }
 
 .left {
-    justify-self: flex-start;
+  justify-self: flex-start;
 }

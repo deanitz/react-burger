@@ -1,11 +1,11 @@
-import AppHeader from '../AppHeader/AppHeader';
-import AppMain from '../AppMain/AppMain';
+import AppHeader from "../AppHeader/AppHeader";
+import AppMain from "../AppMain/AppMain";
 
 const App = () => (
-    <>
-        <AppHeader />
-        <AppMain />
-    </>
+  <>
+    <AppHeader />
+    <AppMain />
+  </>
 );
 
 export default App;
