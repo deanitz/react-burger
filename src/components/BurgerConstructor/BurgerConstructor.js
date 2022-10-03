@@ -30,8 +30,11 @@ const BurgerConstructor = ({ bun, innerIngredients }) => {
       <div
         className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
       >
-        {innerIngredients.map((innerIngredient, index) => (
-          <div key={index} className={styles.innerIngredientContainer}>
+        {innerIngredients.map((innerIngredient) => (
+          <div
+            key={innerIngredient.uniqueId}
+            className={styles.innerIngredientContainer}
+          >
             <DragIcon type="primary" />
             <ConstructorElement
               text={innerIngredient.name}

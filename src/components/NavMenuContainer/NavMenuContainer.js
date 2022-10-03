@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styles from "./NavMenuContainer.module.css";
 
 const NavMenuContainer = ({ children, right }) => (
@@ -9,5 +10,13 @@ const NavMenuContainer = ({ children, right }) => (
     {children}
   </ul>
 );
+
+NavMenuContainer.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+  right: PropTypes.bool,
+};
 
 export default NavMenuContainer;

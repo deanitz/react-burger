@@ -17,16 +17,20 @@ const AppMain = () => {
     "60666c42cc7b410027a1a9be",
   ];
 
-  const selectedIngredientsAll = selectedIngredientsIds.map((id) =>
-    data.find((item) => item._id === id)
-  );
+  const selectedIngredientsAll = selectedIngredientsIds.map((id, index) => {
+    const found = data.find((item) => item._id === id);
+    return {
+      ...found,
+      uniqueId: `${id}_${index}`,
+    };
+  });
 
   const selectedIngredientsInner = selectedIngredientsAll.filter(
     (item) => item.type !== "bun"
   );
-  const selectedIngredientsBun = selectedIngredientsAll.filter(
+  const selectedIngredientsBun = selectedIngredientsAll.find(
     (item) => item.type === "bun"
-  )[0];
+  );
 
   return (
     <main className={styles.appMain}>

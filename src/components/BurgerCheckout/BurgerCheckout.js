@@ -8,7 +8,7 @@ import styles from "./BurgerCheckout.module.css";
 
 const BurgerCheckout = ({ total }) => {
   return (
-    <div className={`${styles.totalContainer} mt-10`}>
+    <div className={`${styles.totalContainer} mt-10 mr-8`}>
       <p className="text text_type_digits-medium mr-10">
         <span className="mr-2">{total}</span>
         <CurrencyIcon type="primary" />

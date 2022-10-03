@@ -13,17 +13,29 @@ const BurgerIngredients = ({ data, selectedIngredientsIds }) => {
   const sauces = data.filter((item) => item.type === "sauce");
   const mains = data.filter((item) => item.type === "main");
 
+  const handleTabClick = (tabName) => {
+    setCurrent(tabName);
+  };
+
   return (
     <section className={styles.burgerIngredients}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
       <div className={styles.tabsContainer}>
-        <Tab value="buns" active={current === "buns"} onClick={setCurrent}>
+        <Tab value="buns" active={current === "buns"} onClick={handleTabClick}>
           Булки
         </Tab>
-        <Tab value="sauces" active={current === "sauces"} onClick={setCurrent}>
+        <Tab
+          value="sauces"
+          active={current === "sauces"}
+          onClick={handleTabClick}
+        >
           Соусы
         </Tab>
-        <Tab value="mains" active={current === "mains"} onClick={setCurrent}>
+        <Tab
+          value="mains"
+          active={current === "mains"}
+          onClick={handleTabClick}
+        >
           Начинки
         </Tab>
       </div>

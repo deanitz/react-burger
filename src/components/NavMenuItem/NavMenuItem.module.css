@@ -1,9 +1,10 @@
-.menuItem {
+.active {
+  color: #f2f2f3;
+}
+
+.link {
+  all: unset;
   display: flex;
   cursor: pointer;
   color: #8585ad;
-}
-
-.active {
-  color: #f2f2f3;
 }
