@@ -1,5 +1,7 @@
+import styles from './BurgerConstructor.module.css';
+
 const BurgerConstructor = () => (
-    <div>BurgerConstructor</div>
+    <section className={styles.burgerConstructor}>BurgerConstructor</section>
 );
 
 export default BurgerConstructor;

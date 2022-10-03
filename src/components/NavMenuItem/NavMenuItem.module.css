@@ -1,4 +1,9 @@
 .menuItem {
     display: flex;
     cursor: pointer;
+    color: #8585AD;
+}
+
+.active {
+    color: #F2F2F3;
 }

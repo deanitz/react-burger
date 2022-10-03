@@ -1,5 +1,7 @@
+import styles from './BurgerIngredients.module.css';
+
 const BurgerIngredients = () => (
-    <div>BurgerIngredients</div>
+    <section className={styles.burgerIngredients}>BurgerIngredients</section>
 );
 
 export default BurgerIngredients;

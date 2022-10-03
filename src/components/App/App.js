@@ -1,14 +1,10 @@
 import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
+import AppMain from '../AppMain/AppMain';
 
 const App = () => (
     <>
         <AppHeader />
-        <main>
-            <BurgerIngredients />
-            <BurgerConstructor />
-        </main>
+        <AppMain />
     </>
 );
 
