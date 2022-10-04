@@ -1,0 +1,6 @@
+.ingredientItemsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: calc(var(--offset-base-size) * 6);
+  column-gap: calc(var(--offset-base-size) * 8);
+}

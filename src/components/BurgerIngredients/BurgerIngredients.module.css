@@ -1,0 +1,15 @@
+.burgerIngredients {
+  width: 600px;
+}
+
+.tabsContainer {
+  display: flex;
+}
+
+.ingredientsListContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 10);
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+}
