@@ -3,22 +3,14 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 
 import styles from "./AppMain.module.css";
 
-import data from "../../utils/data";
+import { getStubSelectedIngredientIds } from "../../utils/ingredientsUtils";
 
-const AppMain = () => {
-  const selectedIngredientsIds = [
-    "60666c42cc7b410027a1a9b1",
-    "60666c42cc7b410027a1a9b9",
-    "60666c42cc7b410027a1a9b4",
-    "60666c42cc7b410027a1a9bb",
-    "60666c42cc7b410027a1a9bb",
-    "60666c42cc7b410027a1a9bc",
-    "60666c42cc7b410027a1a9be",
-    "60666c42cc7b410027a1a9be",
-  ];
+const AppMain = ({ ingredientsData }) => {
+  // Стабовые данные
+  const selectedIngredientsIds = getStubSelectedIngredientIds(ingredientsData);
 
   const selectedIngredientsAll = selectedIngredientsIds.map((id, index) => {
-    const found = data.find((item) => item._id === id);
+    const found = ingredientsData.find((item) => item._id === id);
     return {
       ...found,
       uniqueId: `${id}_${index}`,
@@ -35,7 +27,7 @@ const AppMain = () => {
   return (
     <main className={styles.appMain}>
       <BurgerIngredients
-        data={data}
+        ingredientsData={ingredientsData}
         selectedIngredientsIds={selectedIngredientsIds}
       />
       <BurgerConstructor

@@ -6,12 +6,12 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./BurgerIngredients.module.css";
 
-const BurgerIngredients = ({ data, selectedIngredientsIds }) => {
+const BurgerIngredients = ({ ingredientsData, selectedIngredientsIds }) => {
   const [current, setCurrent] = useState("buns");
 
-  const buns = data.filter((item) => item.type === "bun");
-  const sauces = data.filter((item) => item.type === "sauce");
-  const mains = data.filter((item) => item.type === "main");
+  const buns = ingredientsData.filter((item) => item.type === "bun");
+  const sauces = ingredientsData.filter((item) => item.type === "sauce");
+  const mains = ingredientsData.filter((item) => item.type === "main");
 
   const handleTabClick = (tabName) => {
     setCurrent(tabName);
@@ -61,7 +61,7 @@ const BurgerIngredients = ({ data, selectedIngredientsIds }) => {
 };
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(dataShape).isRequired,
+  ingredientsData: PropTypes.arrayOf(dataShape).isRequired,
   selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
