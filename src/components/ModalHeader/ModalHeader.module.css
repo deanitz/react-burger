@@ -1,0 +1,11 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+}
+
+.closeButtonContainer {
+  cursor: pointer;
+}
