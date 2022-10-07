@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styles from "./IngredientPropertyItem.module.css";
 
 const IngredientPropertyItem = ({ name, value }) => {
@@ -7,6 +8,11 @@ const IngredientPropertyItem = ({ name, value }) => {
       <p className="text text_type_digits-default">{value}</p>
     </div>
   );
+};
+
+IngredientPropertyItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default IngredientPropertyItem;

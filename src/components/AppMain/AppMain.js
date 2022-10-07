@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+import dataShape from "../../utils/dataShape";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 
@@ -36,6 +38,10 @@ const AppMain = ({ ingredientsData }) => {
       />
     </main>
   );
+};
+
+AppMain.propTypes = {
+  total: PropTypes.arrayOf(dataShape).isRequired,
 };
 
 export default AppMain;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import ModalHeader from "../ModalHeader/ModalHeader";
@@ -17,6 +18,12 @@ const Modal = ({ children, header, onClose }) => {
     </>,
     modalRoot
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.element,
+  header: PropTypes.element,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;
