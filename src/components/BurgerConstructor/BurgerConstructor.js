@@ -5,7 +5,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
-import OrderDetails from "../Modal/OrderDetails/OrderDetails";
+import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
 import { getStubOrderId } from "../../utils/stubDataUtils";

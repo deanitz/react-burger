@@ -1,4 +1,4 @@
-import doneImage from "../../../images/done.png";
+import doneImage from "../../images/done.png";
 import PropTypes from "prop-types";
 
 import styles from "./OrderDetails.module.css";
