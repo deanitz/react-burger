@@ -30,7 +30,9 @@ const Modal = ({ children, header, onClose }) => {
   return ReactDOM.createPortal(
     <>
       <ModalOverlay onClose={onClose} />
-      <div className={`${styles.modal} ${styles.modalAdded} pl-10 pt-10 pr-10 pb-15`}>
+      <div
+        className={`${styles.modal} ${styles.modalAdded} pl-10 pt-10 pr-10 pb-15`}
+      >
         <ModalHeader onClose={onClose}>{header}</ModalHeader>
         {children}
       </div>
