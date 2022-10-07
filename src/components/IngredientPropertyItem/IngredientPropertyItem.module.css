@@ -1,0 +1,6 @@
+.propertyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #8585AD;
+}

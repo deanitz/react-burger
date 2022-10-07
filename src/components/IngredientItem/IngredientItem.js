@@ -7,6 +7,7 @@ import {
 import styles from "./IngredientItem.module.css";
 import useModal from "../../hooks/useModal";
 import Modal from "../Modal/Modal";
+import IngredientPropertyItem from "../IngredientPropertyItem/IngredientPropertyItem";
 
 const IngredientItem = ({ item, count }) => {
   const {
@@ -14,15 +15,6 @@ const IngredientItem = ({ item, count }) => {
     show: showModal,
     close: closeModal,
   } = useModal();
-
-  const IngredientPropertyItem = ({name, value}) => {
-    return (
-      <div>
-        <p className="text text_type_main-default">{name}</p>
-        <p className="text text_type_digits-default">{value}</p>
-      </div>
-    );
-  }
 
   const modal = (
     <Modal
