@@ -6,9 +6,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import Modal from "../Modal/Modal";
+import useModal from "../../hooks/useModal";
+
 import styles from "./BurgerConstructor.module.css";
 import doneImage from "../../images/done.png";
-import useModal from "../../hooks/useModal";
 
 const BurgerConstructor = ({ bun, innerIngredients }) => {
   const {

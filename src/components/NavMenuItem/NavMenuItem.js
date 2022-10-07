@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+
 import styles from "./NavMenuItem.module.css";
 
 const NavMenuItem = ({ icon, text, active }) => (

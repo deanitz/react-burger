@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import ModalHeader from "../ModalHeader/ModalHeader";
+
 import styles from "./Modal.module.css";
 
 const modalRoot = document.getElementById("react-modals");

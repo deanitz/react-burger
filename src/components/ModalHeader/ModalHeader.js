@@ -1,4 +1,5 @@
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+
 import styles from "./ModalHeader.module.css";
 
 const ModalHeader = ({ children, onClose }) => {

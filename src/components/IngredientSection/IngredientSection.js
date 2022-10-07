@@ -17,10 +17,7 @@ const IngredientSection = ({ name, data, selectedIngredientsIds }) => {
       <h2 className="text text_type_main-medium mb-6">{name}</h2>
       <div className={styles.ingredientItemsContainer}>
         {data.map((item) => (
-          <IngredientItem item={item}
-            count={getCount(item)}
-            key={item._id}
-          />
+          <IngredientItem item={item} count={getCount(item)} key={item._id} />
         ))}
       </div>
     </section>
