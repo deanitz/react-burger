@@ -2,7 +2,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1);
   z-index: 3;
   background: #1c1c21;
   border: 1px solid rgba(76, 76, 255, 0.2);
@@ -11,4 +11,19 @@
     0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
   color: #f2f2f3;
+}
+
+@keyframes addAnimation {
+	from {
+		transform: translate(-50%, -50%) scale(0.8);
+		opacity: 0;
+	}
+	to {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;	
+	}
+}
+
+.modalAdded {
+	animation: addAnimation .1s linear;
 }

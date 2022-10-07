@@ -7,7 +7,7 @@ const IngredientDetails = ({ item }) => {
   return (
     <div className={styles.ingredientDetailsContainer}>
       <img
-        className="ml-4 mr-4"
+        className={`${styles.ingredientDetailsImage} ml-4 mr-4`}
         src={item.image_large}
         alt="Изображение ингредиента"
       />

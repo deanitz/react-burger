@@ -15,7 +15,7 @@ const OrderDetails = ({ orderNumber }) => {
       <img
         src={doneImage}
         alt="иконка подтверждения заказа"
-        className="mt-15 mb-15"
+        className={`${styles.orderModalImage} mt-15 mb-15`}
       />
       <p className="text text_type_main-default mb-2">
         Ваш заказ начали готовить
