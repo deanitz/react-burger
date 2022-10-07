@@ -7,11 +7,15 @@ import {
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import Modal from "../Modal/Modal";
 import styles from "./BurgerConstructor.module.css";
-import { useState } from "react";
 import doneImage from "../../images/done.png";
+import useModal from "../../hooks/useModal";
 
 const BurgerConstructor = ({ bun, innerIngredients }) => {
-  const [isModal, setIsModal] = useState(false);
+  const {
+    isDisplayed: isModal,
+    show: showModal,
+    close: closeModal,
+  } = useModal();
 
   const getBurgerTotalPrice = () => {
     return (
@@ -20,16 +24,8 @@ const BurgerConstructor = ({ bun, innerIngredients }) => {
     );
   };
 
-  const handleCloseModal = () => {
-    setIsModal(false);
-  };
-
-  const handleOrderClick = () => {
-    setIsModal(true);
-  };
-
   const modal = (
-    <Modal header={null} onClose={handleCloseModal}>
+    <Modal header={null} onClose={closeModal}>
       <div className={styles.orderModalContentContainer}>
         <h1
           className={`${styles.orderModalNumber} text text_type_digits-large ml-15 mr-15`}
@@ -94,7 +90,7 @@ const BurgerConstructor = ({ bun, innerIngredients }) => {
         </div>
         <BurgerCheckout
           total={getBurgerTotalPrice()}
-          onOrderClick={handleOrderClick}
+          onOrderClick={showModal}
         />
       </section>
       {isModal && modal}
