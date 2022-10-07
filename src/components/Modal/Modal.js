@@ -20,10 +20,10 @@ const Modal = ({ children, header, onClose }) => {
       }
     };
 
-    window.addEventListener("keyup", handleEscapeKey);
+    window.addEventListener("keydown", handleEscapeKey);
 
     return () => {
-      window.removeEventListener("keyup", handleEscapeKey);
+      window.removeEventListener("keydown", handleEscapeKey);
     };
   }, [onClose]);
 
