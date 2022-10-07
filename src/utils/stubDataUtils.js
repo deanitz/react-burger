@@ -10,3 +10,7 @@ export const getStubSelectedIngredientIds = (ingredientsData) => {
 
   return [bunId, sauceId, ...mainIds, ...mainIds];
 };
+
+export const getStubOrderId = () => {
+  return Math.floor(Math.random() * 999999);
+};

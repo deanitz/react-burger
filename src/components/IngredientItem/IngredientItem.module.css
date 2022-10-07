@@ -14,14 +14,3 @@
 .name {
   text-align: center;
 }
-
-.ingredientModalContentContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.ingredientModalPropertiesContainer {
-  display: flex;
-  column-gap: calc(var(--offset-base-size) * 5);
-}

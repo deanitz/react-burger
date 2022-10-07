@@ -5,7 +5,7 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 
 import styles from "./AppMain.module.css";
 
-import { getStubSelectedIngredientIds } from "../../utils/ingredientsUtils";
+import { getStubSelectedIngredientIds } from "../../utils/stubDataUtils";
 
 const AppMain = ({ ingredientsData }) => {
   // Стабовые данные
@@ -41,7 +41,7 @@ const AppMain = ({ ingredientsData }) => {
 };
 
 AppMain.propTypes = {
-  total: PropTypes.arrayOf(dataShape).isRequired,
+  ingredientsData: PropTypes.arrayOf(dataShape).isRequired,
 };
 
 export default AppMain;

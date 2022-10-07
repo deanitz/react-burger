@@ -1,0 +1,10 @@
+.ingredientDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ingredientDetailsPropertiesContainer {
+  display: flex;
+  column-gap: calc(var(--offset-base-size) * 5);
+}

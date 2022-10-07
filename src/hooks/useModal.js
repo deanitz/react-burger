@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const useModal = () => {
   const [isDisplayed, setIsDisplayed] = useState(false);
 
-  function show() {
+  const show = useCallback(() => {
     setIsDisplayed(true);
-  }
+  }, []);
 
-  function close() {
+  const close = useCallback(() => {
     setIsDisplayed(false);
-  }
+  }, []);
 
   return {
     isDisplayed,

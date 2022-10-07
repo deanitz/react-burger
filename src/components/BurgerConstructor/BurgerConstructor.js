@@ -5,11 +5,12 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
+import OrderDetails from "../Modal/OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
+import { getStubOrderId } from "../../utils/stubDataUtils";
 
 import styles from "./BurgerConstructor.module.css";
-import doneImage from "../../images/done.png";
 
 const BurgerConstructor = ({ bun, innerIngredients }) => {
   const {
@@ -25,29 +26,11 @@ const BurgerConstructor = ({ bun, innerIngredients }) => {
     );
   };
 
+  const orderId = getStubOrderId();
+
   const modal = (
-    <Modal header={null} onClose={closeModal}>
-      <div className={styles.orderModalContentContainer}>
-        <h1
-          className={`${styles.orderModalNumber} text text_type_digits-large ml-15 mr-15`}
-        >
-          034536
-        </h1>
-        <h2 className="text text_type_main-medium mt-8">
-          идентификатор заказа
-        </h2>
-        <img
-          src={doneImage}
-          alt="иконка подтверждения заказа"
-          className="mt-15 mb-15"
-        />
-        <p className="text text_type_main-default mb-2">
-          Ваш заказ начали готовить
-        </p>
-        <p className="text text_type_main-default mb-15">
-          Дождитесь готовности на орбитальной станции
-        </p>
-      </div>
+    <Modal onClose={closeModal}>
+      <OrderDetails orderNumber={orderId} />
     </Modal>
   );
 

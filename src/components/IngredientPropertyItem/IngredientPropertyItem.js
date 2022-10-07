@@ -12,7 +12,7 @@ const IngredientPropertyItem = ({ name, value }) => {
 
 IngredientPropertyItem.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 export default IngredientPropertyItem;
