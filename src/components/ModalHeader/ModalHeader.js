@@ -4,7 +4,7 @@ import styles from "./ModalHeader.module.css";
 const ModalHeader = ({ children, onClose }) => {
   return (
     <section className={styles.headerContainer}>
-      {children}
+      <div className={styles.childrenContainer}>{children}</div>
       <div className={styles.closeButtonContainer}>
         <CloseIcon type="primary" onClick={onClose} />
       </div>

@@ -5,4 +5,5 @@
   align-items: flex-start;
   justify-content: center;
   column-gap: calc(var(--offset-base-size) * 10);
+  color: #f2f2f3;
 }

@@ -6,10 +6,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import Modal from "../Modal/Modal";
-
 import styles from "./BurgerConstructor.module.css";
+import { useState } from "react";
+import doneImage from "../../images/done.png";
 
 const BurgerConstructor = ({ bun, innerIngredients }) => {
+  const [isModal, setIsModal] = useState(false);
+
   const getBurgerTotalPrice = () => {
     return (
       bun.price * 2 +
@@ -18,16 +21,36 @@ const BurgerConstructor = ({ bun, innerIngredients }) => {
   };
 
   const handleCloseModal = () => {
-    console.log("nah!");
+    setIsModal(false);
+  };
+
+  const handleOrderClick = () => {
+    setIsModal(true);
   };
 
   const modal = (
-    <Modal
-      header={<h1 className="text text_type_main-medium">Внимание!</h1>}
-      onClose={handleCloseModal}
-    >
-      <p>Спасибо за внимание!</p>
-      <p>Открывай меня, если станет скучно :)</p>
+    <Modal header={null} onClose={handleCloseModal}>
+      <div className={styles.orderModalContentContainer}>
+        <h1
+          className={`${styles.orderModalNumber} text text_type_digits-large ml-15 mr-15`}
+        >
+          034536
+        </h1>
+        <h2 className="text text_type_main-medium mt-8">
+          идентификатор заказа
+        </h2>
+        <img
+          src={doneImage}
+          alt="иконка подтверждения заказа"
+          className="mt-15 mb-15"
+        />
+        <p className="text text_type_main-default mb-2">
+          Ваш заказ начали готовить
+        </p>
+        <p className="text text_type_main-default mb-15">
+          Дождитесь готовности на орбитальной станции
+        </p>
+      </div>
     </Modal>
   );
 
@@ -69,9 +92,12 @@ const BurgerConstructor = ({ bun, innerIngredients }) => {
             thumbnail={bun.image}
           />
         </div>
-        <BurgerCheckout total={getBurgerTotalPrice()} />
+        <BurgerCheckout
+          total={getBurgerTotalPrice()}
+          onOrderClick={handleOrderClick}
+        />
       </section>
-      {modal}
+      {isModal && modal}
     </>
   );
 };
