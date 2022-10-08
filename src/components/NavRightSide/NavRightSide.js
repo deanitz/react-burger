@@ -1,6 +1,5 @@
 import NavMenuContainer from "../NavMenuContainer/NavMenuContainer";
 import NavMenuItem from "../NavMenuItem/NavMenuItem";
-
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const NavRightSide = () => (

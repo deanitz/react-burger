@@ -1,0 +1,21 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+}
+
+.childrenContainer {
+  min-height: 64px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.closeButtonContainer {
+  cursor: pointer;
+  display: flex;
+}

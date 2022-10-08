@@ -1,0 +1,15 @@
+.ingredientDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ingredientDetailsPropertiesContainer {
+  display: flex;
+  column-gap: calc(var(--offset-base-size) * 5);
+}
+
+.ingredientDetailsImage {
+  min-height: 240px;
+  min-width: 480px;
+}

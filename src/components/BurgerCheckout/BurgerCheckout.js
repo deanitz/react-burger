@@ -6,14 +6,19 @@ import {
 
 import styles from "./BurgerCheckout.module.css";
 
-const BurgerCheckout = ({ total }) => {
+const BurgerCheckout = ({ total, onOrderClick }) => {
   return (
     <div className={`${styles.totalContainer} mt-10 mr-8`}>
       <p className="text text_type_digits-medium mr-10">
         <span className="mr-2">{total}</span>
         <CurrencyIcon type="primary" />
       </p>
-      <Button type="primary" htmlType="button" size="large">
+      <Button
+        type="primary"
+        htmlType="button"
+        size="large"
+        onClick={onOrderClick}
+      >
         Оформить заказ
       </Button>
     </div>
