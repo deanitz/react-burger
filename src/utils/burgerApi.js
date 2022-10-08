@@ -1,6 +1,6 @@
 const API_URL = "https://norma.nomoreparties.space/api";
 
-const checkReponse = (response) => {
+const checkResponse = (response) => {
     return response.ok
       ? response.json()
       : response.json().then((error) => Promise.reject(error));
@@ -8,5 +8,5 @@ const checkReponse = (response) => {
 
 export const getIngredients = () => {
     return fetch(`${API_URL}/ingredients`)
-     .then(checkReponse)
+     .then(checkResponse)
  }
