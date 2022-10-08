@@ -11,13 +11,11 @@ const modalRoot = document.getElementById("react-modals");
 const Modal = ({ children, header, onClose }) => {
   useEffect(() => {
     const handleEscapeKey = (event) => {
-      switch (event.key) {
-        case "Escape":
-          onClose();
-          break;
-        default:
-          break;
+      if (event.key !== "Escape") {
+        return;
       }
+
+      onClose();
     };
 
     window.addEventListener("keydown", handleEscapeKey);

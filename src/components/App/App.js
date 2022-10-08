@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
+import { getIngredients } from "../../utils/burgerApi";
+import { logError } from "../../utils/logUtils";
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-
-const ingredientsApiUrl = "https://norma.nomoreparties.space/api/ingredients";
 
 const App = () => {
   const [ingredientsData, setIngredientsData] = useState([]);
 
   useEffect(() => {
-    fetch(ingredientsApiUrl)
-      .then((response) => {
-        return response.json();
-      })
+    getIngredients()
       .then((data) => {
         setIngredientsData(data.data);
       })
@@ -19,10 +16,6 @@ const App = () => {
         logError(error);
       });
   }, []);
-
-  const logError = (error) => {
-    console.error("Ошибка:", error);
-  };
 
   return (
     <>
