@@ -1,12 +1,13 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
-import dataShape from "../../utils/dataShape";
+import { useState, useContext } from "react";
+import { AllIngredientsContext } from "../../services/appContext";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./BurgerIngredients.module.css";
 
-const BurgerIngredients = ({ ingredientsData, selectedIngredientsIds }) => {
+const BurgerIngredients = () => {
+  const { ingredientsData } = useContext(AllIngredientsContext);
+
   const [current, setCurrent] = useState("buns");
 
   const buns = ingredientsData.filter((item) => item.type === "bun");
@@ -40,29 +41,12 @@ const BurgerIngredients = ({ ingredientsData, selectedIngredientsIds }) => {
         </Tab>
       </div>
       <div className={`${styles.ingredientsListContainer} custom-scroll mt-10`}>
-        <IngredientSection
-          name="Булки"
-          data={buns}
-          selectedIngredientsIds={selectedIngredientsIds}
-        />
-        <IngredientSection
-          name="Соусы"
-          data={sauces}
-          selectedIngredientsIds={selectedIngredientsIds}
-        />
-        <IngredientSection
-          name="Начинки"
-          data={mains}
-          selectedIngredientsIds={selectedIngredientsIds}
-        />
+        <IngredientSection name="Булки" data={buns} />
+        <IngredientSection name="Соусы" data={sauces} />
+        <IngredientSection name="Начинки" data={mains} />
       </div>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  ingredientsData: PropTypes.arrayOf(dataShape).isRequired,
-  selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default BurgerIngredients;

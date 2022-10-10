@@ -4,6 +4,10 @@ import { logError } from "../../utils/logUtils";
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
 import { getStubSelectedIngredientIds } from "../../utils/stubDataUtils";
+import {
+  AllIngredientsContext,
+  SelectedIngredientsContext,
+} from "../../services/appContext";
 
 const App = () => {
   const [ingredientsData, setIngredientsData] = useState([]);
@@ -25,10 +29,15 @@ const App = () => {
     <>
       <AppHeader />
       {Boolean(ingredientsData.length) && (
-        <AppMain
-          ingredientsData={ingredientsData}
-          selectedIngredientsIds={selectedIngredientsIds}
-        />
+        <AllIngredientsContext.Provider
+          value={{ ingredientsData }}
+        >
+          <SelectedIngredientsContext.Provider
+            value={{ selectedIngredientsIds, setSelectedIngredientsIds }}
+          >
+            <AppMain />
+          </SelectedIngredientsContext.Provider>
+        </AllIngredientsContext.Provider>
       )}
     </>
   );

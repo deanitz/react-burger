@@ -1,5 +1,4 @@
-import PropTypes from "prop-types";
-import dataShape from "../../utils/dataShape";
+import { useContext } from "react";
 import {
   ConstructorElement,
   DragIcon,
@@ -10,10 +9,17 @@ import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
 import { getStubOrderId } from "../../utils/stubDataUtils";
 import { getSplittedIngredientsData } from "../../utils/ingredientUtils";
+import {
+  AllIngredientsContext,
+  SelectedIngredientsContext,
+} from "../../services/appContext";
 
 import styles from "./BurgerConstructor.module.css";
 
-const BurgerConstructor = ({ ingredientsData, selectedIngredientsIds }) => {
+const BurgerConstructor = () => {
+  const { ingredientsData } = useContext(AllIngredientsContext);
+  const { selectedIngredientsIds } = useContext(SelectedIngredientsContext);
+
   const {
     isDisplayed: isModal,
     show: showModal,
@@ -86,11 +92,6 @@ const BurgerConstructor = ({ ingredientsData, selectedIngredientsIds }) => {
       {isModal && modal}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  ingredientsData: PropTypes.arrayOf(dataShape).isRequired,
-  selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default BurgerConstructor;
