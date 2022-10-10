@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getIngredients } from "../../utils/burgerApi";
-import { logError } from "../../utils/logUtils";
+import { getIngredients } from "../../services/burgerApi";
+import { logError } from "../../services/logService";
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
 import { getStubSelectedIngredientIds } from "../../utils/stubDataUtils";
