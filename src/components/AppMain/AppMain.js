@@ -5,27 +5,7 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 
 import styles from "./AppMain.module.css";
 
-import { getStubSelectedIngredientIds } from "../../utils/stubDataUtils";
-
-const AppMain = ({ ingredientsData }) => {
-  // Стабовые данные
-  const selectedIngredientsIds = getStubSelectedIngredientIds(ingredientsData);
-
-  const selectedIngredientsAll = selectedIngredientsIds.map((id, index) => {
-    const found = ingredientsData.find((item) => item._id === id);
-    return {
-      ...found,
-      uniqueId: `${id}_${index}`,
-    };
-  });
-
-  const selectedIngredientsInner = selectedIngredientsAll.filter(
-    (item) => item.type !== "bun"
-  );
-  const selectedIngredientsBun = selectedIngredientsAll.find(
-    (item) => item.type === "bun"
-  );
-
+const AppMain = ({ ingredientsData, selectedIngredientsIds }) => {
   return (
     <main className={styles.appMain}>
       <BurgerIngredients
@@ -33,8 +13,8 @@ const AppMain = ({ ingredientsData }) => {
         selectedIngredientsIds={selectedIngredientsIds}
       />
       <BurgerConstructor
-        bun={selectedIngredientsBun}
-        innerIngredients={selectedIngredientsInner}
+        ingredientsData={ingredientsData}
+        selectedIngredientsIds={selectedIngredientsIds}
       />
     </main>
   );

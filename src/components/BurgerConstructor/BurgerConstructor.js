@@ -9,15 +9,21 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
 import { getStubOrderId } from "../../utils/stubDataUtils";
+import { getSplittedIngredientsData } from "../../utils/ingredientUtils";
 
 import styles from "./BurgerConstructor.module.css";
 
-const BurgerConstructor = ({ bun, innerIngredients }) => {
+const BurgerConstructor = ({ ingredientsData, selectedIngredientsIds }) => {
   const {
     isDisplayed: isModal,
     show: showModal,
     close: closeModal,
   } = useModal();
+
+  const { bun, innerIngredients } = getSplittedIngredientsData(
+    selectedIngredientsIds,
+    ingredientsData
+  );
 
   const getBurgerTotalPrice = () => {
     return (
@@ -83,8 +89,8 @@ const BurgerConstructor = ({ bun, innerIngredients }) => {
 };
 
 BurgerConstructor.propTypes = {
-  bun: dataShape.isRequired,
-  innerIngredients: PropTypes.arrayOf(dataShape).isRequired,
+  ingredientsData: PropTypes.arrayOf(dataShape).isRequired,
+  selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default BurgerConstructor;
