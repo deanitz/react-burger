@@ -17,6 +17,11 @@ import {
 } from "../../services/appContext";
 import { placeOrder } from "../../services/burgerApi";
 import { logError } from "../../services/logService";
+import {
+  ORDER_ACTION_SET,
+  orderIdInitial,
+  orderIdReducer,
+} from "./BurgerConstructor.utils";
 
 import styles from "./BurgerConstructor.module.css";
 
@@ -27,17 +32,6 @@ const BurgerConstructor = () => {
   );
 
   //Тренировочное использование useReducer.
-  const orderIdInitial = { value: 0 };
-  const orderIdReducer = (_, action) => {
-    switch (action.type) {
-      case "set":
-        return { value: action.payload };
-      case "reset":
-        return orderIdInitial;
-      default:
-        throw new Error(`Неверный тип action: ${action.type}`);
-    }
-  };
   const [orderId, orderIdDispatcher] = useReducer(
     orderIdReducer,
     orderIdInitial
@@ -93,7 +87,10 @@ const BurgerConstructor = () => {
 
     placeOrder(order)
       .then((data) => {
-        orderIdDispatcher({ type: "set", payload: data.order.number });
+        orderIdDispatcher({
+          type: ORDER_ACTION_SET,
+          payload: data.order.number,
+        });
         showModal();
       })
       .catch((error) => {
