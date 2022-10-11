@@ -1,10 +1,14 @@
+import { useContext } from "react";
 import PropTypes from "prop-types";
 import dataShape from "../../utils/dataShape";
 import IngredientItem from "../IngredientItem/IngredientItem";
+import { SelectedIngredientsContext } from "../../services/appContext";
 
 import styles from "./IngredientSection.module.css";
 
-const IngredientSection = ({ name, data, selectedIngredientsIds }) => {
+const IngredientSection = ({ name, data }) => {
+  const { selectedIngredientsIds } = useContext(SelectedIngredientsContext);
+
   const getCount = (item) => {
     return selectedIngredientsIds.reduce(
       (acc, curr) => (curr === item._id ? acc + 1 : acc),
@@ -27,7 +31,6 @@ const IngredientSection = ({ name, data, selectedIngredientsIds }) => {
 IngredientSection.propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(dataShape).isRequired,
-  selectedIngredientsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default IngredientSection;
