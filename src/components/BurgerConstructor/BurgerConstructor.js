@@ -8,10 +8,6 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
 import {
-  getSplittedIngredientsData,
-  getBurgerTotalPrice,
-} from "../../utils/ingredientUtils";
-import {
   AllIngredientsContext,
   SelectedIngredientsContext,
 } from "../../services/appContext";
@@ -21,6 +17,8 @@ import {
   ORDER_ACTION_SET,
   orderIdInitial,
   orderIdReducer,
+  getSplittedIngredientsData,
+  getBurgerTotalPrice,
 } from "./BurgerConstructor.utils";
 
 import styles from "./BurgerConstructor.module.css";
