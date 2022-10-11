@@ -29,9 +29,7 @@ const App = () => {
     <>
       <AppHeader />
       {Boolean(ingredientsData.length) && (
-        <AllIngredientsContext.Provider
-          value={{ ingredientsData }}
-        >
+        <AllIngredientsContext.Provider value={{ ingredientsData }}>
           <SelectedIngredientsContext.Provider
             value={{ selectedIngredientsIds, setSelectedIngredientsIds }}
           >

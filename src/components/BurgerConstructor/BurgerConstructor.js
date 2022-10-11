@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo, useReducer, useCallback } from "react";
 import {
   ConstructorElement,
   DragIcon,
@@ -7,18 +7,41 @@ import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
-import { getStubOrderId } from "../../utils/stubDataUtils";
-import { getSplittedIngredientsData } from "../../utils/ingredientUtils";
+import {
+  getSplittedIngredientsData,
+  getBurgerTotalPrice,
+} from "../../utils/ingredientUtils";
 import {
   AllIngredientsContext,
   SelectedIngredientsContext,
 } from "../../services/appContext";
+import { placeOrder } from "../../services/burgerApi";
+import { logError } from "../../services/logService";
 
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
   const { ingredientsData } = useContext(AllIngredientsContext);
-  const { selectedIngredientsIds } = useContext(SelectedIngredientsContext);
+  const { selectedIngredientsIds, setSelectedIngredientsIds } = useContext(
+    SelectedIngredientsContext
+  );
+
+  //Тренировочное использование useReducer.
+  const orderIdInitial = { value: 0 };
+  const orderIdReducer = (_, action) => {
+    switch (action.type) {
+      case "set":
+        return { value: action.payload };
+      case "reset":
+        return orderIdInitial;
+      default:
+        throw new Error(`Неверный тип action: ${action.type}`);
+    }
+  };
+  const [orderId, orderIdDispatcher] = useReducer(
+    orderIdReducer,
+    orderIdInitial
+  );
 
   const {
     isDisplayed: isModal,
@@ -26,23 +49,61 @@ const BurgerConstructor = () => {
     close: closeModal,
   } = useModal();
 
-  const { bun, innerIngredients } = getSplittedIngredientsData(
-    selectedIngredientsIds,
-    ingredientsData
-  );
-
-  const getBurgerTotalPrice = () => {
-    return (
-      bun.price * 2 +
-      innerIngredients.reduce((total, curr) => total + curr.price, 0)
+  const { bun, innerIngredients, totalPrice } = useMemo(() => {
+    const { bun, innerIngredients } = getSplittedIngredientsData(
+      selectedIngredientsIds,
+      ingredientsData
     );
+
+    return {
+      bun,
+      innerIngredients,
+      totalPrice: getBurgerTotalPrice(bun, innerIngredients),
+    };
+  }, [selectedIngredientsIds, ingredientsData]);
+
+  // Стабовые методы для демонстрации записи в контекст
+  const handleInnerIngredientClick = (innerIngredient) => {
+    const stubSortedIngredientsIdsList = [
+      bun,
+      innerIngredient,
+      ...innerIngredients.filter(
+        (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
+      ),
+    ].map((item) => item._id);
+
+    setSelectedIngredientsIds(stubSortedIngredientsIdsList);
   };
 
-  const orderId = getStubOrderId();
+  const handleIngredientRemove = (innerIngredient) => {
+    const stubSortedIngredientsIdsList = [
+      bun,
+      ...innerIngredients.filter(
+        (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
+      ),
+    ].map((item) => item._id);
+
+    setSelectedIngredientsIds(stubSortedIngredientsIdsList);
+  };
+
+  const handleBurgerCheckoutClick = useCallback(() => {
+    const order = {
+      ingredients: selectedIngredientsIds,
+    };
+
+    placeOrder(order)
+      .then((data) => {
+        orderIdDispatcher({ type: "set", payload: data.order.number });
+        showModal();
+      })
+      .catch((error) => {
+        logError(error);
+      });
+  }, [selectedIngredientsIds, orderIdDispatcher, showModal]);
 
   const modal = (
     <Modal onClose={closeModal}>
-      <OrderDetails orderNumber={orderId} />
+      <OrderDetails orderNumber={orderId.value} />
     </Modal>
   );
 
@@ -66,11 +127,14 @@ const BurgerConstructor = () => {
               key={innerIngredient.uniqueId}
               className={styles.innerIngredientContainer}
             >
-              <DragIcon type="primary" />
+              <div onClick={() => handleInnerIngredientClick(innerIngredient)}>
+                <DragIcon type="primary" />
+              </div>
               <ConstructorElement
                 text={innerIngredient.name}
                 price={innerIngredient.price}
                 thumbnail={innerIngredient.image}
+                handleClose={() => handleIngredientRemove(innerIngredient)}
               />
             </div>
           ))}
@@ -85,8 +149,8 @@ const BurgerConstructor = () => {
           />
         </div>
         <BurgerCheckout
-          total={getBurgerTotalPrice()}
-          onOrderClick={showModal}
+          total={totalPrice}
+          onOrderClick={handleBurgerCheckoutClick}
         />
       </section>
       {isModal && modal}
