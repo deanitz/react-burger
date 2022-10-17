@@ -20,19 +20,21 @@ import {
   getSplittedIngredientsData,
   getBurgerTotalPrice,
 } from "./BurgerConstructor.utils";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderInfo } from "../../services/slicers/orderSlice";
 
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
+  const dispatch = useDispatch();
+
+  const { orderId: orderNumber } = useSelector((store) => ({
+    orderId: store?.order?.orderInfo?.order?.number,
+  }));
+
   const { ingredientsData } = useContext(AllIngredientsContext);
   const { selectedIngredientsIds, setSelectedIngredientsIds } = useContext(
     SelectedIngredientsContext
-  );
-
-  //Тренировочное использование useReducer.
-  const [orderId, orderIdDispatcher] = useReducer(
-    orderIdReducer,
-    orderIdInitial
   );
 
   const {
@@ -83,22 +85,14 @@ const BurgerConstructor = () => {
       ingredients: selectedIngredientsIds,
     };
 
-    placeOrder(order)
-      .then((data) => {
-        orderIdDispatcher({
-          type: ORDER_ACTION_SET,
-          payload: data.order.number,
-        });
-        showModal();
-      })
-      .catch((error) => {
-        logError(error);
-      });
-  }, [selectedIngredientsIds, orderIdDispatcher, showModal]);
+    dispatch(getOrderInfo(order)).then(() => {
+      showModal();
+    });
+  }, [selectedIngredientsIds, showModal]);
 
-  const modal = (
+  const modal = isModal && (
     <Modal onClose={closeModal}>
-      <OrderDetails orderNumber={orderId.value} />
+      <OrderDetails orderNumber={orderNumber} />
     </Modal>
   );
 
@@ -148,7 +142,7 @@ const BurgerConstructor = () => {
           onOrderClick={handleBurgerCheckoutClick}
         />
       </section>
-      {isModal && modal}
+      {modal}
     </>
   );
 };

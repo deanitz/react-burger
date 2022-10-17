@@ -8,6 +8,19 @@ import {
   AllIngredientsContext,
   SelectedIngredientsContext,
 } from "../../services/appContext";
+import { rootReducer } from "../../services/reducers/rootReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
+
+const preloadedState = {};
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+  devTools: process.env.NODE_ENV !== "production",
+  preloadedState,
+});
 
 const App = () => {
   const [ingredientsData, setIngredientsData] = useState([]);
@@ -29,13 +42,15 @@ const App = () => {
     <>
       <AppHeader />
       {Boolean(ingredientsData.length) && (
-        <AllIngredientsContext.Provider value={{ ingredientsData }}>
-          <SelectedIngredientsContext.Provider
-            value={{ selectedIngredientsIds, setSelectedIngredientsIds }}
-          >
-            <AppMain />
-          </SelectedIngredientsContext.Provider>
-        </AllIngredientsContext.Provider>
+        <Provider store={store}>
+          <AllIngredientsContext.Provider value={{ ingredientsData }}>
+            <SelectedIngredientsContext.Provider
+              value={{ selectedIngredientsIds, setSelectedIngredientsIds }}
+            >
+              <AppMain />
+            </SelectedIngredientsContext.Provider>
+          </AllIngredientsContext.Provider>
+        </Provider>
       )}
     </>
   );
