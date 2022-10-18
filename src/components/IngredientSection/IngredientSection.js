@@ -6,11 +6,9 @@ import IngredientItem from "../IngredientItem/IngredientItem";
 import styles from "./IngredientSection.module.css";
 
 const IngredientSection = ({ name, data }) => {
-  const { selectedIngredientsIds } = useSelector(
-    (store) => ({
-      selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
-    })
-  );
+  const { selectedIngredientsIds } = useSelector((store) => ({
+    selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+  }));
 
   const getCount = (item) => {
     return selectedIngredientsIds.reduce(

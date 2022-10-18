@@ -46,7 +46,6 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const { setDisplayedIngredient } =
-  ingredientsSlice.actions;
+export const { setDisplayedIngredient } = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

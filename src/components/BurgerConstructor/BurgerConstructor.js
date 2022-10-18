@@ -1,4 +1,4 @@
-import { useContext, useMemo, useCallback, useEffect } from "react";
+import { useMemo, useCallback, useEffect } from "react";
 import {
   ConstructorElement,
   DragIcon,
@@ -7,7 +7,6 @@ import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
-
 import {
   getSplittedIngredientsData,
   getBurgerTotalPrice,
@@ -20,6 +19,7 @@ import {
 import {
   addSelectedIngredient,
   removeSelectedIngredient,
+  updateSelectedIngredients,
 } from "../../services/slicers/selectedIngredientsSlice";
 
 import styles from "./BurgerConstructor.module.css";
@@ -38,17 +38,13 @@ const BurgerConstructor = () => {
     })
   );
 
-  const { ingredientsData } = useSelector(
-    (store) => ({
-      ingredientsData: store.ingredients.ingredientsData,
-    })
-  );
+  const { ingredientsData } = useSelector((store) => ({
+    ingredientsData: store.ingredients.ingredientsData,
+  }));
 
-  const { selectedIngredientsIds } = useSelector(
-    (store) => ({
-      selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
-    })
-  );
+  const { selectedIngredientsIds } = useSelector((store) => ({
+    selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+  }));
 
   const {
     isDisplayed: isModal,
@@ -89,13 +85,15 @@ const BurgerConstructor = () => {
     //     (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
     //   ),
     // ].map((item) => item._id);
-
     // setSelectedIngredientsIds(stubSortedIngredientsIdsList);
   };
 
-  const handleIngredientRemove = (innerIngredient) => {
-    dispatch(removeSelectedIngredient(innerIngredient._id));
-  };
+  const handleIngredientRemove = useCallback(
+    (innerIngredient) => {
+      dispatch(removeSelectedIngredient(innerIngredient._id));
+    },
+    [dispatch]
+  );
 
   const handleBurgerCheckoutClick = useCallback(() => {
     const order = {

@@ -6,11 +6,9 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerIngredients.module.css";
 
 const BurgerIngredients = () => {
-  const { ingredientsData } = useSelector(
-    (store) => ({
-      ingredientsData: store.ingredients.ingredientsData,
-    })
-  );
+  const { ingredientsData } = useSelector((store) => ({
+    ingredientsData: store.ingredients.ingredientsData,
+  }));
 
   const [current, setCurrent] = useState("buns");
 

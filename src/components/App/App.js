@@ -9,21 +9,22 @@ import { setSelectedIngredients } from "../../services/slicers/selectedIngredien
 const App = () => {
   const dispatch = useDispatch();
 
-  const { ingredientsData, selectedIngredientsIds } = useSelector(
-    (store) => ({
-      ingredientsData: store.ingredients.ingredientsData,
-      selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
-    })
-  );
+  const { ingredientsData, selectedIngredientsIds } = useSelector((store) => ({
+    ingredientsData: store.ingredients.ingredientsData,
+    selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+  }));
 
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
 
   useEffect(() => {
-    if (ingredientsData.length){
-    dispatch(setSelectedIngredients(getStubSelectedIngredientIds(ingredientsData)));}
-  }, [ingredientsData]);
+    if (ingredientsData.length) {
+      dispatch(
+        setSelectedIngredients(getStubSelectedIngredientIds(ingredientsData))
+      );
+    }
+  }, [dispatch, ingredientsData]);
 
   return (
     <>

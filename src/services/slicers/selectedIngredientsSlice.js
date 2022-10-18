@@ -9,7 +9,7 @@ const selectedIngredientsSlice = createSlice({
   initialState,
   reducers: {
     setSelectedIngredients: (state, action) => {
-      state.selectedIngredientsIds = action.payload
+      state.selectedIngredientsIds = action.payload;
     },
     addSelectedIngredient: (state, action) => ({
       ...state,
