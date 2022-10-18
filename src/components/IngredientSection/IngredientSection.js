@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import dataShape from "../../utils/dataShape";
@@ -5,7 +6,7 @@ import IngredientItem from "../IngredientItem/IngredientItem";
 
 import styles from "./IngredientSection.module.css";
 
-const IngredientSection = ({ name, data }) => {
+const IngredientSection = forwardRef(({ name, data }, ref) => {
   const { selectedIngredientsIds } = useSelector((store) => ({
     selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
   }));
@@ -18,7 +19,7 @@ const IngredientSection = ({ name, data }) => {
   };
 
   return (
-    <section className={`${styles.ingredientSection}`}>
+    <section className={`${styles.ingredientSection}`} ref={ref}>
       <h2 className="text text_type_main-medium mb-6">{name}</h2>
       <div className={styles.ingredientItemsContainer}>
         {data.map((item) => (
@@ -27,7 +28,7 @@ const IngredientSection = ({ name, data }) => {
       </div>
     </section>
   );
-};
+});
 
 IngredientSection.propTypes = {
   name: PropTypes.string.isRequired,

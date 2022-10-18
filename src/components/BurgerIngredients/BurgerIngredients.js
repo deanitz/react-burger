@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -15,9 +15,35 @@ const BurgerIngredients = () => {
   const buns = ingredientsData.filter((item) => item.type === "bun");
   const sauces = ingredientsData.filter((item) => item.type === "sauce");
   const mains = ingredientsData.filter((item) => item.type === "main");
+  const sections = useMemo(
+    () => [
+      {
+        name: "Булки",
+        tabName: "buns",
+        item: buns,
+        ref: React.createRef(),
+      },
+      {
+        name: "Соусы",
+        tabName: "sauces",
+        item: sauces,
+        ref: React.createRef(),
+      },
+      {
+        name: "Начинки",
+        tabName: "mains",
+        item: mains,
+        ref: React.createRef(),
+      },
+    ],
+    [buns, sauces, mains]
+  );
 
   const handleTabClick = (tabName) => {
     setCurrent(tabName);
+    const refToScroll = sections.find((section) => section.tabName === tabName)
+      .ref.current;
+    refToScroll.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -43,9 +69,14 @@ const BurgerIngredients = () => {
         </Tab>
       </div>
       <div className={`${styles.ingredientsListContainer} custom-scroll mt-10`}>
-        <IngredientSection name="Булки" data={buns} />
-        <IngredientSection name="Соусы" data={sauces} />
-        <IngredientSection name="Начинки" data={mains} />
+        {sections.map((section) => (
+          <IngredientSection
+            name={section.name}
+            data={section.item}
+            ref={section.ref}
+            key={section.tabName}
+          />
+        ))}
       </div>
     </section>
   );
