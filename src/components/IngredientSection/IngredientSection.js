@@ -19,7 +19,7 @@ const IngredientSection = forwardRef(({ name, data }, ref) => {
   };
 
   return (
-    <section className={`${styles.ingredientSection}`} ref={ref}>
+    <section ref={ref}>
       <h2 className="text text_type_main-medium mb-6">{name}</h2>
       <div className={styles.ingredientItemsContainer}>
         {data.map((item) => (
