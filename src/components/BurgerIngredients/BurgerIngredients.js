@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -15,29 +15,28 @@ const BurgerIngredients = () => {
   const buns = ingredientsData.filter((item) => item.type === "bun");
   const sauces = ingredientsData.filter((item) => item.type === "sauce");
   const mains = ingredientsData.filter((item) => item.type === "main");
-  const sections = useMemo(
-    () => [
+  const sections = 
+  [
       {
         name: "Булки",
         tabName: "buns",
         item: buns,
-        ref: React.createRef(),
+        ref: useRef(null),
       },
       {
         name: "Соусы",
         tabName: "sauces",
         item: sauces,
-        ref: React.createRef(),
+        ref: useRef(null),
       },
       {
         name: "Начинки",
         tabName: "mains",
         item: mains,
-        ref: React.createRef(),
+        ref: useRef(null),
       },
-    ],
-    [buns, sauces, mains]
-  );
+    ]
+  ;
 
   const handleTabClick = (tabName) => {
     setCurrent(tabName);
