@@ -1,4 +1,4 @@
-import { useContext, useMemo, useReducer, useCallback } from "react";
+import { useContext, useMemo, useCallback, useEffect } from "react";
 import {
   ConstructorElement,
   DragIcon,
@@ -11,26 +11,32 @@ import {
   AllIngredientsContext,
   SelectedIngredientsContext,
 } from "../../services/appContext";
-import { placeOrder } from "../../services/burgerApi";
-import { logError } from "../../services/logService";
+
 import {
-  ORDER_ACTION_SET,
-  orderIdInitial,
-  orderIdReducer,
   getSplittedIngredientsData,
   getBurgerTotalPrice,
 } from "./BurgerConstructor.utils";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderInfo } from "../../services/slicers/orderSlice";
+import {
+  getOrderInfo,
+  resetOrderInfo,
+} from "../../services/slicers/orderSlice";
 
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
 
-  const { orderId: orderNumber } = useSelector((store) => ({
-    orderId: store?.order?.orderInfo?.order?.number,
-  }));
+  const { orderNumber, isOrderLoaded, isOrderLoadingError } = useSelector(
+    (store) => ({
+      orderNumber: store.order.orderInfo?.order?.number,
+      isOrderLoaded:
+        Boolean(store.order.orderInfo) &&
+        !store.order.orderInfoLoading &&
+        !store.order.orderInfoError,
+      isOrderLoadingError: store.order.orderInfoError,
+    })
+  );
 
   const { ingredientsData } = useContext(AllIngredientsContext);
   const { selectedIngredientsIds, setSelectedIngredientsIds } = useContext(
@@ -42,6 +48,17 @@ const BurgerConstructor = () => {
     show: showModal,
     close: closeModal,
   } = useModal();
+
+  useEffect(() => {
+    if (isOrderLoaded && !isModal) {
+      showModal();
+      return;
+    }
+    if (isOrderLoadingError) {
+      alert("Что-то пошло не так. Попробуйте еще раз.");
+      dispatch(resetOrderInfo());
+    }
+  }, [isOrderLoaded, isModal, showModal, isOrderLoadingError, dispatch]);
 
   const { bun, innerIngredients, totalPrice } = useMemo(() => {
     const { bun, innerIngredients } = getSplittedIngredientsData(
@@ -85,13 +102,16 @@ const BurgerConstructor = () => {
       ingredients: selectedIngredientsIds,
     };
 
-    dispatch(getOrderInfo(order)).then(() => {
-      showModal();
-    });
-  }, [selectedIngredientsIds, showModal]);
+    dispatch(getOrderInfo(order));
+  }, [selectedIngredientsIds, dispatch]);
+
+  const handleCloseModal = () => {
+    dispatch(resetOrderInfo());
+    closeModal();
+  };
 
   const modal = isModal && (
-    <Modal onClose={closeModal}>
+    <Modal onClose={handleCloseModal}>
       <OrderDetails orderNumber={orderNumber} />
     </Modal>
   );
