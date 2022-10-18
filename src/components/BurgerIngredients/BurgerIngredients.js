@@ -1,12 +1,16 @@
-import { useState, useContext } from "react";
-import { AllIngredientsContext } from "../../services/appContext";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./BurgerIngredients.module.css";
 
 const BurgerIngredients = () => {
-  const { ingredientsData } = useContext(AllIngredientsContext);
+  const { ingredientsData } = useSelector(
+    (store) => ({
+      ingredientsData: store.ingredients.ingredientsData,
+    })
+  );
 
   const [current, setCurrent] = useState("buns");
 

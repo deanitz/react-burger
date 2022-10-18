@@ -1,13 +1,16 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import dataShape from "../../utils/dataShape";
 import IngredientItem from "../IngredientItem/IngredientItem";
-import { SelectedIngredientsContext } from "../../services/appContext";
 
 import styles from "./IngredientSection.module.css";
 
 const IngredientSection = ({ name, data }) => {
-  const { selectedIngredientsIds } = useContext(SelectedIngredientsContext);
+  const { selectedIngredientsIds } = useSelector(
+    (store) => ({
+      selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+    })
+  );
 
   const getCount = (item) => {
     return selectedIngredientsIds.reduce(

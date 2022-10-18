@@ -1,25 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const initialState = {
-  selectedIngredientIds: [],
+const initialState = {
+  selectedIngredientsIds: [],
 };
 
 const selectedIngredientsSlice = createSlice({
   name: "selectedIngredients",
   initialState,
   reducers: {
+    setSelectedIngredients: (state, action) => {
+      state.selectedIngredientsIds = action.payload
+    },
     addSelectedIngredient: (state, action) => ({
       ...state,
-      selectedIngredientIds: [action.payload, ...state.selectedIngredientIds],
+      selectedIngredientsIds: [action.payload, ...state.selectedIngredientsIds],
     }),
     removeSelectedIngredient: (state, action) => ({
       ...state,
-      selectedIngredientIds: state.selectedIngredientIds.filter(
+      selectedIngredientsIds: state.selectedIngredientsIds.filter(
         (id) => id !== action.payload
       ),
     }),
     updateSelectedIngredients: (state, action) => {
-      const filteredIds = state.selectedIngredientIds.filter(
+      const filteredIds = state.selectedIngredientsIds.filter(
         (id) => id !== action.payload.id
       );
       const completeIds = filteredIds.splice(
@@ -29,13 +32,14 @@ const selectedIngredientsSlice = createSlice({
       );
       return {
         ...state,
-        selectedIngredientIds: completeIds,
+        selectedIngredientsIds: completeIds,
       };
     },
   },
 });
 
 export const {
+  setSelectedIngredients,
   addSelectedIngredient,
   removeSelectedIngredient,
   updateSelectedIngredients,

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { placeOrder } from "../../services/burgerApi";
 
-export const initialState = {
+const initialState = {
   orderInfo: null,
   orderInfoLoading: false,
   orderInfoError: false,

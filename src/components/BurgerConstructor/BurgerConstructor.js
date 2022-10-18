@@ -7,10 +7,6 @@ import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
-import {
-  AllIngredientsContext,
-  SelectedIngredientsContext,
-} from "../../services/appContext";
 
 import {
   getSplittedIngredientsData,
@@ -21,6 +17,10 @@ import {
   getOrderInfo,
   resetOrderInfo,
 } from "../../services/slicers/orderSlice";
+import {
+  addSelectedIngredient,
+  removeSelectedIngredient,
+} from "../../services/slicers/selectedIngredientsSlice";
 
 import styles from "./BurgerConstructor.module.css";
 
@@ -38,9 +38,16 @@ const BurgerConstructor = () => {
     })
   );
 
-  const { ingredientsData } = useContext(AllIngredientsContext);
-  const { selectedIngredientsIds, setSelectedIngredientsIds } = useContext(
-    SelectedIngredientsContext
+  const { ingredientsData } = useSelector(
+    (store) => ({
+      ingredientsData: store.ingredients.ingredientsData,
+    })
+  );
+
+  const { selectedIngredientsIds } = useSelector(
+    (store) => ({
+      selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+    })
   );
 
   const {
@@ -75,26 +82,19 @@ const BurgerConstructor = () => {
 
   // Стабовые методы для демонстрации записи в контекст
   const handleInnerIngredientClick = (innerIngredient) => {
-    const stubSortedIngredientsIdsList = [
-      bun,
-      innerIngredient,
-      ...innerIngredients.filter(
-        (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
-      ),
-    ].map((item) => item._id);
+    // const stubSortedIngredientsIdsList = [
+    //   bun,
+    //   innerIngredient,
+    //   ...innerIngredients.filter(
+    //     (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
+    //   ),
+    // ].map((item) => item._id);
 
-    setSelectedIngredientsIds(stubSortedIngredientsIdsList);
+    // setSelectedIngredientsIds(stubSortedIngredientsIdsList);
   };
 
   const handleIngredientRemove = (innerIngredient) => {
-    const stubSortedIngredientsIdsList = [
-      bun,
-      ...innerIngredients.filter(
-        (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
-      ),
-    ].map((item) => item._id);
-
-    setSelectedIngredientsIds(stubSortedIngredientsIdsList);
+    dispatch(removeSelectedIngredient(innerIngredient._id));
   };
 
   const handleBurgerCheckoutClick = useCallback(() => {
