@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -13,12 +13,22 @@ import {
   TYPE_SAUCE,
   TYPE_MAIN,
 } from "./BurgerIngredients.utils";
+import useModal from "../../hooks/useModal";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import {
+  setDisplayedIngredient,
+  resetDisplayedIngredient,
+} from "../../services/slicers/ingredientsSlice";
 
 import styles from "./BurgerIngredients.module.css";
 
 const BurgerIngredients = () => {
-  const { ingredientsData } = useSelector((store) => ({
+  const dispatch = useDispatch();
+
+  const { ingredientsData, displayedIngredient } = useSelector((store) => ({
     ingredientsData: store.ingredients.ingredientsData,
+    displayedIngredient: store.ingredients.displayedIngredient,
   }));
 
   const [current, setCurrent] = useState(TAB_BUNS);
@@ -72,10 +82,11 @@ const BurgerIngredients = () => {
         threshold: 0.1,
       }
     );
-    [...sections].map((section) => observer.observe(section.ref.current));
+    const currentRefs = sections.map((section) => section.ref.current);
+    currentRefs.map((curRef) => observer.observe(curRef));
 
     return () => {
-      [...sections].map((section) => observer.unobserve(section.ref.current));
+      currentRefs.map((curRef) => observer.unobserve(curRef));
     };
   }, [sections, setCurrent]);
 
@@ -86,35 +97,74 @@ const BurgerIngredients = () => {
     refToScroll?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const {
+    isDisplayed: isModal,
+    show: showModal,
+    close: closeModal,
+  } = useModal();
+
+  useEffect(() => {
+    if (displayedIngredient && !isModal) {
+      showModal();
+    }
+  }, [displayedIngredient, isModal, showModal]);
+
+  const handleCloseModal = () => {
+    dispatch(resetDisplayedIngredient());
+    closeModal();
+  };
+
+  const handleIngredientItemClick = useCallback(
+    (item) => {
+      dispatch(setDisplayedIngredient(item));
+    },
+    [dispatch]
+  );
+
+  const modal = isModal && displayedIngredient && (
+    <Modal
+      header={<h1 className="text text_type_main-large">Детали ингредиента</h1>}
+      onClose={handleCloseModal}
+    >
+      <IngredientDetails item={displayedIngredient} />
+    </Modal>
+  );
+
   return (
-    <section className={styles.burgerIngredients}>
-      <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
-      <div className={styles.tabsContainer}>
-        {sections.map((section) => (
-          <Tab
-            value={section.tabName}
-            active={current === section.tabName}
-            onClick={handleTabClick}
-            key={section.tabName}
-          >
-            {section.name}
-          </Tab>
-        ))}
-      </div>
-      <div
-        className={`${styles.ingredientsListContainer} custom-scroll mt-10`}
-        ref={viewportRef}
-      >
-        {sections.map((section) => (
-          <IngredientSection
-            name={section.name}
-            data={section.item}
-            ref={section.ref}
-            key={section.tabName}
-          />
-        ))}
-      </div>
-    </section>
+    <>
+      <section className={styles.burgerIngredients}>
+        <h1 className="text text_type_main-large mt-10 mb-5">
+          Соберите бургер
+        </h1>
+        <div className={styles.tabsContainer}>
+          {sections.map((section) => (
+            <Tab
+              value={section.tabName}
+              active={current === section.tabName}
+              onClick={handleTabClick}
+              key={section.tabName}
+            >
+              {section.name}
+            </Tab>
+          ))}
+        </div>
+        <div
+          className={`${styles.ingredientsListContainer} custom-scroll mt-10`}
+          ref={viewportRef}
+        >
+          {sections.map((section) => (
+            <IngredientSection
+              name={section.name}
+              data={section.item}
+              ref={section.ref}
+              key={section.tabName}
+              handleItemClick={handleIngredientItemClick}
+            />
+          ))}
+        </div>
+      </section>
+      {modal}
+    </>
   );
 };
 

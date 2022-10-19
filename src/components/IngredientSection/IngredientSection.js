@@ -6,7 +6,7 @@ import IngredientItem from "../IngredientItem/IngredientItem";
 
 import styles from "./IngredientSection.module.css";
 
-const IngredientSection = forwardRef(({ name, data }, ref) => {
+const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
   const { selectedIngredientsIds } = useSelector((store) => ({
     selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
   }));
@@ -25,7 +25,12 @@ const IngredientSection = forwardRef(({ name, data }, ref) => {
       </h2>
       <div className={styles.ingredientItemsContainer}>
         {data.map((item) => (
-          <IngredientItem item={item} count={getCount(item)} key={item._id} />
+          <IngredientItem
+            item={item}
+            count={getCount(item)}
+            key={item._id}
+            handleClick={handleItemClick}
+          />
         ))}
       </div>
     </section>

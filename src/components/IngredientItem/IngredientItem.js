@@ -4,31 +4,13 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import useModal from "../../hooks/useModal";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 import styles from "./IngredientItem.module.css";
 
-const IngredientItem = ({ item, count }) => {
-  const {
-    isDisplayed: isModal,
-    show: showModal,
-    close: closeModal,
-  } = useModal();
-
-  const modal = (
-    <Modal
-      header={<h1 className="text text_type_main-large">Детали ингредиента</h1>}
-      onClose={closeModal}
-    >
-      <IngredientDetails item={item} />
-    </Modal>
-  );
-
+const IngredientItem = ({ item, count, handleClick }) => {
   return (
     <>
-      <div className={styles.ingredientItem} onClick={showModal}>
+      <div className={styles.ingredientItem} onClick={() => handleClick(item)}>
         <img
           className="ml-4 mr-4"
           src={item.image}
@@ -45,7 +27,6 @@ const IngredientItem = ({ item, count }) => {
         </p>
         {Boolean(count) && <Counter count={count} size="default" />}
       </div>
-      {isModal && modal}
     </>
   );
 };
