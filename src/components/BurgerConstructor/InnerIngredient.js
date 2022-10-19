@@ -15,22 +15,20 @@ const InnerIngredient = ({ data, handleRemove }) => {
     }),
   });
   return (
-    !isDrag && (
-      <div
-        className={`${styles.innerIngredientContainer} ${
-          isDrag ? styles.dragging : ""
-        }`}
-        ref={dragRef}
-      >
-        <DragIcon type="primary" />
-        <ConstructorElement
-          text={data.name}
-          price={data.price}
-          thumbnail={data.image}
-          handleClose={() => handleRemove(data)}
-        />
-      </div>
-    )
+    <div
+      className={`${styles.innerIngredientContainer} ${
+        isDrag ? styles.dragging : ""
+      }`}
+      ref={dragRef}
+    >
+      <DragIcon type="primary" />
+      <ConstructorElement
+        text={data.name}
+        price={data.price}
+        thumbnail={data.image}
+        handleClose={() => handleRemove(data)}
+      />
+    </div>
   );
 };
 
