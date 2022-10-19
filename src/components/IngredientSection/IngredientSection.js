@@ -19,8 +19,10 @@ const IngredientSection = forwardRef(({ name, data }, ref) => {
   };
 
   return (
-    <section ref={ref}>
-      <h2 className="text text_type_main-medium mb-6">{name}</h2>
+    <section>
+      <h2 className="text text_type_main-medium mb-6" ref={ref}>
+        {name}
+      </h2>
       <div className={styles.ingredientItemsContainer}>
         {data.map((item) => (
           <IngredientItem item={item} count={getCount(item)} key={item._id} />
