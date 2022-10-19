@@ -12,10 +12,3 @@
   height: calc(100vh - 600px);
   overflow-y: auto;
 }
-
-.innerIngredientContainer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  column-gap: calc(var(--offset-base-size) * 2);
-}

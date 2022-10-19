@@ -5,6 +5,12 @@
   align-items: center;
   width: 272px;
   cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.dragging {
+  border: 2px solid rgb(51 51 255 / 25%);
+  border-radius: 32px;
 }
 
 .price {

@@ -4,13 +4,26 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useDrag } from "react-dnd";
 
 import styles from "./IngredientItem.module.css";
 
 const IngredientItem = ({ item, count, handleClick }) => {
+  const [{ isDrag }, dragRef] = useDrag({
+    type: "ingredient",
+    item: { item },
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });
+
   return (
     <>
-      <div className={styles.ingredientItem} onClick={() => handleClick(item)}>
+      <div
+        className={`${styles.ingredientItem} ${isDrag ? styles.dragging : ""}`}
+        onClick={() => handleClick(item)}
+        ref={dragRef}
+      >
         <img
           className="ml-4 mr-4"
           src={item.image}

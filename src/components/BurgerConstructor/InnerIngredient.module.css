@@ -1,0 +1,10 @@
+.innerIngredientContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: calc(var(--offset-base-size) * 2);
+}
+
+.dragging {
+  opacity: 0.5;
+}

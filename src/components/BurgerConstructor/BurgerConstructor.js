@@ -1,7 +1,6 @@
 import { useMemo, useCallback, useEffect } from "react";
 import {
   ConstructorElement,
-  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -23,6 +22,7 @@ import {
 } from "../../services/slicers/selectedIngredientsSlice";
 
 import styles from "./BurgerConstructor.module.css";
+import InnerIngredient from "./InnerIngredient";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -76,18 +76,6 @@ const BurgerConstructor = () => {
     };
   }, [selectedIngredientsIds, ingredientsData]);
 
-  // Стабовые методы для демонстрации записи в контекст
-  const handleInnerIngredientClick = (innerIngredient) => {
-    // const stubSortedIngredientsIdsList = [
-    //   bun,
-    //   innerIngredient,
-    //   ...innerIngredients.filter(
-    //     (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
-    //   ),
-    // ].map((item) => item._id);
-    // setSelectedIngredientsIds(stubSortedIngredientsIdsList);
-  };
-
   const handleIngredientRemove = useCallback(
     (innerIngredient) => {
       dispatch(removeSelectedIngredient(innerIngredient._id));
@@ -130,20 +118,11 @@ const BurgerConstructor = () => {
           className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
         >
           {innerIngredients.map((innerIngredient) => (
-            <div
+            <InnerIngredient
+              data={innerIngredient}
+              handleRemove={handleIngredientRemove}
               key={innerIngredient.uniqueId}
-              className={styles.innerIngredientContainer}
-            >
-              <div onClick={() => handleInnerIngredientClick(innerIngredient)}>
-                <DragIcon type="primary" />
-              </div>
-              <ConstructorElement
-                text={innerIngredient.name}
-                price={innerIngredient.price}
-                thumbnail={innerIngredient.image}
-                handleClose={() => handleIngredientRemove(innerIngredient)}
-              />
-            </div>
+            />
           ))}
         </div>
         <div className="ml-8">
