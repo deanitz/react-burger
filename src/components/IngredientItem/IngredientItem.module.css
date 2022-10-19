@@ -10,7 +10,7 @@
 
 .dragging {
   border: 2px solid rgb(51 51 255 / 25%);
-  border-radius: 28px;
+  border-radius: 16px;
 }
 
 .price {
