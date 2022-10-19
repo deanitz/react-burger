@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { addUniqueId } from "../../utils/dataUtils";
 
 const initialState = {
-  selectedIngredientsIds: [],
+  selectedIngredients: {
+    bun: null,
+    inner: [],
+  },
 };
 
 const selectedIngredientsSlice = createSlice({
@@ -9,30 +13,33 @@ const selectedIngredientsSlice = createSlice({
   initialState,
   reducers: {
     setSelectedIngredients: (state, action) => {
-      state.selectedIngredientsIds = action.payload;
+      state.selectedIngredients = action.payload;
     },
-    addSelectedIngredient: (state, action) => ({
-      ...state,
-      selectedIngredientsIds: [action.payload, ...state.selectedIngredientsIds],
-    }),
-    removeSelectedIngredient: (state, action) => ({
-      ...state,
-      selectedIngredientsIds: state.selectedIngredientsIds.filter(
-        (id) => id !== action.payload
-      ),
-    }),
-    updateSelectedIngredients: (state, action) => {
-      const filteredIds = state.selectedIngredientsIds.filter(
-        (id) => id !== action.payload.id
+    setBun: (state, action) => {
+      console.log("setBun item", action.payload);
+      state.selectedIngredients.bun = action.payload;
+    },
+    addSelectedIngredient: (state, action) => {
+      const uniqueItem = addUniqueId(action.payload);
+      state.selectedIngredients.inner.push(uniqueItem);
+    },
+    removeSelectedIngredient: (state, action) => {
+      state.selectedIngredients.inner = state.selectedIngredients.inner.filter(
+        (ingredient) => ingredient.uniqueId !== action.payload
       );
-      const completeIds = filteredIds.splice(
+    },
+    updateSelectedIngredients: (state, action) => {
+      const filtered = state.selectedIngredients.filter(
+        (ingredient) => ingredient.uniqueId !== action.payload.item.uniqueId
+      );
+      const complete = filtered.splice(
         action.payload.index,
         0,
-        action.payload.id
+        action.payload.item.uniqueId
       );
       return {
         ...state,
-        selectedIngredientsIds: completeIds,
+        selectedIngredients: complete,
       };
     },
   },
@@ -43,6 +50,7 @@ export const {
   addSelectedIngredient,
   removeSelectedIngredient,
   updateSelectedIngredients,
+  setBun,
 } = selectedIngredientsSlice.actions;
 
 export default selectedIngredientsSlice.reducer;

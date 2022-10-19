@@ -7,13 +7,13 @@ import IngredientItem from "../IngredientItem/IngredientItem";
 import styles from "./IngredientSection.module.css";
 
 const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
-  const { selectedIngredientsIds } = useSelector((store) => ({
-    selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+  const { selectedIngredients } = useSelector((store) => ({
+    selectedIngredients: store.selectedIngredients.selectedIngredients,
   }));
 
   const getCount = (item) => {
-    return selectedIngredientsIds.reduce(
-      (acc, curr) => (curr === item._id ? acc + 1 : acc),
+    return [selectedIngredients.bun, ...selectedIngredients.inner].reduce(
+      (acc, curr) => (curr._id === item._id ? acc + 1 : acc),
       0
     );
   };

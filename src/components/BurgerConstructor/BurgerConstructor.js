@@ -1,15 +1,10 @@
 import { useMemo, useCallback, useEffect } from "react";
-import {
-  ConstructorElement,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
-import {
-  getSplittedIngredientsData,
-  getBurgerTotalPrice,
-} from "./BurgerConstructor.utils";
+import { getBurgerTotalPrice } from "./BurgerConstructor.utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getOrderInfo,
@@ -19,10 +14,12 @@ import {
   addSelectedIngredient,
   removeSelectedIngredient,
   updateSelectedIngredients,
+  setBun,
 } from "../../services/slicers/selectedIngredientsSlice";
+import InnerIngredient from "./InnerIngredient";
+import { useDrop } from "react-dnd";
 
 import styles from "./BurgerConstructor.module.css";
-import InnerIngredient from "./InnerIngredient";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -38,12 +35,8 @@ const BurgerConstructor = () => {
     })
   );
 
-  const { ingredientsData } = useSelector((store) => ({
-    ingredientsData: store.ingredients.ingredientsData,
-  }));
-
-  const { selectedIngredientsIds } = useSelector((store) => ({
-    selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+  const { selectedIngredients } = useSelector((store) => ({
+    selectedIngredients: store.selectedIngredients.selectedIngredients,
   }));
 
   const {
@@ -64,32 +57,33 @@ const BurgerConstructor = () => {
   }, [isOrderLoaded, isModal, showModal, isOrderLoadingError, dispatch]);
 
   const { bun, innerIngredients, totalPrice } = useMemo(() => {
-    const { bun, innerIngredients } = getSplittedIngredientsData(
-      selectedIngredientsIds,
-      ingredientsData
-    );
+    const { bun, inner: innerIngredients } = selectedIngredients;
 
     return {
       bun,
       innerIngredients,
       totalPrice: getBurgerTotalPrice(bun, innerIngredients),
     };
-  }, [selectedIngredientsIds, ingredientsData]);
+  }, [selectedIngredients]);
 
   const handleIngredientRemove = useCallback(
     (innerIngredient) => {
-      dispatch(removeSelectedIngredient(innerIngredient._id));
+      console.log(innerIngredient.uniqueId);
+      dispatch(removeSelectedIngredient(innerIngredient.uniqueId));
     },
     [dispatch]
   );
 
   const handleBurgerCheckoutClick = useCallback(() => {
     const order = {
-      ingredients: selectedIngredientsIds,
+      ingredients: [
+        bun._id,
+        ...innerIngredients.map((ingredient) => ingredient._id),
+      ],
     };
 
     dispatch(getOrderInfo(order));
-  }, [selectedIngredientsIds, dispatch]);
+  }, [dispatch, bun, innerIngredients]);
 
   const handleCloseModal = () => {
     dispatch(resetOrderInfo());
@@ -102,9 +96,28 @@ const BurgerConstructor = () => {
     </Modal>
   );
 
+  const [, dropIngredientTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      handleDrop(item);
+    },
+  });
+
+  const handleDrop = (item) => {
+    const dropped = item.item;
+    if (dropped.type === "bun") {
+      dispatch(setBun(dropped));
+    } else {
+      dispatch(addSelectedIngredient(dropped));
+    }
+  };
+
   return (
     <>
-      <section className={`${styles.burgerConstructor} mt-25`}>
+      <section
+        className={`${styles.burgerConstructor} mt-25`}
+        ref={dropIngredientTarget}
+      >
         <div className="ml-8">
           <ConstructorElement
             type="top"

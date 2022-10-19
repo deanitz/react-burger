@@ -2,16 +2,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-import { getStubSelectedIngredientIds } from "../../utils/stubDataUtils";
+import { getDefaultSelectedIngredients } from "../../utils/dataUtils";
 import { fetchIngredients } from "../../services/slicers/ingredientsSlice";
 import { setSelectedIngredients } from "../../services/slicers/selectedIngredientsSlice";
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const { ingredientsData, selectedIngredientsIds } = useSelector((store) => ({
+  const { ingredientsData, selectedIngredients } = useSelector((store) => ({
     ingredientsData: store.ingredients.ingredientsData,
-    selectedIngredientsIds: store.selectedIngredients.selectedIngredientsIds,
+    selectedIngredients: store.selectedIngredients.selectedIngredients,
   }));
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const App = () => {
   useEffect(() => {
     if (ingredientsData.length) {
       dispatch(
-        setSelectedIngredients(getStubSelectedIngredientIds(ingredientsData))
+        setSelectedIngredients(getDefaultSelectedIngredients(ingredientsData))
       );
     }
   }, [dispatch, ingredientsData]);
@@ -29,9 +29,11 @@ const App = () => {
   return (
     <>
       <AppHeader />
-      {Boolean(ingredientsData.length && selectedIngredientsIds.length) && (
-        <AppMain />
-      )}
+      {Boolean(
+        ingredientsData.length &&
+          selectedIngredients.bun &&
+          selectedIngredients.inner.length
+      ) && <AppMain />}
     </>
   );
 };
