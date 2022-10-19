@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { useRef, useEffect, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -19,6 +19,7 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import {
   setDisplayedIngredient,
   resetDisplayedIngredient,
+  setSelectedTab,
 } from "../../services/slicers/ingredientsSlice";
 
 import styles from "./BurgerIngredients.module.css";
@@ -26,12 +27,13 @@ import styles from "./BurgerIngredients.module.css";
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
 
-  const { ingredientsData, displayedIngredient } = useSelector((store) => ({
-    ingredientsData: store.ingredients.ingredientsData,
-    displayedIngredient: store.ingredients.displayedIngredient,
-  }));
-
-  const [current, setCurrent] = useState(TAB_BUNS);
+  const { ingredientsData, displayedIngredient, selectedTab } = useSelector(
+    (store) => ({
+      ingredientsData: store.ingredients.ingredientsData,
+      displayedIngredient: store.ingredients.displayedIngredient,
+      selectedTab: store.ingredients.selectedTab,
+    })
+  );
 
   const viewportRef = useRef(null);
   const bunsRef = useRef(null);
@@ -63,6 +65,10 @@ const BurgerIngredients = () => {
   );
 
   useEffect(() => {
+    dispatch(setSelectedTab(TAB_BUNS));
+  }, [dispatch]);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const intersectingEntry = entries.find((entry) => entry.isIntersecting);
@@ -74,7 +80,7 @@ const BurgerIngredients = () => {
         const intersectedSection = sections.find(
           (section) => section.ref.current === intersectingEntry.target
         );
-        setCurrent(intersectedSection.tabName);
+        dispatch(setSelectedTab(intersectedSection.tabName));
       },
       {
         root: viewportRef.current,
@@ -88,14 +94,18 @@ const BurgerIngredients = () => {
     return () => {
       currentRefs.map((curRef) => observer.unobserve(curRef));
     };
-  }, [sections, setCurrent]);
+  }, [sections, dispatch]);
 
-  const handleTabClick = (tabName) => {
-    setCurrent(tabName);
-    const refToScroll = sections.find((section) => section.tabName === tabName)
-      .ref?.current;
-    refToScroll?.scrollIntoView({ behavior: "smooth" });
-  };
+  const handleTabClick = useCallback(
+    (tabName) => {
+      dispatch(setSelectedTab(tabName));
+      const refToScroll = sections.find(
+        (section) => section.tabName === tabName
+      ).ref?.current;
+      refToScroll?.scrollIntoView({ behavior: "smooth" });
+    },
+    [dispatch, sections]
+  );
 
   const {
     isDisplayed: isModal,
@@ -140,7 +150,7 @@ const BurgerIngredients = () => {
           {sections.map((section) => (
             <Tab
               value={section.tabName}
-              active={current === section.tabName}
+              active={selectedTab === section.tabName}
               onClick={handleTabClick}
               key={section.tabName}
             >
