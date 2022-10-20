@@ -1,4 +1,4 @@
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import {
   ConstructorElement,
   DragIcon,
@@ -6,20 +6,27 @@ import {
 
 import styles from "./InnerIngredient.module.css";
 
-const InnerIngredient = ({ data, handleRemove }) => {
+const InnerIngredient = ({ data, handleRemove, handleReorder }) => {
   const [{ isDrag }, dragRef] = useDrag({
     type: "constructorInnerIngredient",
-    item: { data },
+    item: { draggedData: data },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
     }),
   });
+
+  const [, dropRef] = useDrop(() => ({
+    accept: "constructorInnerIngredient",
+    hover({ draggedData }) {
+      handleReorder(draggedData, data);
+    },
+  }));
   return (
     <div
       className={`${styles.innerIngredientContainer} ${
         isDrag ? styles.dragging : ""
       }`}
-      ref={dragRef}
+      ref={(node) => dragRef(dropRef(node))}
     >
       <DragIcon type="primary" />
       <ConstructorElement

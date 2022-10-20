@@ -13,7 +13,7 @@ import {
 import {
   addSelectedIngredient,
   removeSelectedIngredient,
-  updateSelectedIngredients,
+  reorderSelectedIngredients,
   setBun,
 } from "../../services/slicers/selectedIngredientsSlice";
 import InnerIngredient from "./InnerIngredient";
@@ -68,8 +68,19 @@ const BurgerConstructor = () => {
 
   const handleIngredientRemove = useCallback(
     (innerIngredient) => {
-      console.log(innerIngredient.uniqueId);
       dispatch(removeSelectedIngredient(innerIngredient.uniqueId));
+    },
+    [dispatch]
+  );
+
+  const handleIngredientReorder = useCallback(
+    (draggedIngredient, staticIngredient) => {
+      if (draggedIngredient === staticIngredient) {
+        return;
+      }
+      dispatch(
+        reorderSelectedIngredients({ draggedIngredient, staticIngredient })
+      );
     },
     [dispatch]
   );
@@ -134,6 +145,7 @@ const BurgerConstructor = () => {
             <InnerIngredient
               data={innerIngredient}
               handleRemove={handleIngredientRemove}
+              handleReorder={handleIngredientReorder}
               key={innerIngredient.uniqueId}
             />
           ))}

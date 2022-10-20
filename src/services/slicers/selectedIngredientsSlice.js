@@ -16,31 +16,38 @@ const selectedIngredientsSlice = createSlice({
       state.selectedIngredients = action.payload;
     },
     setBun: (state, action) => {
-      console.log("setBun item", action.payload);
       state.selectedIngredients.bun = action.payload;
     },
     addSelectedIngredient: (state, action) => {
       const uniqueItem = addUniqueId(action.payload);
-      state.selectedIngredients.inner.push(uniqueItem);
+      state.selectedIngredients.inner.unshift(uniqueItem);
     },
     removeSelectedIngredient: (state, action) => {
       state.selectedIngredients.inner = state.selectedIngredients.inner.filter(
         (ingredient) => ingredient.uniqueId !== action.payload
       );
     },
-    updateSelectedIngredients: (state, action) => {
-      const filtered = state.selectedIngredients.filter(
-        (ingredient) => ingredient.uniqueId !== action.payload.item.uniqueId
+    reorderSelectedIngredients: (state, action) => {
+      const { draggedIngredient, staticIngredient } = action.payload;
+
+      const isDraggingDown =
+        state.selectedIngredients.inner.findIndex(
+          (ingredient) => ingredient.uniqueId === draggedIngredient.uniqueId
+        ) <
+        state.selectedIngredients.inner.findIndex(
+          (ingredient) => ingredient.uniqueId === staticIngredient.uniqueId
+        );
+
+      const filtered = state.selectedIngredients.inner.filter(
+        (ingredient) => ingredient.uniqueId !== draggedIngredient.uniqueId
       );
-      const complete = filtered.splice(
-        action.payload.index,
-        0,
-        action.payload.item.uniqueId
+      const index = filtered.findIndex(
+        (ingredient) => ingredient.uniqueId === staticIngredient.uniqueId
       );
-      return {
-        ...state,
-        selectedIngredients: complete,
-      };
+
+      filtered.splice(isDraggingDown ? index + 1 : index, 0, draggedIngredient);
+      state.selectedIngredients.inner = filtered;
+      console.log("complete", state.selectedIngredients.inner);
     },
   },
 });
@@ -49,7 +56,7 @@ export const {
   setSelectedIngredients,
   addSelectedIngredient,
   removeSelectedIngredient,
-  updateSelectedIngredients,
+  reorderSelectedIngredients,
   setBun,
 } = selectedIngredientsSlice.actions;
 
