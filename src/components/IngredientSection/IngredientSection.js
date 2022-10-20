@@ -40,6 +40,7 @@ const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
 IngredientSection.propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(dataShape).isRequired,
+  handleItemClick: PropTypes.func.isRequired,
 };
 
 export default IngredientSection;

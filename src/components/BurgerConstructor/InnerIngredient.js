@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+import dataShape from "../../utils/dataShape";
 import { useDrag, useDrop } from "react-dnd";
 import {
   ConstructorElement,
@@ -38,6 +40,12 @@ const InnerIngredient = ({ data, handleRemove, handleReorder }) => {
       />
     </div>
   );
+};
+
+InnerIngredient.propTypes = {
+  data: dataShape.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+  handleReorder: PropTypes.func.isRequired,
 };
 
 export default InnerIngredient;

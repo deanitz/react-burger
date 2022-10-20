@@ -29,6 +29,7 @@ const BurgerCheckout = ({ total, onOrderClick, disabled }) => {
 BurgerCheckout.propTypes = {
   total: PropTypes.number.isRequired,
   onOrderClick: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default BurgerCheckout;

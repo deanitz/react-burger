@@ -47,6 +47,7 @@ const IngredientItem = ({ item, count, handleClick }) => {
 IngredientItem.propTypes = {
   item: dataShape.isRequired,
   count: PropTypes.number.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default IngredientItem;
