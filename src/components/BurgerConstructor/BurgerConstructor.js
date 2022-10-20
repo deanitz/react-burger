@@ -6,10 +6,7 @@ import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
 import { getBurgerTotalPrice } from "./BurgerConstructor.utils";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getOrderInfo,
-  resetOrderInfo,
-} from "../../services/slices/orderSlice";
+import { getOrderInfo, resetOrderInfo } from "../../services/slices/orderSlice";
 import {
   addSelectedIngredient,
   removeSelectedIngredient,
@@ -18,6 +15,7 @@ import {
 } from "../../services/slices/selectedIngredientsSlice";
 import InnerIngredient from "./InnerIngredient";
 import { useDrop } from "react-dnd";
+import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
 
 import styles from "./BurgerConstructor.module.css";
 
@@ -96,32 +94,39 @@ const BurgerConstructor = () => {
     dispatch(getOrderInfo(order));
   }, [dispatch, bun, innerIngredients]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     dispatch(resetOrderInfo());
     closeModal();
-  };
+  }, [dispatch, closeModal]);
 
-  const modal = isModal && (
-    <Modal onClose={handleCloseModal}>
-      <OrderDetails orderNumber={orderNumber} />
-    </Modal>
+  const modal = useMemo(
+    () =>
+      isModal && (
+        <Modal onClose={handleCloseModal}>
+          <OrderDetails orderNumber={orderNumber} />
+        </Modal>
+      ),
+    [isModal, handleCloseModal, orderNumber]
   );
 
   const [, dropIngredientTarget] = useDrop({
-    accept: bun ? ["bun", "sauce", "main"] : "bun",
+    accept: bun ? [TYPE_BUN, TYPE_SAUCE, TYPE_MAIN] : TYPE_BUN,
     drop(item) {
       handleDrop(item);
     },
   });
 
-  const handleDrop = (item) => {
-    const dropped = item.item;
-    if (dropped.type === "bun") {
-      dispatch(setBun(dropped));
-    } else {
-      dispatch(addSelectedIngredient(dropped));
-    }
-  };
+  const handleDrop = useCallback(
+    (item) => {
+      const dropped = item.item;
+      if (dropped.type === TYPE_BUN) {
+        dispatch(setBun(dropped));
+      } else {
+        dispatch(addSelectedIngredient(dropped));
+      }
+    },
+    [dispatch]
+  );
 
   const placeholder = useMemo(
     () => (
@@ -169,25 +174,30 @@ const BurgerConstructor = () => {
     [isOrderLoading, bun, innerIngredients]
   );
 
-  const burgerInner =
-    innerIngredients && innerIngredients.length ? (
-      <div
-        className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
-      >
-        {innerIngredients.map((innerIngredient) => (
-          <InnerIngredient
-            data={innerIngredient}
-            handleRemove={handleIngredientRemove}
-            handleReorder={handleIngredientReorder}
-            key={innerIngredient.uniqueId}
-          />
-        ))}
-      </div>
-    ) : (
-      <div className={`${styles.placeholder} mt-4 mb-4 ml-10 mr-10`}>
-        <h2 className="text text_type_main-medium">Перетащите соусы и начинки сюда</h2>
-      </div>
-    );
+  const burgerInner = useMemo(
+    () =>
+      innerIngredients && innerIngredients.length ? (
+        <div
+          className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
+        >
+          {innerIngredients.map((innerIngredient) => (
+            <InnerIngredient
+              data={innerIngredient}
+              handleRemove={handleIngredientRemove}
+              handleReorder={handleIngredientReorder}
+              key={innerIngredient.uniqueId}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={`${styles.placeholder} mt-4 mb-4 ml-10 mr-10`}>
+          <h2 className="text text_type_main-medium">
+            Перетащите соусы и начинки сюда
+          </h2>
+        </div>
+      ),
+    [innerIngredients, handleIngredientRemove, handleIngredientReorder]
+  );
 
   return (
     <>
@@ -198,7 +208,9 @@ const BurgerConstructor = () => {
         <div className={styles.selectedIngredientsContainer}>
           {Boolean(bun) ? (
             <>
-              {burgerTop} {burgerInner} {burgerBottom}
+              {burgerTop}
+              {burgerInner}
+              {burgerBottom}
             </>
           ) : (
             placeholder

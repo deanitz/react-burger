@@ -1,12 +1,20 @@
 import { v4 as uuid } from "uuid";
 
+export const TYPE_BUN = "bun";
+export const TYPE_SAUCE = "sauce";
+export const TYPE_MAIN = "main";
+
+export const TYPE_CONSTRUCTOR_INNER_INGREDIENT = "constructorInnerIngredient";
+
 export const getDefaultSelectedIngredients = (ingredientsData) => {
-  const bun = addUniqueId(ingredientsData.find((item) => item.type === "bun"));
+  const bun = addUniqueId(
+    ingredientsData.find((item) => item.type === TYPE_BUN)
+  );
   const sauce = addUniqueId(
-    ingredientsData.find((item) => item.type === "sauce")
+    ingredientsData.find((item) => item.type === TYPE_SAUCE)
   );
   const main = addUniqueId(
-    ingredientsData.find((item) => item.type === "main")
+    ingredientsData.find((item) => item.type === TYPE_MAIN)
   );
 
   return {

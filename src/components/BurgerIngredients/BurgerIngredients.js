@@ -9,10 +9,8 @@ import {
   CAPTION_BUNS,
   CAPTION_SAUCES,
   CAPTION_MAINS,
-  TYPE_BUN,
-  TYPE_SAUCE,
-  TYPE_MAIN,
 } from "./BurgerIngredients.utils";
+import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
 import useModal from "../../hooks/useModal";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
@@ -21,6 +19,7 @@ import {
   resetDisplayedIngredient,
 } from "../../services/slices/displayedIngredientSlice";
 import { setSelectedTab } from "../../services/slices/selectedIngredientsTabSlice";
+import { getIntersectionObserverSettings } from "../../utils/intersectionObserverUtils";
 
 import styles from "./BurgerIngredients.module.css";
 
@@ -69,24 +68,21 @@ const BurgerIngredients = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const intersectingEntry = entries.find((entry) => entry.isIntersecting);
+    const intersectionCallback = (entries) => {
+      const intersectingEntry = entries.find((entry) => entry.isIntersecting);
 
-        if (!intersectingEntry) {
-          return;
-        }
-
-        const intersectedSection = sections.find(
-          (section) => section.ref.current === intersectingEntry.target
-        );
-        dispatch(setSelectedTab(intersectedSection.tabName));
-      },
-      {
-        root: viewportRef.current,
-        rootMargin: "0px 0px -80% 0px",
-        threshold: 0.1,
+      if (!intersectingEntry) {
+        return;
       }
+
+      const intersectedSection = sections.find(
+        (section) => section.ref.current === intersectingEntry.target
+      );
+      dispatch(setSelectedTab(intersectedSection.tabName));
+    };
+    const observer = new IntersectionObserver(
+      intersectionCallback,
+      getIntersectionObserverSettings(viewportRef.current)
     );
     const currentRefs = sections.map((section) => section.ref.current);
     currentRefs.map((curRef) => observer.observe(curRef));
@@ -119,10 +115,10 @@ const BurgerIngredients = () => {
     }
   }, [displayedIngredient, isModal, showModal]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     dispatch(resetDisplayedIngredient());
     closeModal();
-  };
+  }, [dispatch, closeModal]);
 
   const handleIngredientItemClick = useCallback(
     (item) => {
@@ -131,13 +127,20 @@ const BurgerIngredients = () => {
     [dispatch]
   );
 
-  const modal = isModal && displayedIngredient && (
-    <Modal
-      header={<h1 className="text text_type_main-large">Детали ингредиента</h1>}
-      onClose={handleCloseModal}
-    >
-      <IngredientDetails item={displayedIngredient} />
-    </Modal>
+  const modal = useMemo(
+    () =>
+      isModal &&
+      Boolean(displayedIngredient) && (
+        <Modal
+          header={
+            <h1 className="text text_type_main-large">Детали ингредиента</h1>
+          }
+          onClose={handleCloseModal}
+        >
+          <IngredientDetails item={displayedIngredient} />
+        </Modal>
+      ),
+    [isModal, displayedIngredient, handleCloseModal]
   );
 
   return (

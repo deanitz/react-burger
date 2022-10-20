@@ -3,12 +3,13 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { TYPE_CONSTRUCTOR_INNER_INGREDIENT } from "../../utils/dataUtils";
 
 import styles from "./InnerIngredient.module.css";
 
 const InnerIngredient = ({ data, handleRemove, handleReorder }) => {
   const [{ isDrag }, dragRef] = useDrag({
-    type: "constructorInnerIngredient",
+    type: TYPE_CONSTRUCTOR_INNER_INGREDIENT,
     item: { draggedData: data },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
@@ -16,7 +17,7 @@ const InnerIngredient = ({ data, handleRemove, handleReorder }) => {
   });
 
   const [, dropRef] = useDrop(() => ({
-    accept: "constructorInnerIngredient",
+    accept: TYPE_CONSTRUCTOR_INNER_INGREDIENT,
     hover({ draggedData }) {
       handleReorder(draggedData, data);
     },
