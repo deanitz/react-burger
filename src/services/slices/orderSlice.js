@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { placeOrder } from "../burgerApi";
+import { logError } from "../logService";
 
 const initialState = {
   orderInfo: null,
@@ -7,13 +8,16 @@ const initialState = {
   orderInfoError: false,
 };
 
-export const getOrderInfo = createAsyncThunk(
-  "order/getOrderInfo",
-  async (order) => {
-    const response = await placeOrder(order);
-    return response;
-  }
-);
+export const getOrderInfo = createAsyncThunk("order/getOrderInfo", (order) => {
+  return placeOrder(order)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      logError(error);
+      throw error;
+    });
+});
 
 const orderSlice = createSlice({
   name: "order",

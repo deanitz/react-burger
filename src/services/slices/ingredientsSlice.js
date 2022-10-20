@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getIngredients } from "../burgerApi";
+import { logError } from "../logService";
 
 const initialState = {
   ingredientsData: [],
@@ -9,9 +10,15 @@ const initialState = {
 
 export const fetchIngredients = createAsyncThunk(
   "ingredients/fetchIngredients",
-  async (order) => {
-    const response = await getIngredients(order);
-    return response;
+  () => {
+    return getIngredients()
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        logError(error);
+        throw error;
+      });
   }
 );
 
@@ -30,6 +37,7 @@ const ingredientsSlice = createSlice({
       state.ingredientsData = payload.data;
     },
     [fetchIngredients.rejected]: (state) => {
+      console.log("rejected handled!");
       state.ingredientsData = initialState.ingredientsData;
       state.ingredientsDataLoading = false;
       state.ingredientsDataError = true;
