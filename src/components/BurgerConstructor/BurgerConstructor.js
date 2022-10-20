@@ -24,16 +24,16 @@ import styles from "./BurgerConstructor.module.css";
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
 
-  const { orderNumber, isOrderLoaded, isOrderLoadingError } = useSelector(
-    (store) => ({
+  const { orderNumber, isOrderLoaded, isOrderLoading, isOrderLoadingError } =
+    useSelector((store) => ({
       orderNumber: store.order.orderInfo?.order?.number,
       isOrderLoaded:
         Boolean(store.order.orderInfo) &&
         !store.order.orderInfoLoading &&
         !store.order.orderInfoError,
       isOrderLoadingError: store.order.orderInfoError,
-    })
-  );
+      isOrderLoading: store.order.orderInfoLoading,
+    }));
 
   const { selectedIngredients } = useSelector((store) => ({
     selectedIngredients: store.selectedIngredients.selectedIngredients,
@@ -108,7 +108,7 @@ const BurgerConstructor = () => {
   );
 
   const [, dropIngredientTarget] = useDrop({
-    accept: "ingredient",
+    accept: bun ? ["bun", "sauce", "main"] : "bun",
     drop(item) {
       handleDrop(item);
     },
@@ -123,12 +123,18 @@ const BurgerConstructor = () => {
     }
   };
 
-  return (
-    <>
-      <section
-        className={`${styles.burgerConstructor} mt-25`}
-        ref={dropIngredientTarget}
-      >
+  const placeholder = useMemo(
+    () => (
+      <div className={`${styles.placeholder} ${styles.minBunHeight}`}>
+        <h2 className="text text_type_main-medium">Перетащите булку сюда</h2>
+      </div>
+    ),
+    []
+  );
+
+  const burgerTop = useMemo(
+    () =>
+      Boolean(bun) && (
         <div className="ml-8">
           <ConstructorElement
             type="top"
@@ -138,18 +144,13 @@ const BurgerConstructor = () => {
             thumbnail={bun.image}
           />
         </div>
-        <div
-          className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
-        >
-          {innerIngredients.map((innerIngredient) => (
-            <InnerIngredient
-              data={innerIngredient}
-              handleRemove={handleIngredientRemove}
-              handleReorder={handleIngredientReorder}
-              key={innerIngredient.uniqueId}
-            />
-          ))}
-        </div>
+      ),
+    [bun]
+  );
+
+  const burgerBottom = useMemo(
+    () =>
+      Boolean(bun) && (
         <div className="ml-8">
           <ConstructorElement
             type="bottom"
@@ -159,9 +160,54 @@ const BurgerConstructor = () => {
             thumbnail={bun.image}
           />
         </div>
+      ),
+    [bun]
+  );
+
+  const isCheckoutDisabled = useMemo(
+    () => isOrderLoading || !Boolean(bun) || !Boolean(innerIngredients.length),
+    [isOrderLoading, bun, innerIngredients]
+  );
+
+  const burgerInner =
+    innerIngredients && innerIngredients.length ? (
+      <div
+        className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
+      >
+        {innerIngredients.map((innerIngredient) => (
+          <InnerIngredient
+            data={innerIngredient}
+            handleRemove={handleIngredientRemove}
+            handleReorder={handleIngredientReorder}
+            key={innerIngredient.uniqueId}
+          />
+        ))}
+      </div>
+    ) : (
+      <div className={`${styles.placeholder} mt-4 mb-4 ml-10 mr-10`}>
+        <h2 className="text text_type_main-medium">Перетащите соусы и начинки сюда</h2>
+      </div>
+    );
+
+  return (
+    <>
+      <section
+        className={`${styles.burgerConstructor} mt-25 mb-25`}
+        ref={dropIngredientTarget}
+      >
+        <div className={styles.selectedIngredientsContainer}>
+          {Boolean(bun) ? (
+            <>
+              {burgerTop} {burgerInner} {burgerBottom}
+            </>
+          ) : (
+            placeholder
+          )}
+        </div>
         <BurgerCheckout
           total={totalPrice}
           onOrderClick={handleBurgerCheckoutClick}
+          disabled={isCheckoutDisabled}
         />
       </section>
       {modal}

@@ -19,8 +19,8 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import {
   setDisplayedIngredient,
   resetDisplayedIngredient,
-  setSelectedTab,
-} from "../../services/slicers/ingredientsSlice";
+} from "../../services/slicers/displayedIngredientSlice";
+import { setSelectedTab } from "../../services/slicers/selectedIngredientsTabSlice";
 
 import styles from "./BurgerIngredients.module.css";
 
@@ -30,8 +30,8 @@ const BurgerIngredients = () => {
   const { ingredientsData, displayedIngredient, selectedTab } = useSelector(
     (store) => ({
       ingredientsData: store.ingredients.ingredientsData,
-      displayedIngredient: store.ingredients.displayedIngredient,
-      selectedTab: store.ingredients.selectedTab,
+      displayedIngredient: store.displayedIngredient.value,
+      selectedTab: store.selectedIngredientsTab.value,
     })
   );
 

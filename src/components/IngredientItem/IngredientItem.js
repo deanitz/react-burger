@@ -10,7 +10,7 @@ import styles from "./IngredientItem.module.css";
 
 const IngredientItem = ({ item, count, handleClick }) => {
   const [{ isDrag }, dragRef] = useDrag({
-    type: "ingredient",
+    type: item.type,
     item: { item },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),

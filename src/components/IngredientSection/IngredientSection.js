@@ -13,7 +13,7 @@ const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
 
   const getCount = (item) => {
     return [selectedIngredients.bun, ...selectedIngredients.inner].reduce(
-      (acc, curr) => (curr._id === item._id ? acc + 1 : acc),
+      (acc, curr) => (curr ? (curr._id === item._id ? acc + 1 : acc) : acc),
       0
     );
   };

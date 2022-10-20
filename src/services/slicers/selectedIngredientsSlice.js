@@ -47,7 +47,6 @@ const selectedIngredientsSlice = createSlice({
 
       filtered.splice(isDraggingDown ? index + 1 : index, 0, draggedIngredient);
       state.selectedIngredients.inner = filtered;
-      console.log("complete", state.selectedIngredients.inner);
     },
   },
 });

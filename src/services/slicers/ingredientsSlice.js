@@ -5,8 +5,6 @@ const initialState = {
   ingredientsData: [],
   ingredientsDataLoading: false,
   ingredientsDataError: false,
-  displayedIngredient: null,
-  selectedTab: null,
 };
 
 export const fetchIngredients = createAsyncThunk(
@@ -20,17 +18,7 @@ export const fetchIngredients = createAsyncThunk(
 const ingredientsSlice = createSlice({
   name: "ingredients",
   initialState,
-  reducers: {
-    setDisplayedIngredient: (state, action) => {
-      state.displayedIngredient = action.payload;
-    },
-    resetDisplayedIngredient: (state) => {
-      state.displayedIngredient = null;
-    },
-    setSelectedTab: (state, action) => {
-      state.selectedTab = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: {
     [fetchIngredients.pending]: (state) => {
       state.ingredientsDataLoading = true;
@@ -42,16 +30,11 @@ const ingredientsSlice = createSlice({
       state.ingredientsData = payload.data;
     },
     [fetchIngredients.rejected]: (state) => {
+      state.ingredientsData = initialState.ingredientsData;
       state.ingredientsDataLoading = false;
       state.ingredientsDataError = true;
     },
   },
 });
-
-export const {
-  setDisplayedIngredient,
-  resetDisplayedIngredient,
-  setSelectedTab,
-} = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

@@ -32,6 +32,7 @@ const orderSlice = createSlice({
       state.orderInfo = payload;
     },
     [getOrderInfo.rejected]: (state) => {
+      state.orderInfo = initialState.orderInfo;
       state.orderInfoLoading = false;
       state.orderInfoError = true;
     },
