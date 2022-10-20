@@ -19,8 +19,8 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import {
   setDisplayedIngredient,
   resetDisplayedIngredient,
-} from "../../services/slicers/displayedIngredientSlice";
-import { setSelectedTab } from "../../services/slicers/selectedIngredientsTabSlice";
+} from "../../services/slices/displayedIngredientSlice";
+import { setSelectedTab } from "../../services/slices/selectedIngredientsTabSlice";
 
 import styles from "./BurgerIngredients.module.css";
 

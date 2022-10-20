@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-import { fetchIngredients } from "../../services/slicers/ingredientsSlice";
+import { fetchIngredients } from "../../services/slices/ingredientsSlice";
 
 const App = () => {
   const dispatch = useDispatch();

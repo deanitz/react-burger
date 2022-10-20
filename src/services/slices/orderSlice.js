@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { placeOrder } from "../../services/burgerApi";
+import { placeOrder } from "../burgerApi";
 
 const initialState = {
   orderInfo: null,

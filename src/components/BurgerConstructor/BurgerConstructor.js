@@ -9,13 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getOrderInfo,
   resetOrderInfo,
-} from "../../services/slicers/orderSlice";
+} from "../../services/slices/orderSlice";
 import {
   addSelectedIngredient,
   removeSelectedIngredient,
   reorderSelectedIngredients,
   setBun,
-} from "../../services/slicers/selectedIngredientsSlice";
+} from "../../services/slices/selectedIngredientsSlice";
 import InnerIngredient from "./InnerIngredient";
 import { useDrop } from "react-dnd";
 
