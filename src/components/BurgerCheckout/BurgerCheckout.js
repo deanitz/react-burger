@@ -6,7 +6,7 @@ import {
 
 import styles from "./BurgerCheckout.module.css";
 
-const BurgerCheckout = ({ total, onOrderClick }) => {
+const BurgerCheckout = ({ total, onOrderClick, disabled }) => {
   return (
     <div className={`${styles.totalContainer} mt-10 mr-8`}>
       <p className="text text_type_digits-medium mr-10">
@@ -18,6 +18,7 @@ const BurgerCheckout = ({ total, onOrderClick }) => {
         htmlType="button"
         size="large"
         onClick={onOrderClick}
+        disabled={disabled}
       >
         Оформить заказ
       </Button>
@@ -28,6 +29,7 @@ const BurgerCheckout = ({ total, onOrderClick }) => {
 BurgerCheckout.propTypes = {
   total: PropTypes.number.isRequired,
   onOrderClick: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default BurgerCheckout;

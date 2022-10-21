@@ -1,42 +1,31 @@
-import { useEffect, useState } from "react";
-import { getIngredients } from "../../services/burgerApi";
-import { logError } from "../../services/logService";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-import { getStubSelectedIngredientIds } from "../../utils/stubDataUtils";
-import {
-  AllIngredientsContext,
-  SelectedIngredientsContext,
-} from "../../services/appContext";
+import { fetchIngredients } from "../../services/slices/ingredientsSlice";
 
 const App = () => {
-  const [ingredientsData, setIngredientsData] = useState([]);
-  const [selectedIngredientsIds, setSelectedIngredientsIds] = useState([]);
+  const dispatch = useDispatch();
+
+  const { ingredientsData, ingredientsDataError } = useSelector((store) => ({
+    ingredientsData: store.ingredients.ingredientsData,
+    ingredientsDataError: store.ingredients.ingredientsDataError,
+  }));
 
   useEffect(() => {
-    getIngredients()
-      .then((data) => {
-        setIngredientsData(data.data);
-        // Стабовые данные
-        setSelectedIngredientsIds(getStubSelectedIngredientIds(data.data));
-      })
-      .catch((error) => {
-        logError(error);
-      });
-  }, []);
+    dispatch(fetchIngredients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (ingredientsDataError) {
+      alert("Что-то пошло не так. Попробуйте еще раз.");
+    }
+  }, [ingredientsDataError]);
 
   return (
     <>
       <AppHeader />
-      {Boolean(ingredientsData.length) && (
-        <AllIngredientsContext.Provider value={{ ingredientsData }}>
-          <SelectedIngredientsContext.Provider
-            value={{ selectedIngredientsIds, setSelectedIngredientsIds }}
-          >
-            <AppMain />
-          </SelectedIngredientsContext.Provider>
-        </AllIngredientsContext.Provider>
-      )}
+      {Boolean(ingredientsData.length) && <AppMain />}
     </>
   );
 };

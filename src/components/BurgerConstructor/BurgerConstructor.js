@@ -1,47 +1,41 @@
-import { useContext, useMemo, useReducer, useCallback } from "react";
-import {
-  ConstructorElement,
-  DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useMemo, useCallback, useEffect } from "react";
+import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
+import { getBurgerTotalPrice } from "./BurgerConstructor.utils";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderInfo, resetOrderInfo } from "../../services/slices/orderSlice";
 import {
-  getSplittedIngredientsData,
-  getBurgerTotalPrice,
-} from "../../utils/ingredientUtils";
-import {
-  AllIngredientsContext,
-  SelectedIngredientsContext,
-} from "../../services/appContext";
-import { placeOrder } from "../../services/burgerApi";
-import { logError } from "../../services/logService";
+  addSelectedIngredient,
+  removeSelectedIngredient,
+  reorderSelectedIngredients,
+  setBun,
+} from "../../services/slices/selectedIngredientsSlice";
+import InnerIngredient from "./InnerIngredient";
+import { useDrop } from "react-dnd";
+import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
 
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
-  const { ingredientsData } = useContext(AllIngredientsContext);
-  const { selectedIngredientsIds, setSelectedIngredientsIds } = useContext(
-    SelectedIngredientsContext
-  );
+  const dispatch = useDispatch();
 
-  //Тренировочное использование useReducer.
-  const orderIdInitial = { value: 0 };
-  const orderIdReducer = (_, action) => {
-    switch (action.type) {
-      case "set":
-        return { value: action.payload };
-      case "reset":
-        return orderIdInitial;
-      default:
-        throw new Error(`Неверный тип action: ${action.type}`);
-    }
-  };
-  const [orderId, orderIdDispatcher] = useReducer(
-    orderIdReducer,
-    orderIdInitial
-  );
+  const { orderNumber, isOrderLoaded, isOrderLoading, isOrderLoadingError } =
+    useSelector((store) => ({
+      orderNumber: store.order.orderInfo?.order?.number,
+      isOrderLoaded:
+        Boolean(store.order.orderInfo) &&
+        !store.order.orderInfoLoading &&
+        !store.order.orderInfoError,
+      isOrderLoadingError: store.order.orderInfoError,
+      isOrderLoading: store.order.orderInfoLoading,
+    }));
+
+  const { selectedIngredients } = useSelector((store) => ({
+    selectedIngredients: store.selectedIngredients.selectedIngredients,
+  }));
 
   const {
     isDisplayed: isModal,
@@ -49,67 +43,103 @@ const BurgerConstructor = () => {
     close: closeModal,
   } = useModal();
 
+  useEffect(() => {
+    if (isOrderLoaded && !isModal) {
+      showModal();
+      return;
+    }
+    if (isOrderLoadingError) {
+      alert("Что-то пошло не так. Попробуйте еще раз.");
+      dispatch(resetOrderInfo());
+    }
+  }, [isOrderLoaded, isModal, showModal, isOrderLoadingError, dispatch]);
+
   const { bun, innerIngredients, totalPrice } = useMemo(() => {
-    const { bun, innerIngredients } = getSplittedIngredientsData(
-      selectedIngredientsIds,
-      ingredientsData
-    );
+    const { bun, inner: innerIngredients } = selectedIngredients;
 
     return {
       bun,
       innerIngredients,
       totalPrice: getBurgerTotalPrice(bun, innerIngredients),
     };
-  }, [selectedIngredientsIds, ingredientsData]);
+  }, [selectedIngredients]);
 
-  // Стабовые методы для демонстрации записи в контекст
-  const handleInnerIngredientClick = (innerIngredient) => {
-    const stubSortedIngredientsIdsList = [
-      bun,
-      innerIngredient,
-      ...innerIngredients.filter(
-        (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
-      ),
-    ].map((item) => item._id);
+  const handleIngredientRemove = useCallback(
+    (innerIngredient) => {
+      dispatch(removeSelectedIngredient(innerIngredient.uniqueId));
+    },
+    [dispatch]
+  );
 
-    setSelectedIngredientsIds(stubSortedIngredientsIdsList);
-  };
-
-  const handleIngredientRemove = (innerIngredient) => {
-    const stubSortedIngredientsIdsList = [
-      bun,
-      ...innerIngredients.filter(
-        (ingredient) => ingredient.uniqueId !== innerIngredient.uniqueId
-      ),
-    ].map((item) => item._id);
-
-    setSelectedIngredientsIds(stubSortedIngredientsIdsList);
-  };
+  const handleIngredientReorder = useCallback(
+    (draggedIngredient, staticIngredient) => {
+      if (draggedIngredient === staticIngredient) {
+        return;
+      }
+      dispatch(
+        reorderSelectedIngredients({ draggedIngredient, staticIngredient })
+      );
+    },
+    [dispatch]
+  );
 
   const handleBurgerCheckoutClick = useCallback(() => {
     const order = {
-      ingredients: selectedIngredientsIds,
+      ingredients: [
+        bun._id,
+        ...innerIngredients.map((ingredient) => ingredient._id),
+      ],
     };
 
-    placeOrder(order)
-      .then((data) => {
-        orderIdDispatcher({ type: "set", payload: data.order.number });
-        showModal();
-      })
-      .catch((error) => {
-        logError(error);
-      });
-  }, [selectedIngredientsIds, orderIdDispatcher, showModal]);
+    dispatch(getOrderInfo(order));
+  }, [dispatch, bun, innerIngredients]);
 
-  const modal = (
-    <Modal onClose={closeModal}>
-      <OrderDetails orderNumber={orderId.value} />
-    </Modal>
+  const handleCloseModal = useCallback(() => {
+    dispatch(resetOrderInfo());
+    closeModal();
+  }, [dispatch, closeModal]);
+
+  const modal = useMemo(
+    () =>
+      isModal && (
+        <Modal onClose={handleCloseModal}>
+          <OrderDetails orderNumber={orderNumber} />
+        </Modal>
+      ),
+    [isModal, handleCloseModal, orderNumber]
   );
 
-  return (
-    <>
-      <section className={`${styles.burgerConstructor} mt-25`}>
+  const [, dropIngredientTarget] = useDrop({
+    accept: bun ? [TYPE_BUN, TYPE_SAUCE, TYPE_MAIN] : TYPE_BUN,
+    drop(item) {
+      handleDrop(item);
+    },
+  });
+
+  const handleDrop = useCallback(
+    (item) => {
+      const dropped = item.item;
+      if (dropped.type === TYPE_BUN) {
+        dispatch(setBun(dropped));
+      } else {
+        dispatch(addSelectedIngredient(dropped));
+      }
+    },
+    [dispatch]
+  );
+
+  const placeholder = useMemo(
+    () => (
+      <div className={`${styles.placeholder} ${styles.minBunHeight}`}>
+        <h2 className="text text_type_main-medium">Перетащите булку сюда</h2>
+      </div>
+    ),
+    []
+  );
+
+  const burgerTop = useMemo(
+    () =>
+      Boolean(bun) && (
         <div className="ml-8">
           <ConstructorElement
             type="top"
@@ -119,26 +149,13 @@ const BurgerConstructor = () => {
             thumbnail={bun.image}
           />
         </div>
-        <div
-          className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
-        >
-          {innerIngredients.map((innerIngredient) => (
-            <div
-              key={innerIngredient.uniqueId}
-              className={styles.innerIngredientContainer}
-            >
-              <div onClick={() => handleInnerIngredientClick(innerIngredient)}>
-                <DragIcon type="primary" />
-              </div>
-              <ConstructorElement
-                text={innerIngredient.name}
-                price={innerIngredient.price}
-                thumbnail={innerIngredient.image}
-                handleClose={() => handleIngredientRemove(innerIngredient)}
-              />
-            </div>
-          ))}
-        </div>
+      ),
+    [bun]
+  );
+
+  const burgerBottom = useMemo(
+    () =>
+      Boolean(bun) && (
         <div className="ml-8">
           <ConstructorElement
             type="bottom"
@@ -148,12 +165,64 @@ const BurgerConstructor = () => {
             thumbnail={bun.image}
           />
         </div>
+      ),
+    [bun]
+  );
+
+  const isCheckoutDisabled = useMemo(
+    () => isOrderLoading || !Boolean(bun) || !Boolean(innerIngredients.length),
+    [isOrderLoading, bun, innerIngredients]
+  );
+
+  const burgerInner = useMemo(
+    () =>
+      innerIngredients && innerIngredients.length ? (
+        <div
+          className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
+        >
+          {innerIngredients.map((innerIngredient) => (
+            <InnerIngredient
+              data={innerIngredient}
+              handleRemove={handleIngredientRemove}
+              handleReorder={handleIngredientReorder}
+              key={innerIngredient.uniqueId}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={`${styles.placeholder} mt-4 mb-4 ml-10 mr-10`}>
+          <h2 className="text text_type_main-medium">
+            Перетащите соусы и начинки сюда
+          </h2>
+        </div>
+      ),
+    [innerIngredients, handleIngredientRemove, handleIngredientReorder]
+  );
+
+  return (
+    <>
+      <section
+        className={`${styles.burgerConstructor} mt-25 mb-25`}
+        ref={dropIngredientTarget}
+      >
+        <div className={styles.selectedIngredientsContainer}>
+          {Boolean(bun) ? (
+            <>
+              {burgerTop}
+              {burgerInner}
+              {burgerBottom}
+            </>
+          ) : (
+            placeholder
+          )}
+        </div>
         <BurgerCheckout
           total={totalPrice}
           onOrderClick={handleBurgerCheckoutClick}
+          disabled={isCheckoutDisabled}
         />
       </section>
-      {isModal && modal}
+      {modal}
     </>
   );
 };

@@ -1,51 +1,183 @@
-import { useState, useContext } from "react";
-import { AllIngredientsContext } from "../../services/appContext";
+import { useRef, useEffect, useMemo, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  TAB_BUNS,
+  TAB_SAUCES,
+  TAB_MAINS,
+  CAPTION_BUNS,
+  CAPTION_SAUCES,
+  CAPTION_MAINS,
+} from "./BurgerIngredients.utils";
+import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
+import useModal from "../../hooks/useModal";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import {
+  setDisplayedIngredient,
+  resetDisplayedIngredient,
+} from "../../services/slices/displayedIngredientSlice";
+import { setSelectedTab } from "../../services/slices/selectedIngredientsTabSlice";
+import { getIntersectionObserverSettings } from "../../utils/intersectionObserverUtils";
 
 import styles from "./BurgerIngredients.module.css";
 
 const BurgerIngredients = () => {
-  const { ingredientsData } = useContext(AllIngredientsContext);
+  const dispatch = useDispatch();
 
-  const [current, setCurrent] = useState("buns");
+  const { ingredientsData, displayedIngredient, selectedTab } = useSelector(
+    (store) => ({
+      ingredientsData: store.ingredients.ingredientsData,
+      displayedIngredient: store.displayedIngredient.value,
+      selectedTab: store.selectedIngredientsTab.value,
+    })
+  );
 
-  const buns = ingredientsData.filter((item) => item.type === "bun");
-  const sauces = ingredientsData.filter((item) => item.type === "sauce");
-  const mains = ingredientsData.filter((item) => item.type === "main");
+  const viewportRef = useRef(null);
+  const bunsRef = useRef(null);
+  const saucesRef = useRef(null);
+  const mainsRef = useRef(null);
 
-  const handleTabClick = (tabName) => {
-    setCurrent(tabName);
-  };
+  const sections = useMemo(
+    () => [
+      {
+        name: CAPTION_BUNS,
+        tabName: TAB_BUNS,
+        item: ingredientsData.filter((item) => item.type === TYPE_BUN),
+        ref: bunsRef,
+      },
+      {
+        name: CAPTION_SAUCES,
+        tabName: TAB_SAUCES,
+        item: ingredientsData.filter((item) => item.type === TYPE_SAUCE),
+        ref: saucesRef,
+      },
+      {
+        name: CAPTION_MAINS,
+        tabName: TAB_MAINS,
+        item: ingredientsData.filter((item) => item.type === TYPE_MAIN),
+        ref: mainsRef,
+      },
+    ],
+    [ingredientsData]
+  );
+
+  useEffect(() => {
+    dispatch(setSelectedTab(TAB_BUNS));
+  }, [dispatch]);
+
+  useEffect(() => {
+    const intersectionCallback = (entries) => {
+      const intersectingEntry = entries.find((entry) => entry.isIntersecting);
+
+      if (!intersectingEntry) {
+        return;
+      }
+
+      const intersectedSection = sections.find(
+        (section) => section.ref.current === intersectingEntry.target
+      );
+      dispatch(setSelectedTab(intersectedSection.tabName));
+    };
+    const observer = new IntersectionObserver(
+      intersectionCallback,
+      getIntersectionObserverSettings(viewportRef.current)
+    );
+    const currentRefs = sections.map((section) => section.ref.current);
+    currentRefs.map((curRef) => observer.observe(curRef));
+
+    return () => {
+      currentRefs.map((curRef) => observer.unobserve(curRef));
+    };
+  }, [sections, dispatch]);
+
+  const handleTabClick = useCallback(
+    (tabName) => {
+      dispatch(setSelectedTab(tabName));
+      const refToScroll = sections.find(
+        (section) => section.tabName === tabName
+      ).ref?.current;
+      refToScroll?.scrollIntoView({ behavior: "smooth" });
+    },
+    [dispatch, sections]
+  );
+
+  const {
+    isDisplayed: isModal,
+    show: showModal,
+    close: closeModal,
+  } = useModal();
+
+  useEffect(() => {
+    if (displayedIngredient && !isModal) {
+      showModal();
+    }
+  }, [displayedIngredient, isModal, showModal]);
+
+  const handleCloseModal = useCallback(() => {
+    dispatch(resetDisplayedIngredient());
+    closeModal();
+  }, [dispatch, closeModal]);
+
+  const handleIngredientItemClick = useCallback(
+    (item) => {
+      dispatch(setDisplayedIngredient(item));
+    },
+    [dispatch]
+  );
+
+  const modal = useMemo(
+    () =>
+      isModal &&
+      Boolean(displayedIngredient) && (
+        <Modal
+          header={
+            <h1 className="text text_type_main-large">Детали ингредиента</h1>
+          }
+          onClose={handleCloseModal}
+        >
+          <IngredientDetails item={displayedIngredient} />
+        </Modal>
+      ),
+    [isModal, displayedIngredient, handleCloseModal]
+  );
 
   return (
-    <section className={styles.burgerIngredients}>
-      <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
-      <div className={styles.tabsContainer}>
-        <Tab value="buns" active={current === "buns"} onClick={handleTabClick}>
-          Булки
-        </Tab>
-        <Tab
-          value="sauces"
-          active={current === "sauces"}
-          onClick={handleTabClick}
+    <>
+      <section className={styles.burgerIngredients}>
+        <h1 className="text text_type_main-large mt-10 mb-5">
+          Соберите бургер
+        </h1>
+        <div className={styles.tabsContainer}>
+          {sections.map((section) => (
+            <Tab
+              value={section.tabName}
+              active={selectedTab === section.tabName}
+              onClick={handleTabClick}
+              key={section.tabName}
+            >
+              {section.name}
+            </Tab>
+          ))}
+        </div>
+        <div
+          className={`${styles.ingredientsListContainer} custom-scroll mt-10`}
+          ref={viewportRef}
         >
-          Соусы
-        </Tab>
-        <Tab
-          value="mains"
-          active={current === "mains"}
-          onClick={handleTabClick}
-        >
-          Начинки
-        </Tab>
-      </div>
-      <div className={`${styles.ingredientsListContainer} custom-scroll mt-10`}>
-        <IngredientSection name="Булки" data={buns} />
-        <IngredientSection name="Соусы" data={sauces} />
-        <IngredientSection name="Начинки" data={mains} />
-      </div>
-    </section>
+          {sections.map((section) => (
+            <IngredientSection
+              name={section.name}
+              data={section.item}
+              ref={section.ref}
+              key={section.tabName}
+              handleItemClick={handleIngredientItemClick}
+            />
+          ))}
+        </div>
+      </section>
+      {modal}
+    </>
   );
 };
 

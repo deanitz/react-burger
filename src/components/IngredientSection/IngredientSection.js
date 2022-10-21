@@ -1,36 +1,46 @@
-import { useContext } from "react";
+import { forwardRef } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import dataShape from "../../utils/dataShape";
 import IngredientItem from "../IngredientItem/IngredientItem";
-import { SelectedIngredientsContext } from "../../services/appContext";
 
 import styles from "./IngredientSection.module.css";
 
-const IngredientSection = ({ name, data }) => {
-  const { selectedIngredientsIds } = useContext(SelectedIngredientsContext);
+const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
+  const { selectedIngredients } = useSelector((store) => ({
+    selectedIngredients: store.selectedIngredients.selectedIngredients,
+  }));
 
   const getCount = (item) => {
-    return selectedIngredientsIds.reduce(
-      (acc, curr) => (curr === item._id ? acc + 1 : acc),
+    return [selectedIngredients.bun, ...selectedIngredients.inner].reduce(
+      (acc, curr) => (curr ? (curr._id === item._id ? acc + 1 : acc) : acc),
       0
     );
   };
 
   return (
-    <section className={`${styles.ingredientSection}`}>
-      <h2 className="text text_type_main-medium mb-6">{name}</h2>
+    <section>
+      <h2 className="text text_type_main-medium mb-6" ref={ref}>
+        {name}
+      </h2>
       <div className={styles.ingredientItemsContainer}>
         {data.map((item) => (
-          <IngredientItem item={item} count={getCount(item)} key={item._id} />
+          <IngredientItem
+            item={item}
+            count={getCount(item)}
+            key={item._id}
+            handleClick={handleItemClick}
+          />
         ))}
       </div>
     </section>
   );
-};
+});
 
 IngredientSection.propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(dataShape).isRequired,
+  handleItemClick: PropTypes.func.isRequired,
 };
 
 export default IngredientSection;

@@ -1,21 +1,35 @@
 .burgerConstructor {
   width: 600px;
-  height: calc(100vh - 300px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .innerIngredientsListContainer {
   display: flex;
   flex-direction: column;
   row-gap: calc(var(--offset-base-size) * 4);
-  max-height: 464px;
+  max-height: calc(100vh - 609px);
   min-height: 82px;
-  height: calc(100vh - 600px);
   overflow-y: auto;
 }
 
-.innerIngredientContainer {
+.selectedIngredientsContainer {
   display: flex;
+  flex-direction: column;
+}
+
+.placeholder {
+  height: 78px;
+  border: 2px dashed rgb(51 51 255 / 25%);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  column-gap: calc(var(--offset-base-size) * 2);
+}
+
+.minBunHeight {
+  height: 274px;
 }
