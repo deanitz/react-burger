@@ -25,7 +25,7 @@ const App = () => {
   return (
     <>
       <AppHeader />
-      {Boolean(ingredientsData.length) && <AppMain />}
+      {ingredientsData.length && <AppMain />}
     </>
   );
 };

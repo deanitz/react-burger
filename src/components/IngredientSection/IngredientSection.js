@@ -8,7 +8,7 @@ import styles from "./IngredientSection.module.css";
 
 const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
   const { selectedIngredients } = useSelector((store) => ({
-    selectedIngredients: store.selectedIngredients.selectedIngredients,
+    selectedIngredients: store.selectedIngredients,
   }));
 
   const getCount = (item) => {

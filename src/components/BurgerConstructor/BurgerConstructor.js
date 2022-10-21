@@ -26,7 +26,7 @@ const BurgerConstructor = () => {
     useSelector((store) => ({
       orderNumber: store.order.orderInfo?.order?.number,
       isOrderLoaded:
-        Boolean(store.order.orderInfo) &&
+        store.order.orderInfo &&
         !store.order.orderInfoLoading &&
         !store.order.orderInfoError,
       isOrderLoadingError: store.order.orderInfoError,
@@ -34,7 +34,7 @@ const BurgerConstructor = () => {
     }));
 
   const { selectedIngredients } = useSelector((store) => ({
-    selectedIngredients: store.selectedIngredients.selectedIngredients,
+    selectedIngredients: store.selectedIngredients,
   }));
 
   const {
@@ -139,7 +139,7 @@ const BurgerConstructor = () => {
 
   const burgerTop = useMemo(
     () =>
-      Boolean(bun) && (
+      bun && (
         <div className="ml-8">
           <ConstructorElement
             type="top"
@@ -155,7 +155,7 @@ const BurgerConstructor = () => {
 
   const burgerBottom = useMemo(
     () =>
-      Boolean(bun) && (
+      bun && (
         <div className="ml-8">
           <ConstructorElement
             type="bottom"
@@ -170,7 +170,7 @@ const BurgerConstructor = () => {
   );
 
   const isCheckoutDisabled = useMemo(
-    () => isOrderLoading || !Boolean(bun) || !Boolean(innerIngredients.length),
+    () => isOrderLoading || !bun || !innerIngredients.length,
     [isOrderLoading, bun, innerIngredients]
   );
 
@@ -206,7 +206,7 @@ const BurgerConstructor = () => {
         ref={dropIngredientTarget}
       >
         <div className={styles.selectedIngredientsContainer}>
-          {Boolean(bun) ? (
+          {bun ? (
             <>
               {burgerTop}
               {burgerInner}

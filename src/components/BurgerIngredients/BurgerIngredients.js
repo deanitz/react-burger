@@ -130,7 +130,7 @@ const BurgerIngredients = () => {
   const modal = useMemo(
     () =>
       isModal &&
-      Boolean(displayedIngredient) && (
+      displayedIngredient && (
         <Modal
           header={
             <h1 className="text text_type_main-large">Детали ингредиента</h1>
