@@ -7,9 +7,9 @@ import { fetchIngredients } from "../../services/slices/ingredientsSlice";
 const App = () => {
   const dispatch = useDispatch();
 
-  const { ingredientsData, ingredientsDataError } = useSelector((store) => ({
-    ingredientsData: store.ingredients.ingredientsData,
-    ingredientsDataError: store.ingredients.ingredientsDataError,
+  const { ingredientsData, ingredientsDataError } = useSelector(({ingredients}) => ({
+    ingredientsData: ingredients.ingredientsData,
+    ingredientsDataError: ingredients.ingredientsDataError,
   }));
 
   useEffect(() => {
