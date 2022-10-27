@@ -23,17 +23,17 @@ const BurgerConstructor = () => {
   const dispatch = useDispatch();
 
   const { orderNumber, isOrderLoaded, isOrderLoading, isOrderLoadingError } =
-    useSelector(({order}) => ({
+    useSelector(({ order }) => ({
       orderNumber: order.orderInfo?.number,
       isOrderLoaded:
-        order.orderInfo &&
-        !order.orderInfoLoading &&
-        !order.orderInfoError,
+        order.orderInfo && !order.orderInfoLoading && !order.orderInfoError,
       isOrderLoadingError: order.orderInfoError,
       isOrderLoading: order.orderInfoLoading,
     }));
 
-  const selectedIngredients = useSelector(({selectedIngredients}) => selectedIngredients);
+  const selectedIngredients = useSelector(
+    ({ selectedIngredients }) => selectedIngredients
+  );
 
   const {
     isDisplayed: isModal,

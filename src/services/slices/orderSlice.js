@@ -33,10 +33,12 @@ const orderSlice = createSlice({
     [getOrderInfo.fulfilled]: (state, { payload }) => {
       state.orderInfoLoading = false;
       state.orderInfoError = !payload.success;
-      state.orderInfo = payload.success ? {
-        name: payload.name,
-        number: payload.order.number,
-      } : initialState.orderInfo;
+      state.orderInfo = payload.success
+        ? {
+            name: payload.name,
+            number: payload.order.number,
+          }
+        : initialState.orderInfo;
     },
     [getOrderInfo.rejected]: (state) => {
       state.orderInfo = initialState.orderInfo;
