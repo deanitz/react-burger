@@ -17,12 +17,9 @@ import {
 const App = () => {
   const dispatch = useDispatch();
 
-  const { ingredientsData, ingredientsDataError } = useSelector(
-    ({ ingredients }) => ({
-      ingredientsData: ingredients.ingredientsData,
-      ingredientsDataError: ingredients.ingredientsDataError,
-    })
-  );
+  const { ingredientsDataError } = useSelector(({ ingredients }) => ({
+    ingredientsDataError: ingredients.ingredientsDataError,
+  }));
 
   useEffect(() => {
     dispatch(fetchIngredients());

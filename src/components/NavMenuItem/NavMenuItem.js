@@ -1,19 +1,20 @@
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
 import styles from "./NavMenuItem.module.css";
 
-const NavMenuItem = ({ icon, text, active }) => (
+const NavMenuItem = ({ icon, text, to }) => (
   <li className="p-5">
-    <a href="/#" className={styles.link}>
+    <NavLink
+      to={to}
+      end
+      className={({ isActive }) =>
+        `${styles.link} ${isActive ? styles.active : styles.normal}`
+      }
+    >
       {icon}
-      <span
-        className={`text text_type_main-default ml-2 ${
-          active ? styles.active : ""
-        }`}
-      >
-        {text}
-      </span>
-    </a>
+      <span className={`text text_type_main-default ml-2`}>{text}</span>
+    </NavLink>
   </li>
 );
 
