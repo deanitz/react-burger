@@ -74,6 +74,7 @@ const Profile = () => {
               value={state.name}
               name={"name"}
               errorText={"Ошибка ввода имени"}
+              icon="EditIcon"
             />
           </div>
           <div className="mt-6">
@@ -81,6 +82,7 @@ const Profile = () => {
               onChange={onChange}
               value={state.email}
               name={"email"}
+              icon="EditIcon"
             />
           </div>
           <div className="mt-6">
