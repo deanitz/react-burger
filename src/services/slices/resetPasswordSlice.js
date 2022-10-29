@@ -6,16 +6,20 @@ import {
 import { logError } from "../logService";
 
 const initialState = {
-  resetPasswordSuccess: null,
-  resetPasswordLoading: false,
-  resetPasswordError: false,
-  renewPasswordSuccess: null,
-  renewPasswordLoading: false,
-  renewPasswordError: false,
+  reset: {
+    success: null,
+    loading: false,
+    error: false,
+  },
+  renew: {
+    success: null,
+    loading: false,
+    error: false,
+  }
 };
 
-export const resetPassword = createAsyncThunk(
-  "resetPassword/resetPassword",
+export const reset = createAsyncThunk(
+  "resetPassword/reset",
   (email) => {
     return apiResetPassword({
       email,
@@ -30,8 +34,8 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
-export const renewPassword = createAsyncThunk(
-  "resetPassword/renewPassword",
+export const renew = createAsyncThunk(
+  "resetPassword/renew",
   (email) => {
     return apiRenewPassword({
       email,
@@ -55,33 +59,33 @@ const resetPasswordSlice = createSlice({
     },
   },
   extraReducers: {
-    [resetPassword.pending]: (state) => {
-      state.resetPasswordLoading = true;
-      state.resetPasswordError = false;
+    [reset.pending]: (state) => {
+      state.reset.loading = true;
+      state.reset.error = false;
     },
-    [resetPassword.fulfilled]: (state, { payload }) => {
-      state.resetPasswordLoading = false;
-      state.resetPasswordSuccess = payload.success;
-      state.resetPasswordError = !payload.success;
+    [reset.fulfilled]: (state, { payload }) => {
+      state.reset.loading = false;
+      state.reset.success = payload.success;
+      state.reset.error = !payload.success;
     },
-    [resetPassword.rejected]: (state) => {
-      state.resetPasswordLoading = false;
-      state.resetPasswordSuccess = false;
-      state.resetPasswordError = true;
+    [reset.rejected]: (state) => {
+      state.reset.loading = false;
+      state.reset.success = false;
+      state.reset.error = true;
     },
-    [renewPassword.pending]: (state) => {
-      state.renewPasswordLoading = true;
-      state.renewPasswordError = false;
+    [renew.pending]: (state) => {
+      state.renew.loading = true;
+      state.renew.error = false;
     },
-    [renewPassword.fulfilled]: (state, { payload }) => {
-      state.renewPasswordLoading = false;
-      state.renewPasswordSuccess = payload.success;
-      state.renewPasswordError = !payload.success;
+    [renew.fulfilled]: (state, { payload }) => {
+      state.renew.loading = false;
+      state.renew.success = payload.success;
+      state.renew.error = !payload.success;
     },
-    [renewPassword.rejected]: (state) => {
-      state.renewPasswordLoading = false;
-      state.renewPasswordSuccess = false;
-      state.renewPasswordError = true;
+    [renew.rejected]: (state) => {
+      state.renew.loading = false;
+      state.renew.success = false;
+      state.renew.error = true;
     },
   },
 });

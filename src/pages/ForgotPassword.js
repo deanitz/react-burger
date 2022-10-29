@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
 import {
-  resetPassword,
+  reset as resetPassword,
   resetState,
 } from "../services/slices/resetPasswordSlice";
 import { ROUTE_LOGIN, ROUTE_RESET_PASSWORD } from "../utils/routes";
@@ -20,11 +20,11 @@ const ForgotPassword = () => {
     isResetPasswordError,
   } = useSelector(({ resetPassword }) => ({
     isResetPasswordSuccess:
-      resetPassword.resetPasswordSuccess &&
-      !resetPassword.resetPasswordLoading &&
-      !resetPassword.resetPasswordError,
-    isResetPasswordError: resetPassword.resetPasswordError,
-    isResetPasswordLoading: resetPassword.resetPasswordLoading,
+      resetPassword.reset.success &&
+      !resetPassword.reset.loading &&
+      !resetPassword.reset.error,
+    isResetPasswordError: resetPassword.reset.error,
+    isResetPasswordLoading: resetPassword.reset.loading,
   }));
 
   const navigate = useNavigate();
