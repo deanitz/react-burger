@@ -4,6 +4,7 @@ import order from "../slices/orderSlice";
 import selectedIngredients from "../slices/selectedIngredientsSlice";
 import selectedIngredientsTab from "../slices/selectedIngredientsTabSlice";
 import displayedIngredient from "../slices/displayedIngredientSlice";
+import resetPassword from "../slices/resetPasswordSlice";
 
 export const rootReducer = combineReducers({
   ingredients,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   selectedIngredients,
   selectedIngredientsTab,
   displayedIngredient,
+  resetPassword,
 });

@@ -6,6 +6,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
+import { ROUTE_LOGIN } from "../utils/routes";
 
 const ResetPassword = () => {
   const [state, setState] = useState({
@@ -32,7 +33,7 @@ const ResetPassword = () => {
             onChange={onChange}
             value={state.newPassword}
             placeholder={"Введите новый пароль"}
-            name={"password"}
+            name={"newPassword"}
           />
         </div>
         <div className="mt-6">
@@ -46,13 +47,13 @@ const ResetPassword = () => {
           />
         </div>
         <div className="mt-6">
-          <Button type="primary" size="medium">
+          <Button type="primary" size="medium" htmlType="button">
             Сохранить
           </Button>
         </div>
         <span className="mt-20 text text_type_main-default">
           Вспомнили пароль?{" "}
-          <Link to="/login" className="page-form_link">
+          <Link to={ROUTE_LOGIN} className="page-form_link">
             Войти
           </Link>
         </span>

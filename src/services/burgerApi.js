@@ -19,3 +19,13 @@ export const placeOrder = (order) => {
     body: JSON.stringify(order),
   }).then(checkResponse);
 };
+
+export const resetPassword = (email) => {
+  return fetch(`${API_URL}/password-reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(email),
+  }).then(checkResponse);
+};

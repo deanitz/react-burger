@@ -6,6 +6,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
+import { ROUTE_FORGOT_PASSWORD, ROUTE_REGISTER } from "../utils/routes";
 
 const Login = () => {
   const [state, setState] = useState({
@@ -36,19 +37,19 @@ const Login = () => {
           />
         </div>
         <div className="mt-6">
-          <Button type="primary" size="medium">
+          <Button type="primary" size="medium" htmlType="button">
             Войти
           </Button>
         </div>
         <span className="mt-20 text text_type_main-default">
           Вы — новый пользователь?{" "}
-          <Link to="/register" className="page-form_link">
+          <Link to={ROUTE_REGISTER} className="page-form_link">
             Зарегистрироваться
           </Link>
         </span>
         <span className="mt-4 text text_type_main-default">
           Забыли пароль?{" "}
-          <Link to="/forgot-password" className="page-form_link">
+          <Link to={ROUTE_FORGOT_PASSWORD} className="page-form_link">
             Восстановить пароль
           </Link>
         </span>

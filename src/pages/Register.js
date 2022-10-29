@@ -7,6 +7,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
+import { ROUTE_LOGIN } from "../utils/routes";
 
 const Register = () => {
   const [state, setState] = useState({
@@ -50,13 +51,13 @@ const Register = () => {
           />
         </div>
         <div className="mt-6">
-          <Button type="primary" size="medium">
+          <Button type="primary" size="medium" htmlType="button">
             Зарегистрироваться
           </Button>
         </div>
         <span className="mt-20 text text_type_main-default">
           Уже зарегистрированы?{" "}
-          <Link to="/login" className="page-form_link">
+          <Link to={ROUTE_LOGIN} className="page-form_link">
             Войти
           </Link>
         </span>

@@ -3,6 +3,7 @@ import NavMenuContainer from "../NavMenuContainer/NavMenuContainer";
 import NavMenuItem from "../NavMenuItem/NavMenuItem";
 import { ProfileIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, matchPath } from "react-router-dom";
+import { ROUTE_PROFILE } from "../../utils/routes";
 
 const NavRightSide = () => {
   const { pathname } = useLocation();
@@ -13,8 +14,8 @@ const NavRightSide = () => {
   return (
     <NavMenuContainer right={true}>
       <NavMenuItem
-        to="/profile"
-        icon={<ProfileIcon type={getIconType("/profile")} />}
+        to={ROUTE_PROFILE}
+        icon={<ProfileIcon type={getIconType(ROUTE_PROFILE)} />}
         text="Личный кабинет"
       />
     </NavMenuContainer>
