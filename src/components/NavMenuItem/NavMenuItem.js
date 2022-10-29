@@ -3,11 +3,11 @@ import { NavLink } from "react-router-dom";
 
 import styles from "./NavMenuItem.module.css";
 
-const NavMenuItem = ({ icon, text, to }) => (
+const NavMenuItem = ({ icon, text, to, end }) => (
   <li className="p-5">
     <NavLink
       to={to}
-      end
+      end={end}
       className={({ isActive }) =>
         `${styles.link} ${isActive ? styles.active : styles.normal}`
       }

@@ -25,7 +25,7 @@ const Login = () => {
   return (
     <PageLayout>
       <form className="page-form">
-        <h1 className="text text text_type_main-medium mt-10 mb-5">Вход</h1>
+        <h1 className="text text_type_main-medium mt-10 mb-5">Вход</h1>
         <div className="mt-6">
           <EmailInput onChange={onChange} value={state.email} name={"email"} />
         </div>

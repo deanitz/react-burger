@@ -20,11 +20,13 @@ const NavLeftSide = () => {
         icon={<BurgerIcon type={getIconType(ROUTE_ROOT)} />}
         text="Конструктор"
         to={ROUTE_ROOT}
+        end
       />
       <NavMenuItem
         icon={<ListIcon type={getIconType(ROUTE_ORDERS_FLOW)} />}
         text="Лента заказов"
         to={ROUTE_ORDERS_FLOW}
+        end
       />
     </NavMenuContainer>
   );

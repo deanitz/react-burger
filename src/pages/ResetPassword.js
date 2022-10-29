@@ -3,12 +3,33 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
+import {
+  renewPassword,
+  resetState,
+} from "../services/slices/resetPasswordSlice";
 import { ROUTE_LOGIN } from "../utils/routes";
 
 const ResetPassword = () => {
+  const dispatch = useDispatch();
+  const {
+    isRenewPasswordSuccess,
+    isRenewPasswordLoading,
+    isRenewPasswordError,
+  } = useSelector(({ resetPassword }) => ({
+    isRenewPasswordSuccess:
+      resetPassword.renewPasswordSuccess &&
+      !resetPassword.renewPasswordLoading &&
+      !resetPassword.renewPasswordError,
+    isRenewPasswordError: resetPassword.renewPasswordError,
+    isRenewPasswordLoading: resetPassword.renewPasswordLoading,
+  }));
+
+  const navigate = useNavigate();
+
   const [state, setState] = useState({
     newPassword: "",
     code: "",
@@ -22,10 +43,30 @@ const ResetPassword = () => {
     });
   };
 
+  const handleRenewPassword = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(renewPassword(state.email));
+    },
+    [dispatch, state.email]
+  );
+
+  useEffect(() => {
+    if (isRenewPasswordSuccess) {
+      dispatch(resetState());
+      navigate(ROUTE_LOGIN, { replace: false });
+      return;
+    }
+    if (isRenewPasswordError) {
+      dispatch(resetState());
+      alert("Что-то пошло не так. Попробуйте еще раз.");
+    }
+  }, [isRenewPasswordSuccess, isRenewPasswordError, dispatch, navigate]);
+
   return (
     <PageLayout>
       <form className="page-form">
-        <h1 className="text text text_type_main-medium mt-10 mb-5">
+        <h1 className="text text_type_main-medium mt-10 mb-5">
           Восстановление пароля
         </h1>
         <div className="mt-6">
@@ -47,7 +88,13 @@ const ResetPassword = () => {
           />
         </div>
         <div className="mt-6">
-          <Button type="primary" size="medium" htmlType="button">
+          <Button
+            type="primary"
+            size="medium"
+            htmlType="button"
+            onClick={handleRenewPassword}
+            disabled={isRenewPasswordLoading || isRenewPasswordSuccess}
+          >
             Сохранить
           </Button>
         </div>

@@ -51,9 +51,7 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (isResetPasswordSuccess) {
-      console.log("before dispatch(resetState)");
       dispatch(resetState());
-      console.log("after dispatch(resetState)");
       navigate(ROUTE_RESET_PASSWORD, { replace: false });
       return;
     }
@@ -66,7 +64,7 @@ const ForgotPassword = () => {
   return (
     <PageLayout>
       <form className="page-form">
-        <h1 className="text text text_type_main-medium mt-10 mb-5">
+        <h1 className="text text_type_main-medium mt-10 mb-5">
           Восстановление пароля
         </h1>
         <div className="mt-6">

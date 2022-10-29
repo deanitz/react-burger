@@ -29,3 +29,53 @@ export const resetPassword = (email) => {
     body: JSON.stringify(email),
   }).then(checkResponse);
 };
+
+export const renewPassword = (params) => {
+  return fetch(`${API_URL}/password-reset/reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then(checkResponse);
+};
+
+export const register = (params) => {
+  return fetch(`${API_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then(checkResponse);
+};
+
+export const login = (params) => {
+  return fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then(checkResponse);
+};
+
+export const logout = (params) => {
+  return fetch(`${API_URL}/auth/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then(checkResponse);
+};
+
+export const token = (params) => {
+  return fetch(`${API_URL}/auth/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then(checkResponse);
+};
