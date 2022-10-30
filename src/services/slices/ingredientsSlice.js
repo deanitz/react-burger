@@ -37,7 +37,6 @@ const ingredientsSlice = createSlice({
       state.ingredientsData = payload.data;
     },
     [fetchIngredients.rejected]: (state) => {
-      console.log("rejected handled!");
       state.ingredientsData = initialState.ingredientsData;
       state.ingredientsDataLoading = false;
       state.ingredientsDataError = true;

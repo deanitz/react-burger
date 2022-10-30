@@ -3,12 +3,28 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
-import { ROUTE_FORGOT_PASSWORD, ROUTE_REGISTER } from "../utils/routes";
+import { login, resetLogin } from "../services/slices/authSlice";
+import {
+  ROUTE_FORGOT_PASSWORD,
+  ROUTE_REGISTER,
+  ROUTE_ROOT,
+} from "../utils/routes";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoginSuccess, isLoginLoading, isLoginError } = useSelector(
+    ({ auth }) => ({
+      isLoginSuccess: auth.login.success,
+      isLoginLoading: auth.login.loading,
+      isLoginError: auth.login.error,
+    })
+  );
+
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -21,6 +37,31 @@ const Login = () => {
       [name]: value,
     });
   };
+
+  const handleLogin = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(
+        login({
+          email: state.email,
+          password: state.password,
+        })
+      );
+    },
+    [dispatch, state.email, state.password]
+  );
+
+  useEffect(() => {
+    if (isLoginSuccess) {
+      dispatch(resetLogin());
+      navigate(ROUTE_ROOT, { replace: false });
+      return;
+    }
+    if (isLoginError) {
+      dispatch(resetLogin());
+      alert("Что-то пошло не так. Попробуйте еще раз.");
+    }
+  }, [isLoginSuccess, isLoginError, dispatch, navigate]);
 
   return (
     <PageLayout>
@@ -37,7 +78,13 @@ const Login = () => {
           />
         </div>
         <div className="mt-6">
-          <Button type="primary" size="medium" htmlType="button">
+          <Button
+            type="primary"
+            size="medium"
+            htmlType="button"
+            onClick={handleLogin}
+            disabled={isLoginLoading}
+          >
             Войти
           </Button>
         </div>

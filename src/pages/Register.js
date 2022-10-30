@@ -4,12 +4,23 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
-import { ROUTE_LOGIN } from "../utils/routes";
+import { register, resetRegister } from "../services/slices/authSlice";
+import { ROUTE_LOGIN, ROUTE_ROOT } from "../utils/routes";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isRegistrationSuccess, isRegistrationLoading, isRegistrationError } =
+    useSelector(({ auth }) => ({
+      isRegistrationSuccess: auth.register.success,
+      isRegistrationLoading: auth.register.loading,
+      isRegistrationError: auth.register.error,
+    }));
+
   const [state, setState] = useState({
     name: "",
     email: "",
@@ -23,6 +34,31 @@ const Register = () => {
       [name]: value,
     });
   };
+
+  const handleRegistration = useCallback(
+    (e) => {
+      e.preventDefault();
+      dispatch(
+        register({
+          email: state.email,
+          password: state.password,
+          name: state.name,
+        })
+      );
+    },
+    [dispatch, state.email, state.password, state.name]
+  );
+
+  useEffect(() => {
+    if (isRegistrationSuccess) {
+      navigate(ROUTE_ROOT, { replace: false });
+      return;
+    }
+    if (isRegistrationError) {
+      dispatch(resetRegister());
+      alert("Что-то пошло не так. Попробуйте еще раз.");
+    }
+  }, [isRegistrationSuccess, isRegistrationError, dispatch, navigate]);
 
   return (
     <PageLayout>
@@ -49,7 +85,13 @@ const Register = () => {
           />
         </div>
         <div className="mt-6">
-          <Button type="primary" size="medium" htmlType="button">
+          <Button
+            type="primary"
+            size="medium"
+            htmlType="button"
+            onClick={handleRegistration}
+            disabled={isRegistrationLoading}
+          >
             Зарегистрироваться
           </Button>
         </div>

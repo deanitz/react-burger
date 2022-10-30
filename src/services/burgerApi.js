@@ -79,3 +79,23 @@ export const token = (params) => {
     body: JSON.stringify(params),
   }).then(checkResponse);
 };
+
+export const getUserInfo = (accessToken) => {
+  return fetch(`${API_URL}/auth/user`, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  }).then(checkResponse);
+};
+
+export const updateUserInfo = (params, accessToken) => {
+  return fetch(`${API_URL}/auth/user`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + accessToken,
+    },
+    body: JSON.stringify(params),
+  }).then(checkResponse);
+};

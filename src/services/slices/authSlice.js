@@ -1,29 +1,39 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { 
+import {
+  getRefreshToken,
+  removeTokens,
+  storeTokens,
+} from "../../utils/localStorageUtils";
+import {
   login as apiLogin,
   logout as apiLogout,
   register as apiRegister,
   token as apiToken,
- } from "../burgerApi";
+} from "../burgerApi";
 import { logError } from "../logService";
 
 const initialState = {
   login: {
-    info: null,
+    success: null,
     loading: false,
     error: false,
   },
   logout: {
-    info: null,
+    success: null,
     loading: false,
     error: false,
   },
   register: {
-    info: null,
+    success: null,
     loading: false,
     error: false,
   },
   token: {
+    success: null,
+    loading: false,
+    error: false,
+  },
+  user: {
     info: null,
     loading: false,
     error: false,
@@ -31,10 +41,9 @@ const initialState = {
 };
 
 export const login = createAsyncThunk("auth/login", (params) => {
-  return apiLogin({
-    params,
-  })
+  return apiLogin(params)
     .then((response) => {
+      storeTokens(response);
       return response;
     })
     .catch((error) => {
@@ -43,11 +52,13 @@ export const login = createAsyncThunk("auth/login", (params) => {
     });
 });
 
-export const logout = createAsyncThunk("auth/logout", (params) => {
-  return apiLogout({
-    params,
-  })
+export const logout = createAsyncThunk("auth/logout", () => {
+  const params = {
+    token: getRefreshToken(),
+  };
+  return apiLogout(params)
     .then((response) => {
+      removeTokens();
       return response;
     })
     .catch((error) => {
@@ -57,10 +68,9 @@ export const logout = createAsyncThunk("auth/logout", (params) => {
 });
 
 export const register = createAsyncThunk("auth/register", (params) => {
-  return apiRegister({
-    params,
-  })
+  return apiRegister(params)
     .then((response) => {
+      storeTokens(response);
       return response;
     })
     .catch((error) => {
@@ -70,10 +80,9 @@ export const register = createAsyncThunk("auth/register", (params) => {
 });
 
 export const token = createAsyncThunk("auth/token", (params) => {
-  return apiToken({
-    params,
-  })
+  return apiToken(params)
     .then((response) => {
+      storeTokens(response);
       return response;
     })
     .catch((error) => {
@@ -106,12 +115,12 @@ const authSlice = createSlice({
     },
     [login.fulfilled]: (state, { payload }) => {
       state.login.loading = false;
-      state.login.info = payload.success ? payload : initialState.login.info;
+      state.login.success = payload.success;
       state.login.error = !payload.success;
     },
     [login.rejected]: (state) => {
       state.login.loading = false;
-      state.login.info = initialState.login.info;
+      state.login.success = initialState.login.success;
       state.login.error = true;
     },
     [logout.pending]: (state) => {
@@ -120,12 +129,12 @@ const authSlice = createSlice({
     },
     [logout.fulfilled]: (state, { payload }) => {
       state.logout.loading = false;
-      state.logout.info = payload.success ? payload : initialState.logout.info;
+      state.logout.success = payload.success;
       state.logout.error = !payload.success;
     },
     [logout.rejected]: (state) => {
       state.logout.loading = false;
-      state.logout.info = initialState.logout.info;
+      state.logout.success = initialState.logout.success;
       state.logout.error = true;
     },
     [register.pending]: (state) => {
@@ -134,12 +143,12 @@ const authSlice = createSlice({
     },
     [register.fulfilled]: (state, { payload }) => {
       state.register.loading = false;
-      state.register.info = payload.success ? payload : initialState.register.info;
+      state.register.success = payload.success;
       state.register.error = !payload.success;
     },
     [register.rejected]: (state) => {
       state.register.loading = false;
-      state.register.info = initialState.register.info;
+      state.register.success = initialState.register.success;
       state.register.error = true;
     },
     [token.pending]: (state) => {
@@ -148,17 +157,18 @@ const authSlice = createSlice({
     },
     [token.fulfilled]: (state, { payload }) => {
       state.token.loading = false;
-      state.token.info = payload.success ? payload : initialState.token.info;
+      state.token.success = payload.success;
       state.token.error = !payload.success;
     },
     [token.rejected]: (state) => {
       state.token.loading = false;
-      state.token.info = initialState.token.info;
+      state.token.success = initialState.token.success;
       state.token.error = true;
     },
   },
 });
 
-export const { resetState } = authSlice.actions;
+export const { resetLogin, resetLogout, resetRegister, resetToken } =
+  authSlice.actions;
 
 export default authSlice.reducer;

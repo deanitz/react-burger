@@ -15,40 +15,34 @@ const initialState = {
     success: null,
     loading: false,
     error: false,
-  }
+  },
 };
 
-export const reset = createAsyncThunk(
-  "resetPassword/reset",
-  (email) => {
-    return apiResetPassword({
-      email,
+export const reset = createAsyncThunk("resetPassword/reset", (email) => {
+  return apiResetPassword({
+    email,
+  })
+    .then((response) => {
+      return response;
     })
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        logError(error);
-        throw error;
-      });
-  }
-);
+    .catch((error) => {
+      logError(error);
+      throw error;
+    });
+});
 
-export const renew = createAsyncThunk(
-  "resetPassword/renew",
-  (email) => {
-    return apiRenewPassword({
-      email,
+export const renew = createAsyncThunk("resetPassword/renew", (email) => {
+  return apiRenewPassword({
+    email,
+  })
+    .then((response) => {
+      return response;
     })
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        logError(error);
-        throw error;
-      });
-  }
-);
+    .catch((error) => {
+      logError(error);
+      throw error;
+    });
+});
 
 const resetPasswordSlice = createSlice({
   name: "resetPassword",
