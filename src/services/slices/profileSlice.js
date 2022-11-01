@@ -51,10 +51,10 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     resetGetUserInfo: (state) => {
-      state.login = initialState.login;
+      state.getUserInfo = initialState.getUserInfo;
     },
     resetUpdateUserInfo: (state) => {
-      state.logout = initialState.logout;
+      state.updateUserInfo = initialState.updateUserInfo;
     },
   },
   extraReducers: {
@@ -71,7 +71,7 @@ const profileSlice = createSlice({
     },
     [getUserInfo.rejected]: (state) => {
       state.getUserInfo.loading = false;
-      state.getUserInfo.success = initialState.getUserInfo.success;
+      state.getUserInfo.success = initialState.getUserInfo.info;
       state.getUserInfo.error = true;
     },
     [updateUserInfo.pending]: (state) => {
