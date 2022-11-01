@@ -28,3 +28,7 @@ body {
   text-decoration: none;
   color: #4c4cff;
 }
+
+.error-message {
+  color: var(--colors-interface-error);
+}

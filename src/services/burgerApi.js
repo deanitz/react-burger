@@ -16,7 +16,7 @@ export const fetchWithRefresh = async (url, options) => {
     if (err.message === "jwt expired") {
       const { refreshToken, accessToken } = await refreshTokenRequest();
 
-      storeTokens({refreshToken, accessToken});
+      storeTokens({ refreshToken, accessToken });
 
       options.headers.authorization = accessToken;
 
@@ -32,7 +32,7 @@ export const fetchWithRefresh = async (url, options) => {
 export const refreshTokenRequest = () => {
   const params = {
     token: getRefreshToken(),
-  }
+  };
   return fetch(`${API_URL}/auth/token`, {
     method: "POST",
     headers: {

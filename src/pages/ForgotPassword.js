@@ -55,11 +55,7 @@ const ForgotPassword = () => {
       navigate(ROUTE_RESET_PASSWORD, { replace: false });
       return;
     }
-    if (isResetPasswordError) {
-      dispatch(resetState());
-      alert("Что-то пошло не так. Попробуйте еще раз.");
-    }
-  }, [isResetPasswordSuccess, isResetPasswordError, dispatch, navigate]);
+  }, [isResetPasswordSuccess, dispatch, navigate]);
 
   return (
     <PageLayout>
@@ -87,6 +83,11 @@ const ForgotPassword = () => {
             Войти
           </Link>
         </span>
+        {isResetPasswordError && (
+          <span className="error-message mt-10 text text_type_main-default">
+            Ошибка при сбросе пароля. Попробуйте еще раз.
+          </span>
+        )}
       </form>
     </PageLayout>
   );

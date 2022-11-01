@@ -8,7 +8,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
-import { register, resetRegister } from "../services/slices/authSlice";
+import { register } from "../services/slices/authSlice";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "../utils/routes";
 
 const Register = () => {
@@ -54,10 +54,6 @@ const Register = () => {
       navigate(ROUTE_ROOT, { replace: false });
       return;
     }
-    if (isRegistrationError) {
-      dispatch(resetRegister());
-      alert("Что-то пошло не так. Попробуйте еще раз.");
-    }
   }, [isRegistrationSuccess, isRegistrationError, dispatch, navigate]);
 
   return (
@@ -101,6 +97,11 @@ const Register = () => {
             Войти
           </Link>
         </span>
+        {isRegistrationError && (
+          <span className="error-message mt-10 text text_type_main-default">
+            Ошибка при смене пароля. Попробуйте еще раз.
+          </span>
+        )}
       </form>
     </PageLayout>
   );

@@ -38,14 +38,8 @@ const Profile = () => {
   );
 
   useEffect(() => {
-    if (isLogoutSuccess) {
+    if (isLogoutSuccess || isLogoutError) {
       dispatch(resetLogout());
-      navigate(ROUTE_LOGIN, { replace: false });
-      return;
-    }
-    if (isLogoutError) {
-      dispatch(resetLogout());
-      alert("Ошибка при выходе из приложения.");
       navigate(ROUTE_LOGIN, { replace: false });
     }
   }, [dispatch, navigate, isLogoutSuccess, isLogoutError]);

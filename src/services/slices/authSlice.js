@@ -89,9 +89,6 @@ const authSlice = createSlice({
     resetLogout: (state) => {
       state.logout = initialState.logout;
     },
-    resetRegister: (state) => {
-      state.register = initialState.register;
-    },
   },
   extraReducers: {
     [login.pending]: (state) => {
@@ -139,7 +136,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetLogin, resetLogout, resetRegister } =
-  authSlice.actions;
+export const { resetLogin, resetLogout } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -57,11 +57,7 @@ const ResetPassword = () => {
       navigate(ROUTE_LOGIN, { replace: false });
       return;
     }
-    if (isRenewPasswordError) {
-      dispatch(resetState());
-      alert("Что-то пошло не так. Попробуйте еще раз.");
-    }
-  }, [isRenewPasswordSuccess, isRenewPasswordError, dispatch, navigate]);
+  }, [isRenewPasswordSuccess, dispatch, navigate]);
 
   return (
     <PageLayout>
@@ -104,6 +100,11 @@ const ResetPassword = () => {
             Войти
           </Link>
         </span>
+        {isRenewPasswordError && (
+          <span className="error-message mt-10 text text_type_main-default">
+            Ошибка при обновлении пароля. Попробуйте еще раз.
+          </span>
+        )}
       </form>
     </PageLayout>
   );

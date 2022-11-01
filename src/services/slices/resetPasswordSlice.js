@@ -54,6 +54,7 @@ const resetPasswordSlice = createSlice({
   },
   extraReducers: {
     [reset.pending]: (state) => {
+      state.reset.success = false;
       state.reset.loading = true;
       state.reset.error = false;
     },
@@ -68,6 +69,7 @@ const resetPasswordSlice = createSlice({
       state.reset.error = true;
     },
     [renew.pending]: (state) => {
+      state.renew.success = false;
       state.renew.loading = true;
       state.renew.error = false;
     },

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserInfo,
   resetGetUserInfo,
+  resetUpdateUserInfo,
   updateUserInfo,
 } from "../../services/slices/profileSlice";
 
@@ -16,21 +17,25 @@ const defaultAccountInfoState = {
   name: "",
   email: "",
   password: "",
-}
+};
 
 const AccountInfo = () => {
   const dispatch = useDispatch();
 
-  const { isGetUserInfoSuccess, isGetUserInfoError, userInfo } = useSelector(
-    ({ profile }) => ({
-      isGetUserInfoSuccess:
-        profile.getUserInfo.info &&
-        !profile.getUserInfo.loading &&
-        !profile.getUserInfo.error,
-      userInfo: profile.getUserInfo.info,
-      isGetUserInfoError: profile.getUserInfo.error,
-    })
-  );
+  const {
+    isGetUserInfoSuccess,
+    isGetUserInfoLoading,
+    isGetUserInfoError,
+    userInfo,
+  } = useSelector(({ profile }) => ({
+    isGetUserInfoSuccess:
+      profile.getUserInfo.info &&
+      !profile.getUserInfo.loading &&
+      !profile.getUserInfo.error,
+    userInfo: profile.getUserInfo.info,
+    isGetUserInfoLoading: profile.getUserInfo.loading,
+    isGetUserInfoError: profile.getUserInfo.error,
+  }));
 
   useEffect(() => {
     if (isGetUserInfoSuccess) {
@@ -41,10 +46,7 @@ const AccountInfo = () => {
       });
       return;
     }
-    if (isGetUserInfoError) {
-      alert("Ошибка загрузки данных пользователя.");
-    }
-  }, [dispatch, isGetUserInfoSuccess, isGetUserInfoError, userInfo]);
+  }, [dispatch, isGetUserInfoSuccess, userInfo]);
 
   useEffect(() => {
     setState(defaultAccountInfoState);
@@ -52,7 +54,8 @@ const AccountInfo = () => {
 
     return () => {
       dispatch(resetGetUserInfo());
-    }
+      dispatch(resetUpdateUserInfo());
+    };
   }, [dispatch]);
 
   const [state, setState] = useState(defaultAccountInfoState);
@@ -65,6 +68,13 @@ const AccountInfo = () => {
       [name]: value,
     });
   };
+
+  const { isSaveUserInfoSuccess, isSaveUserInfoLoading, isSaveUserInfoError } =
+    useSelector(({ profile }) => ({
+      isSaveUserInfoSuccess: profile.updateUserInfo.success,
+      isSaveUserInfoLoading: profile.updateUserInfo.loading,
+      isSaveUserInfoError: profile.updateUserInfo.error,
+    }));
 
   const handleSave = useCallback(
     (e) => {
@@ -123,7 +133,11 @@ const AccountInfo = () => {
           size="medium"
           htmlType="button"
           onClick={handleSave}
-          disabled={false}
+          disabled={
+            !isGetUserInfoSuccess ||
+            isGetUserInfoLoading ||
+            isSaveUserInfoLoading
+          }
         >
           Сохранить
         </Button>
@@ -132,11 +146,30 @@ const AccountInfo = () => {
           size="medium"
           htmlType="button"
           onClick={handleCancel}
-          disabled={false}
+          disabled={
+            !isGetUserInfoSuccess ||
+            isGetUserInfoLoading ||
+            isSaveUserInfoLoading
+          }
         >
           Отменить
         </Button>
       </div>
+      {isGetUserInfoError && (
+        <span className="error-message mt-10 text text_type_main-default">
+          Ошибка загрузки данных пользователя.
+        </span>
+      )}
+      {isSaveUserInfoError && (
+        <span className="error-message mt-10 text text_type_main-default">
+          Ошибка сохранения данных пользователя.
+        </span>
+      )}
+      {isSaveUserInfoSuccess && (
+        <span className="mt-10 text text_type_main-default">
+          Данные успешно сохранены.
+        </span>
+      )}
     </form>
   );
 };

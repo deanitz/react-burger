@@ -75,6 +75,7 @@ const profileSlice = createSlice({
       state.getUserInfo.error = true;
     },
     [updateUserInfo.pending]: (state) => {
+      state.updateUserInfo.success = false;
       state.updateUserInfo.loading = true;
       state.updateUserInfo.error = false;
     },

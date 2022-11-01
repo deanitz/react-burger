@@ -47,7 +47,7 @@ const BurgerConstructor = () => {
       return;
     }
     if (isOrderLoadingError) {
-      alert("Что-то пошло не так. Попробуйте еще раз.");
+      alert("Ошибка создания заказа. Попробуйте еще раз.");
       dispatch(resetOrderInfo());
     }
   }, [isOrderLoaded, isModal, showModal, isOrderLoadingError, dispatch]);

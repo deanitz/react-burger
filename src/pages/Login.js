@@ -57,10 +57,6 @@ const Login = () => {
       navigate(ROUTE_ROOT, { replace: false });
       return;
     }
-    if (isLoginError) {
-      dispatch(resetLogin());
-      alert("Что-то пошло не так. Попробуйте еще раз.");
-    }
   }, [isLoginSuccess, isLoginError, dispatch, navigate]);
 
   return (
@@ -100,6 +96,11 @@ const Login = () => {
             Восстановить пароль
           </Link>
         </span>
+        {isLoginError && (
+          <span className="error-message mt-10 text text_type_main-default">
+            Неверный адрес электронной почты или пароль.
+          </span>
+        )}
       </form>
     </PageLayout>
   );
