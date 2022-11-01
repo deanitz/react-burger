@@ -31,9 +31,9 @@ export const reset = createAsyncThunk("resetPassword/reset", (email) => {
     });
 });
 
-export const renew = createAsyncThunk("resetPassword/renew", (email) => {
+export const renew = createAsyncThunk("resetPassword/renew", (params) => {
   return apiRenewPassword({
-    email,
+    ...params,
   })
     .then((response) => {
       return response;

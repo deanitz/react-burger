@@ -48,9 +48,14 @@ const ResetPassword = () => {
   const handleRenewPassword = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch(renewPassword(state.email));
+      dispatch(
+        renewPassword({
+          password: state.newPassword,
+          token: state.code,
+        })
+      );
     },
-    [dispatch, state.email]
+    [dispatch, state.code, state.newPassword]
   );
 
   useEffect(() => {

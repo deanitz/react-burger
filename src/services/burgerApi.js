@@ -110,7 +110,7 @@ export const getUserInfo = (accessToken) => {
   return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "GET",
     headers: {
-      "Authorization": "Bearer " + accessToken,
+      Authorization: "Bearer " + accessToken,
     },
   });
 };
@@ -120,7 +120,7 @@ export const updateUserInfo = (params, accessToken) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + accessToken,
+      Authorization: "Bearer " + accessToken,
     },
     body: JSON.stringify(params),
   });
