@@ -13,7 +13,9 @@ import {
 } from "../../services/slices/profileSlice";
 
 const defaultAccountInfoState = {
-
+  name: "",
+  email: "",
+  password: "",
 }
 
 const AccountInfo = () => {
