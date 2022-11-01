@@ -5,8 +5,6 @@ export function ProtectedRoute({ children }) {
   const { user } = useAuth();
   const { pathname } = useLocation();
 
-  console.log("navigating to ", user.isAuthenticated ? children : "login");
-  console.log("returnPath", pathname);
   return (
     user.isAuthenticated ? (
       children
