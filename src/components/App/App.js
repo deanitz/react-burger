@@ -12,7 +12,7 @@ import {
 } from "../../pages";
 import OrdersHistory from "../../pages/profile/OrdersHistory";
 import AccountInfo from "../../pages/profile/AccountInfo";
-import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { useIngredients } from "../../hooks/useIngredients";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";

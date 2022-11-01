@@ -21,6 +21,7 @@ const NavMenuItem = ({ icon, text, to, end }) => (
 NavMenuItem.propTypes = {
   icon: PropTypes.element.isRequired,
   text: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
   active: PropTypes.bool,
 };
 

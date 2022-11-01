@@ -1,7 +1,8 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import PropTypes from "prop-types";
 
-export function ProtectedRoute({ children }) {
+const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   const { pathname } = useLocation();
 
@@ -11,3 +12,12 @@ export function ProtectedRoute({ children }) {
     <Navigate to="/login" state={{ returnPath: pathname }} replace={true} />
   );
 }
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
+
+export default ProtectedRoute;
