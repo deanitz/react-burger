@@ -12,6 +12,10 @@ import {
   updateUserInfo,
 } from "../../services/slices/profileSlice";
 
+const defaultAccountInfoState = {
+
+}
+
 const AccountInfo = () => {
   const dispatch = useDispatch();
 
@@ -36,21 +40,20 @@ const AccountInfo = () => {
       return;
     }
     if (isGetUserInfoError) {
-      dispatch(resetGetUserInfo());
       alert("Ошибка загрузки данных пользователя.");
     }
   }, [dispatch, isGetUserInfoSuccess, isGetUserInfoError, userInfo]);
 
   useEffect(() => {
-    dispatch(resetGetUserInfo());
+    setState(defaultAccountInfoState);
     dispatch(getUserInfo());
+
+    return () => {
+      dispatch(resetGetUserInfo());
+    }
   }, [dispatch]);
 
-  const [state, setState] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [state, setState] = useState(defaultAccountInfoState);
 
   const onChange = (e) => {
     const name = e.target.name;
@@ -74,12 +77,15 @@ const AccountInfo = () => {
     [dispatch, state]
   );
 
-  const handleCancel = useCallback((e) => {
-    e.preventDefault();
+  const handleCancel = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    dispatch(resetGetUserInfo());
-    dispatch(getUserInfo());
-  }, []);
+      dispatch(resetGetUserInfo());
+      dispatch(getUserInfo());
+    },
+    [dispatch]
+  );
 
   return (
     <form className="page-form">

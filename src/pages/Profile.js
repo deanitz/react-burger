@@ -45,7 +45,8 @@ const Profile = () => {
     }
     if (isLogoutError) {
       dispatch(resetLogout());
-      alert("Ошибка при выходе из приложения. Попробуйте еще раз.");
+      alert("Ошибка при выходе из приложения.");
+      navigate(ROUTE_LOGIN, { replace: false });
     }
   }, [dispatch, navigate, isLogoutSuccess, isLogoutError]);
 

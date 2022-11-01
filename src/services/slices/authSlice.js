@@ -8,7 +8,6 @@ import {
   login as apiLogin,
   logout as apiLogout,
   register as apiRegister,
-  token as apiToken,
 } from "../burgerApi";
 import { logError } from "../logService";
 
@@ -62,6 +61,7 @@ export const logout = createAsyncThunk("auth/logout", () => {
       return response;
     })
     .catch((error) => {
+      removeTokens();
       logError(error);
       throw error;
     });
@@ -69,18 +69,6 @@ export const logout = createAsyncThunk("auth/logout", () => {
 
 export const register = createAsyncThunk("auth/register", (params) => {
   return apiRegister(params)
-    .then((response) => {
-      storeTokens(response);
-      return response;
-    })
-    .catch((error) => {
-      logError(error);
-      throw error;
-    });
-});
-
-export const token = createAsyncThunk("auth/token", (params) => {
-  return apiToken(params)
     .then((response) => {
       storeTokens(response);
       return response;
@@ -103,9 +91,6 @@ const authSlice = createSlice({
     },
     resetRegister: (state) => {
       state.register = initialState.register;
-    },
-    resetToken: (state) => {
-      state.token = initialState.token;
     },
   },
   extraReducers: {
@@ -151,24 +136,10 @@ const authSlice = createSlice({
       state.register.success = initialState.register.success;
       state.register.error = true;
     },
-    [token.pending]: (state) => {
-      state.token.loading = true;
-      state.token.error = false;
-    },
-    [token.fulfilled]: (state, { payload }) => {
-      state.token.loading = false;
-      state.token.success = payload.success;
-      state.token.error = !payload.success;
-    },
-    [token.rejected]: (state) => {
-      state.token.loading = false;
-      state.token.success = initialState.token.success;
-      state.token.error = true;
-    },
   },
 });
 
-export const { resetLogin, resetLogout, resetRegister, resetToken } =
+export const { resetLogin, resetLogout, resetRegister } =
   authSlice.actions;
 
 export default authSlice.reducer;

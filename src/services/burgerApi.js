@@ -1,9 +1,45 @@
+import { getRefreshToken, storeTokens } from "../utils/localStorageUtils";
+
 const API_URL = "https://norma.nomoreparties.space/api";
 
 const checkResponse = (response) => {
   return response.ok
     ? response.json()
     : response.json().then((error) => Promise.reject(error));
+};
+
+export const fetchWithRefresh = async (url, options) => {
+  try {
+    const res = await fetch(url, options);
+    return await checkResponse(res);
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const { refreshToken, accessToken } = await refreshTokenRequest();
+
+      storeTokens({refreshToken, accessToken});
+
+      options.headers.authorization = accessToken;
+
+      const res = await fetch(url, options);
+
+      return await checkResponse(res);
+    } else {
+      return Promise.reject(err);
+    }
+  }
+};
+
+export const refreshTokenRequest = () => {
+  const params = {
+    token: getRefreshToken(),
+  }
+  return fetch(`${API_URL}/auth/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  }).then(checkResponse);
 };
 
 export const getIngredients = () => {
@@ -70,32 +106,22 @@ export const logout = (params) => {
   }).then(checkResponse);
 };
 
-export const token = (params) => {
-  return fetch(`${API_URL}/auth/token`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-  }).then(checkResponse);
-};
-
 export const getUserInfo = (accessToken) => {
-  return fetch(`${API_URL}/auth/user`, {
+  return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "GET",
     headers: {
       Authorization: "Bearer " + accessToken,
     },
-  }).then(checkResponse);
+  });
 };
 
 export const updateUserInfo = (params, accessToken) => {
-  return fetch(`${API_URL}/auth/user`, {
+  return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: "Bearer " + accessToken,
     },
     body: JSON.stringify(params),
-  }).then(checkResponse);
+  });
 };
