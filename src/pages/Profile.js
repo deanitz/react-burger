@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
 import { logout, resetLogout } from "../services/slices/authSlice";
 import {
-  ROUTE_LOGIN,
   ROUTE_PROFILE,
   ROUTE_PROFILE_ORDERS,
 } from "../utils/routes";
@@ -13,14 +12,11 @@ import { useLocation, matchPath } from "react-router-dom";
 import styles from "./Profile.module.css";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogoutSuccess, isLogoutLoading, isLogoutError } = useSelector(
+  const { isLogoutLoading } = useSelector(
     ({ auth }) => ({
-      isLogoutSuccess: auth.logout.success,
       isLogoutLoading: auth.logout.loading,
-      isLogoutError: auth.logout.error,
     })
   );
 
@@ -38,11 +34,10 @@ const Profile = () => {
   );
 
   useEffect(() => {
-    if (isLogoutSuccess || isLogoutError) {
+    return () => {
       dispatch(resetLogout());
-      navigate(ROUTE_LOGIN, { replace: false });
     }
-  }, [dispatch, navigate, isLogoutSuccess, isLogoutError]);
+  }, [dispatch]);
 
   const { pathname } = useLocation();
   const isProfileRoot = useMemo(

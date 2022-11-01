@@ -15,6 +15,7 @@ import {
 } from "../../pages";
 import OrdersHistory from "../../pages/profile/OrdersHistory";
 import AccountInfo from "../../pages/profile/AccountInfo";
+import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,11 @@ const App = () => {
           <Route path="register" element={<Register />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="reset-password" element={<ResetPassword />} />
-          <Route path="profile" element={<Profile />}>
+          <Route path="profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }>
             <Route index element={<AccountInfo />} />
             <Route path="orders" element={<OrdersHistory />} />
           </Route>

@@ -106,6 +106,7 @@ const authSlice = createSlice({
       state.login.error = true;
     },
     [logout.pending]: (state) => {
+      state.logout.success = initialState.logout.success;
       state.logout.loading = true;
       state.logout.error = false;
     },

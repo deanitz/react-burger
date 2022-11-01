@@ -5,15 +5,20 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
+import { useAuth } from "../hooks/useAuth";
 import {
   renew as renewPassword,
   resetState,
 } from "../services/slices/resetPasswordSlice";
-import { ROUTE_LOGIN } from "../utils/routes";
+import { ROUTE_LOGIN, ROUTE_ROOT } from "../utils/routes";
 
 const ResetPassword = () => {
+  const {user} = useAuth();
+  const { state: locationState } = useLocation();
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const {
     isRenewPasswordSuccess,
@@ -27,8 +32,6 @@ const ResetPassword = () => {
     isRenewPasswordError: resetPassword.renew.error,
     isRenewPasswordLoading: resetPassword.renew.loading,
   }));
-
-  const navigate = useNavigate();
 
   const [state, setState] = useState({
     newPassword: "",
@@ -58,6 +61,10 @@ const ResetPassword = () => {
       return;
     }
   }, [isRenewPasswordSuccess, dispatch, navigate]);
+
+  if (user.isAuthenticated) {
+    return <Navigate to={locationState?.returnPath || ROUTE_ROOT} replace= {false} />
+  }
 
   return (
     <PageLayout>

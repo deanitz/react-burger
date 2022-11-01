@@ -5,8 +5,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
+import { useAuth } from "../hooks/useAuth";
 import { login, resetLogin } from "../services/slices/authSlice";
 import {
   ROUTE_FORGOT_PASSWORD,
@@ -15,8 +16,11 @@ import {
 } from "../utils/routes";
 
 const Login = () => {
+  const {user} = useAuth();
+  const { state: locationState } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { isLoginSuccess, isLoginLoading, isLoginError } = useSelector(
     ({ auth }) => ({
       isLoginSuccess: auth.login.success,
@@ -29,6 +33,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -54,10 +59,13 @@ const Login = () => {
   useEffect(() => {
     if (isLoginSuccess) {
       dispatch(resetLogin());
-      navigate(ROUTE_ROOT, { replace: false });
-      return;
+      navigate(locationState?.returnPath || ROUTE_ROOT, { replace: false });
     }
-  }, [isLoginSuccess, isLoginError, dispatch, navigate]);
+  }, [isLoginSuccess, isLoginError, locationState, dispatch, navigate]);
+
+  if (user.isAuthenticated) {
+    return <Navigate to={locationState?.returnPath || ROUTE_ROOT} replace= {false} />
+  }
 
   return (
     <PageLayout>

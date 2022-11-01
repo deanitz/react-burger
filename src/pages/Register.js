@@ -6,12 +6,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
+import { useAuth } from "../hooks/useAuth";
 import { register } from "../services/slices/authSlice";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "../utils/routes";
 
 const Register = () => {
+  const {user} = useAuth();
+  const { state: locationState } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isRegistrationSuccess, isRegistrationLoading, isRegistrationError } =
@@ -55,6 +58,10 @@ const Register = () => {
       return;
     }
   }, [isRegistrationSuccess, isRegistrationError, dispatch, navigate]);
+
+  if (user.isAuthenticated) {
+    return <Navigate to={locationState?.returnPath || ROUTE_ROOT} replace= {false} />
+  }
 
   return (
     <PageLayout>
