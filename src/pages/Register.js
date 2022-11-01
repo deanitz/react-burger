@@ -6,15 +6,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
-import { useAuth } from "../hooks/useAuth";
+import { useLoginProtection } from "../hooks/useLoginProtection";
 import { register } from "../services/slices/authSlice";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "../utils/routes";
 
 const Register = () => {
-  const {user} = useAuth();
-  const { state: locationState } = useLocation();
+  const { navigateIfLoggedIn } = useLoginProtection();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isRegistrationSuccess, isRegistrationLoading, isRegistrationError } =
@@ -59,58 +58,60 @@ const Register = () => {
     }
   }, [isRegistrationSuccess, isRegistrationError, dispatch, navigate]);
 
-  if (user.isAuthenticated) {
-    return <Navigate to={locationState?.returnPath || ROUTE_ROOT} replace= {false} />
-  }
-
   return (
-    <PageLayout>
-      <form className="page-form">
-        <h1 className="text text_type_main-medium mt-10 mb-5">Регистрация</h1>
-        <div className="mt-6">
-          <Input
-            type={"text"}
-            placeholder={"Имя"}
-            onChange={onChange}
-            value={state.name}
-            name={"name"}
-            errorText={"Ошибка ввода имени"}
-          />
-        </div>
-        <div className="mt-6">
-          <EmailInput onChange={onChange} value={state.email} name={"email"} />
-        </div>
-        <div className="mt-6">
-          <PasswordInput
-            onChange={onChange}
-            value={state.password}
-            name={"password"}
-          />
-        </div>
-        <div className="mt-6">
-          <Button
-            type="primary"
-            size="medium"
-            htmlType="button"
-            onClick={handleRegistration}
-            disabled={isRegistrationLoading}
-          >
-            Зарегистрироваться
-          </Button>
-        </div>
-        <span className="mt-20 text text_type_main-default">
-          Уже зарегистрированы?{" "}
-          <Link to={ROUTE_LOGIN} className="page-form_link">
-            Войти
-          </Link>
-        </span>
-        {isRegistrationError && (
-          <span className="error-message mt-10 text text_type_main-default">
-            Ошибка при смене пароля. Попробуйте еще раз.
+    navigateIfLoggedIn() || (
+      <PageLayout>
+        <form className="page-form">
+          <h1 className="text text_type_main-medium mt-10 mb-5">Регистрация</h1>
+          <div className="mt-6">
+            <Input
+              type={"text"}
+              placeholder={"Имя"}
+              onChange={onChange}
+              value={state.name}
+              name={"name"}
+              errorText={"Ошибка ввода имени"}
+            />
+          </div>
+          <div className="mt-6">
+            <EmailInput
+              onChange={onChange}
+              value={state.email}
+              name={"email"}
+            />
+          </div>
+          <div className="mt-6">
+            <PasswordInput
+              onChange={onChange}
+              value={state.password}
+              name={"password"}
+            />
+          </div>
+          <div className="mt-6">
+            <Button
+              type="primary"
+              size="medium"
+              htmlType="button"
+              onClick={handleRegistration}
+              disabled={isRegistrationLoading}
+            >
+              Зарегистрироваться
+            </Button>
+          </div>
+          <span className="mt-20 text text_type_main-default">
+            Уже зарегистрированы?{" "}
+            <Link to={ROUTE_LOGIN} className="page-form_link">
+              Войти
+            </Link>
           </span>
-        )}
-      </form>
-    </PageLayout>
+          {isRegistrationError && (
+            <span className="error-message mt-10 text text_type_main-default">
+              Ошибка при смене пароля. Попробуйте еще раз.
+            </span>
+          )}
+        </form>
+      </PageLayout>
+    )
   );
 };
 

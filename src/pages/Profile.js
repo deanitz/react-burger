@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
 import { logout, resetLogout } from "../services/slices/authSlice";
-import {
-  ROUTE_PROFILE,
-  ROUTE_PROFILE_ORDERS,
-} from "../utils/routes";
+import { ROUTE_PROFILE, ROUTE_PROFILE_ORDERS } from "../utils/routes";
 import { useLocation, matchPath } from "react-router-dom";
 
 import styles from "./Profile.module.css";
@@ -14,11 +11,9 @@ import styles from "./Profile.module.css";
 const Profile = () => {
   const dispatch = useDispatch();
 
-  const { isLogoutLoading } = useSelector(
-    ({ auth }) => ({
-      isLogoutLoading: auth.logout.loading,
-    })
-  );
+  const { isLogoutLoading } = useSelector(({ auth }) => ({
+    isLogoutLoading: auth.logout.loading,
+  }));
 
   const handleLogout = useCallback(
     (e) => {
@@ -36,7 +31,7 @@ const Profile = () => {
   useEffect(() => {
     return () => {
       dispatch(resetLogout());
-    }
+    };
   }, [dispatch]);
 
   const { pathname } = useLocation();

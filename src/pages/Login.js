@@ -5,9 +5,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
-import { useAuth } from "../hooks/useAuth";
+import { useLoginProtection } from "../hooks/useLoginProtection";
 import { login, resetLogin } from "../services/slices/authSlice";
 import {
   ROUTE_FORGOT_PASSWORD,
@@ -16,7 +16,7 @@ import {
 } from "../utils/routes";
 
 const Login = () => {
-  const {user} = useAuth();
+  const { navigateIfLoggedIn } = useLoginProtection();
   const { state: locationState } = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,54 +63,56 @@ const Login = () => {
     }
   }, [isLoginSuccess, isLoginError, locationState, dispatch, navigate]);
 
-  if (user.isAuthenticated) {
-    return <Navigate to={locationState?.returnPath || ROUTE_ROOT} replace= {false} />
-  }
-
   return (
-    <PageLayout>
-      <form className="page-form">
-        <h1 className="text text_type_main-medium mt-10 mb-5">Вход</h1>
-        <div className="mt-6">
-          <EmailInput onChange={onChange} value={state.email} name={"email"} />
-        </div>
-        <div className="mt-6">
-          <PasswordInput
-            onChange={onChange}
-            value={state.password}
-            name={"password"}
-          />
-        </div>
-        <div className="mt-6">
-          <Button
-            type="primary"
-            size="medium"
-            htmlType="button"
-            onClick={handleLogin}
-            disabled={isLoginLoading}
-          >
-            Войти
-          </Button>
-        </div>
-        <span className="mt-20 text text_type_main-default">
-          Вы — новый пользователь?{" "}
-          <Link to={ROUTE_REGISTER} className="page-form_link">
-            Зарегистрироваться
-          </Link>
-        </span>
-        <span className="mt-4 text text_type_main-default">
-          Забыли пароль?{" "}
-          <Link to={ROUTE_FORGOT_PASSWORD} className="page-form_link">
-            Восстановить пароль
-          </Link>
-        </span>
-        {isLoginError && (
-          <span className="error-message mt-10 text text_type_main-default">
-            Неверный адрес электронной почты или пароль.
+    navigateIfLoggedIn() || (
+      <PageLayout>
+        <form className="page-form">
+          <h1 className="text text_type_main-medium mt-10 mb-5">Вход</h1>
+          <div className="mt-6">
+            <EmailInput
+              onChange={onChange}
+              value={state.email}
+              name={"email"}
+            />
+          </div>
+          <div className="mt-6">
+            <PasswordInput
+              onChange={onChange}
+              value={state.password}
+              name={"password"}
+            />
+          </div>
+          <div className="mt-6">
+            <Button
+              type="primary"
+              size="medium"
+              htmlType="button"
+              onClick={handleLogin}
+              disabled={isLoginLoading}
+            >
+              Войти
+            </Button>
+          </div>
+          <span className="mt-20 text text_type_main-default">
+            Вы — новый пользователь?{" "}
+            <Link to={ROUTE_REGISTER} className="page-form_link">
+              Зарегистрироваться
+            </Link>
           </span>
-        )}
-      </form>
-    </PageLayout>
+          <span className="mt-4 text text_type_main-default">
+            Забыли пароль?{" "}
+            <Link to={ROUTE_FORGOT_PASSWORD} className="page-form_link">
+              Восстановить пароль
+            </Link>
+          </span>
+          {isLoginError && (
+            <span className="error-message mt-10 text text_type_main-default">
+              Неверный адрес электронной почты или пароль.
+            </span>
+          )}
+        </form>
+      </PageLayout>
+    )
   );
 };
 

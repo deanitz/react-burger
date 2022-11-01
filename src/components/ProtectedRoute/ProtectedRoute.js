@@ -5,13 +5,9 @@ export function ProtectedRoute({ children }) {
   const { user } = useAuth();
   const { pathname } = useLocation();
 
-  return (
-    user.isAuthenticated ? (
-      children
-    ) : (
-      <Navigate
-        to="/login" state={{returnPath: pathname}} replace={false}
-      />
-    )
+  return user.isAuthenticated ? (
+    children
+  ) : (
+    <Navigate to="/login" state={{ returnPath: pathname }} replace={false} />
   );
 }
