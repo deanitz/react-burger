@@ -6,7 +6,7 @@ import IngredientItem from "../IngredientItem/IngredientItem";
 
 import styles from "./IngredientSection.module.css";
 
-const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
+const IngredientSection = forwardRef(({ name, data }, ref) => {
   const selectedIngredients = useSelector(
     ({ selectedIngredients }) => selectedIngredients
   );
@@ -25,12 +25,7 @@ const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
       </h2>
       <div className={styles.ingredientItemsContainer}>
         {data.map((item) => (
-          <IngredientItem
-            item={item}
-            count={getCount(item)}
-            key={item._id}
-            handleClick={handleItemClick}
-          />
+          <IngredientItem item={item} count={getCount(item)} key={item._id} />
         ))}
       </div>
     </section>
@@ -40,7 +35,6 @@ const IngredientSection = forwardRef(({ name, data, handleItemClick }, ref) => {
 IngredientSection.propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(dataShape).isRequired,
-  handleItemClick: PropTypes.func.isRequired,
 };
 
 export default IngredientSection;

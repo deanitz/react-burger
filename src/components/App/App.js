@@ -1,8 +1,5 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import AppMain from "../AppMain/AppMain";
-import { fetchIngredients } from "../../services/slices/ingredientsSlice";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import AppLayout from "../AppLayout/AppLayout";
 import {
   NotFound,
@@ -16,27 +13,24 @@ import {
 import OrdersHistory from "../../pages/profile/OrdersHistory";
 import AccountInfo from "../../pages/profile/AccountInfo";
 import { ProtectedRoute } from "../ProtectedRoute/ProtectedRoute";
+import { useIngredients } from "../../hooks/useIngredients";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 const App = () => {
-  const dispatch = useDispatch();
+  useIngredients();
 
-  const { ingredientsDataError } = useSelector(({ ingredients }) => ({
-    ingredientsDataError: ingredients.ingredientsDataError,
-  }));
+  const location = useLocation();
+  const navigate = useNavigate();
+  const background = location.state && location.state.background;
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (ingredientsDataError) {
-      alert("Что-то пошло не так. Попробуйте еще раз.");
-    }
-  }, [ingredientsDataError]);
+  const handleCloseModal = () => {
+    navigate(-1);
+  };
 
   return (
-    <BrowserRouter>
-      <Routes>
+    <>
+      <Routes location={background || location}>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<AppMain />} />
           <Route path="login" element={<Login />} />
@@ -58,7 +52,26 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+      {background && (
+        <Routes>
+          <Route
+            path="/ingredients/:id"
+            element={
+              <Modal
+                header={
+                  <h1 className="text text_type_main-large">
+                    Детали ингредиента
+                  </h1>
+                }
+                onClose={handleCloseModal}
+              >
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
+    </>
   );
 };
 

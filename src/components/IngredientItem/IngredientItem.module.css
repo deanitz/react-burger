@@ -6,6 +6,7 @@
   width: 272px;
   cursor: pointer;
   border: 2px solid transparent;
+  color: #f2f2f3;
 }
 
 .dragging {
@@ -19,4 +20,9 @@
 
 .name {
   text-align: center;
+}
+
+.link {
+  text-decoration: none;
+  color: unset;
 }

@@ -5,10 +5,13 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 
 import styles from "./IngredientItem.module.css";
 
-const IngredientItem = ({ item, count, handleClick }) => {
+const IngredientItem = ({ item, count }) => {
+  const location = useLocation();
+
   const [{ isDrag }, dragRef] = useDrag({
     type: item.type,
     item: { item },
@@ -18,10 +21,16 @@ const IngredientItem = ({ item, count, handleClick }) => {
   });
 
   return (
-    <>
+    <Link
+      key={item._id}
+      to={`/ingredients/${item._id}`}
+      state={{
+        background: location,
+      }}
+      className={styles.link}
+    >
       <div
         className={`${styles.ingredientItem} ${isDrag ? styles.dragging : ""}`}
-        onClick={() => handleClick(item)}
         ref={dragRef}
       >
         <img
@@ -40,14 +49,13 @@ const IngredientItem = ({ item, count, handleClick }) => {
         </p>
         {Boolean(count) && <Counter count={count} size="default" />}
       </div>
-    </>
+    </Link>
   );
 };
 
 IngredientItem.propTypes = {
   item: dataShape.isRequired,
   count: PropTypes.number.isRequired,
-  handleClick: PropTypes.func.isRequired,
 };
 
 export default IngredientItem;

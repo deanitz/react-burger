@@ -8,6 +8,6 @@ export function ProtectedRoute({ children }) {
   return user.isAuthenticated ? (
     children
   ) : (
-    <Navigate to="/login" state={{ returnPath: pathname }} replace={false} />
+    <Navigate to="/login" state={{ returnPath: pathname }} replace={true} />
   );
 }

@@ -11,13 +11,6 @@ import {
   CAPTION_MAINS,
 } from "./BurgerIngredients.utils";
 import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
-import useModal from "../../hooks/useModal";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import {
-  setDisplayedIngredient,
-  resetDisplayedIngredient,
-} from "../../services/slices/displayedIngredientSlice";
 import { setSelectedTab } from "../../services/slices/selectedIngredientsTabSlice";
 import { getIntersectionObserverSettings } from "../../utils/intersectionObserverUtils";
 
@@ -26,13 +19,10 @@ import styles from "./BurgerIngredients.module.css";
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
 
-  const { ingredientsData, displayedIngredient, selectedTab } = useSelector(
-    (store) => ({
-      ingredientsData: store.ingredients.ingredientsData,
-      displayedIngredient: store.displayedIngredient.value,
-      selectedTab: store.selectedIngredientsTab.value,
-    })
-  );
+  const { ingredientsData, selectedTab } = useSelector((store) => ({
+    ingredientsData: store.ingredients.ingredientsData,
+    selectedTab: store.selectedIngredientsTab.value,
+  }));
 
   const viewportRef = useRef(null);
   const bunsRef = useRef(null);
@@ -103,46 +93,6 @@ const BurgerIngredients = () => {
     [dispatch, sections]
   );
 
-  const {
-    isDisplayed: isModal,
-    show: showModal,
-    close: closeModal,
-  } = useModal();
-
-  useEffect(() => {
-    if (displayedIngredient && !isModal) {
-      showModal();
-    }
-  }, [displayedIngredient, isModal, showModal]);
-
-  const handleCloseModal = useCallback(() => {
-    dispatch(resetDisplayedIngredient());
-    closeModal();
-  }, [dispatch, closeModal]);
-
-  const handleIngredientItemClick = useCallback(
-    (item) => {
-      dispatch(setDisplayedIngredient(item));
-    },
-    [dispatch]
-  );
-
-  const modal = useMemo(
-    () =>
-      isModal &&
-      displayedIngredient && (
-        <Modal
-          header={
-            <h1 className="text text_type_main-large">Детали ингредиента</h1>
-          }
-          onClose={handleCloseModal}
-        >
-          <IngredientDetails item={displayedIngredient} />
-        </Modal>
-      ),
-    [isModal, displayedIngredient, handleCloseModal]
-  );
-
   return (
     <>
       <section className={styles.burgerIngredients}>
@@ -171,12 +121,10 @@ const BurgerIngredients = () => {
               data={section.item}
               ref={section.ref}
               key={section.tabName}
-              handleItemClick={handleIngredientItemClick}
             />
           ))}
         </div>
       </section>
-      {modal}
     </>
   );
 };
