@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
   ) : (
     <Navigate to="/login" state={{ returnPath: pathname }} replace={true} />
   );
-}
+};
 
 ProtectedRoute.propTypes = {
   children: PropTypes.oneOfType([

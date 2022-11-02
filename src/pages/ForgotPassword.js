@@ -58,7 +58,7 @@ const ForgotPassword = () => {
   return (
     navigateIfLoggedIn() || (
       <PageLayout>
-        <form className="page-form">
+        <form className="page-form" onSubmit={handleResetPassword}>
           <h1 className="text text_type_main-medium mt-10 mb-5">
             Восстановление пароля
           </h1>
@@ -73,9 +73,12 @@ const ForgotPassword = () => {
             <Button
               type="primary"
               size="medium"
-              onClick={handleResetPassword}
-              disabled={isResetPasswordLoading || isResetPasswordSuccess}
-              htmlType="button"
+              disabled={
+                isResetPasswordLoading ||
+                isResetPasswordSuccess ||
+                !state?.email?.length
+              }
+              htmlType="submit"
             >
               Восстановить
             </Button>

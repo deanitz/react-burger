@@ -66,7 +66,7 @@ const Login = () => {
   return (
     navigateIfLoggedIn() || (
       <PageLayout>
-        <form className="page-form">
+        <form className="page-form" onSubmit={handleLogin}>
           <h1 className="text text_type_main-medium mt-10 mb-5">Вход</h1>
           <div className="mt-6">
             <EmailInput
@@ -86,9 +86,12 @@ const Login = () => {
             <Button
               type="primary"
               size="medium"
-              htmlType="button"
-              onClick={handleLogin}
-              disabled={isLoginLoading}
+              htmlType="submit"
+              disabled={
+                isLoginLoading ||
+                !state?.email?.length ||
+                !state?.password.length
+              }
             >
               Войти
             </Button>

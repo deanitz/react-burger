@@ -61,7 +61,7 @@ const Register = () => {
   return (
     navigateIfLoggedIn() || (
       <PageLayout>
-        <form className="page-form">
+        <form className="page-form" onSubmit={handleRegistration}>
           <h1 className="text text_type_main-medium mt-10 mb-5">Регистрация</h1>
           <div className="mt-6">
             <Input
@@ -91,9 +91,13 @@ const Register = () => {
             <Button
               type="primary"
               size="medium"
-              htmlType="button"
-              onClick={handleRegistration}
-              disabled={isRegistrationLoading}
+              htmlType="submit"
+              disabled={
+                isRegistrationLoading ||
+                !state?.name?.length ||
+                !state?.email?.length ||
+                !state?.password.length
+              }
             >
               Зарегистрироваться
             </Button>
@@ -106,7 +110,7 @@ const Register = () => {
           </span>
           {isRegistrationError && (
             <span className="error-message mt-10 text text_type_main-default">
-              Ошибка при смене пароля. Попробуйте еще раз.
+              Ошибка регистрации. Попробуйте еще раз.
             </span>
           )}
         </form>

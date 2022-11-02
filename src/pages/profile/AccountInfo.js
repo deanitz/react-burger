@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Button,
   EmailInput,
@@ -43,10 +43,13 @@ const AccountInfo = () => {
         name: userInfo.name,
         email: userInfo.email,
         password: "",
+
+        originalName: userInfo.name,
+        originalEmail: userInfo.email,
       });
       return;
     }
-  }, [dispatch, isGetUserInfoSuccess, userInfo]);
+  }, [isGetUserInfoSuccess, userInfo]);
 
   useEffect(() => {
     setState(defaultAccountInfoState);
@@ -89,18 +92,43 @@ const AccountInfo = () => {
     [dispatch, state]
   );
 
+  useEffect(() => {
+    if (isSaveUserInfoSuccess) {
+      setState({
+        ...state,
+        originalName: state.name,
+        originalEmail: state.email,
+        password: "",
+      });
+      return;
+    }
+  }, [isSaveUserInfoSuccess, state]);
+
   const handleCancel = useCallback(
     (e) => {
       e.preventDefault();
 
-      dispatch(resetGetUserInfo());
-      dispatch(getUserInfo());
+      dispatch(resetUpdateUserInfo());
+      setState({
+        ...state,
+        name: state.originalName,
+        email: state.originalEmail,
+        password: "",
+      });
     },
-    [dispatch]
+    [state, dispatch]
   );
 
+  const { isNameChanged, isEmailChanged, isPasswordChanged } = useMemo(() => {
+    const isNameChanged = state.name !== state.originalName;
+    const isEmailChanged = state.email !== state.originalEmail;
+    const isPasswordChanged = Boolean(state.password.length);
+
+    return { isNameChanged, isEmailChanged, isPasswordChanged };
+  }, [state]);
+
   return (
-    <form className="page-form">
+    <form className="page-form" onSubmit={handleSave}>
       <div className="mt-6">
         <Input
           type={"text"}
@@ -109,7 +137,7 @@ const AccountInfo = () => {
           value={state.name}
           name={"name"}
           errorText={"Ошибка ввода имени"}
-          icon="EditIcon"
+          icon={isNameChanged ? "EditIcon" : ""}
         />
       </div>
       <div className="mt-6">
@@ -117,7 +145,7 @@ const AccountInfo = () => {
           onChange={onChange}
           value={state.email}
           name={"email"}
-          icon="EditIcon"
+          icon={isEmailChanged ? "EditIcon" : ""}
         />
       </div>
       <div className="mt-6">
@@ -127,34 +155,37 @@ const AccountInfo = () => {
           name={"password"}
         />
       </div>
-      <div className="mt-6">
-        <Button
-          type="primary"
-          size="medium"
-          htmlType="button"
-          onClick={handleSave}
-          disabled={
-            !isGetUserInfoSuccess ||
-            isGetUserInfoLoading ||
-            isSaveUserInfoLoading
-          }
-        >
-          Сохранить
-        </Button>
-        <Button
-          type="secondary"
-          size="medium"
-          htmlType="button"
-          onClick={handleCancel}
-          disabled={
-            !isGetUserInfoSuccess ||
-            isGetUserInfoLoading ||
-            isSaveUserInfoLoading
-          }
-        >
-          Отменить
-        </Button>
-      </div>
+      {(isNameChanged || isEmailChanged || isPasswordChanged) && (
+        <div className="mt-6">
+          <Button
+            type="primary"
+            size="medium"
+            htmlType="submit"
+            disabled={
+              !isGetUserInfoSuccess ||
+              isGetUserInfoLoading ||
+              isSaveUserInfoLoading ||
+              !state?.name?.length ||
+              !state?.email?.length
+            }
+          >
+            Сохранить
+          </Button>
+          <Button
+            type="secondary"
+            size="medium"
+            htmlType="button"
+            onClick={handleCancel}
+            disabled={
+              !isGetUserInfoSuccess ||
+              isGetUserInfoLoading ||
+              isSaveUserInfoLoading
+            }
+          >
+            Отменить
+          </Button>
+        </div>
+      )}
       {isGetUserInfoError && (
         <span className="error-message mt-10 text text_type_main-default">
           Ошибка загрузки данных пользователя.
@@ -165,11 +196,12 @@ const AccountInfo = () => {
           Ошибка сохранения данных пользователя.
         </span>
       )}
-      {isSaveUserInfoSuccess && (
-        <span className="mt-10 text text_type_main-default">
-          Данные успешно сохранены.
-        </span>
-      )}
+      {isSaveUserInfoSuccess &&
+        !(isNameChanged || isEmailChanged || isPasswordChanged) && (
+          <span className="mt-10 text text_type_main-default">
+            Данные успешно сохранены.
+          </span>
+        )}
     </form>
   );
 };

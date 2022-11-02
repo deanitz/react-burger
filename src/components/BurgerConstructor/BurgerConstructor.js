@@ -16,11 +16,17 @@ import {
 import InnerIngredient from "./InnerIngredient";
 import { useDrop } from "react-dnd";
 import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
+import { ROUTE_LOGIN } from "../../utils/routes";
+import { useAuth } from "../../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const { orderNumber, isOrderLoaded, isOrderLoading, isOrderLoadingError } =
     useSelector(({ order }) => ({
@@ -82,6 +88,21 @@ const BurgerConstructor = () => {
   );
 
   const handleBurgerCheckoutClick = useCallback(() => {
+    if (!user.isAuthenticated) {
+      if (
+        !window.confirm(
+          "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?"
+        )
+      ) {
+        return;
+      }
+      navigate(ROUTE_LOGIN, {
+        replace: false,
+        state: { returnPath: pathname },
+      });
+      return;
+    }
+
     const order = {
       ingredients: [
         bun._id,
@@ -90,7 +111,7 @@ const BurgerConstructor = () => {
     };
 
     dispatch(getOrderInfo(order));
-  }, [dispatch, bun, innerIngredients]);
+  }, [dispatch, bun, innerIngredients, navigate, pathname, user]);
 
   const handleCloseModal = useCallback(() => {
     dispatch(resetOrderInfo());

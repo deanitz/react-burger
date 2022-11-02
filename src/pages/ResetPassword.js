@@ -69,7 +69,7 @@ const ResetPassword = () => {
   return (
     navigateIfLoggedIn() || (
       <PageLayout>
-        <form className="page-form">
+        <form className="page-form" onSubmit={handleRenewPassword}>
           <h1 className="text text_type_main-medium mt-10 mb-5">
             Восстановление пароля
           </h1>
@@ -95,9 +95,13 @@ const ResetPassword = () => {
             <Button
               type="primary"
               size="medium"
-              htmlType="button"
-              onClick={handleRenewPassword}
-              disabled={isRenewPasswordLoading || isRenewPasswordSuccess}
+              htmlType="submit"
+              disabled={
+                isRenewPasswordLoading ||
+                isRenewPasswordSuccess ||
+                !state?.newPassword?.length ||
+                !state?.code?.length
+              }
             >
               Сохранить
             </Button>
