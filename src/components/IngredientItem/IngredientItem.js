@@ -22,7 +22,6 @@ const IngredientItem = ({ item, count }) => {
 
   return (
     <Link
-      key={item._id}
       to={`/ingredients/${item._id}`}
       state={{
         background: location,
