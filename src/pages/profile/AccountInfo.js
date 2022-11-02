@@ -39,6 +39,7 @@ const AccountInfo = () => {
 
   useEffect(() => {
     if (isGetUserInfoSuccess) {
+      setIsDataSaved(false);
       setState({
         name: userInfo.name,
         email: userInfo.email,
@@ -62,6 +63,7 @@ const AccountInfo = () => {
   }, [dispatch]);
 
   const [state, setState] = useState(defaultAccountInfoState);
+  const [isDataSaved, setIsDataSaved] = useState(false);
 
   const onChange = (e) => {
     const name = e.target.name;
@@ -83,6 +85,7 @@ const AccountInfo = () => {
     (e) => {
       e.preventDefault();
 
+      setIsDataSaved(false);
       dispatch(
         updateUserInfo({
           ...state,
@@ -94,15 +97,16 @@ const AccountInfo = () => {
 
   useEffect(() => {
     if (isSaveUserInfoSuccess) {
-      setState({
+      dispatch(resetUpdateUserInfo());
+      setIsDataSaved(true);
+      setState((state) => ({
         ...state,
         originalName: state.name,
         originalEmail: state.email,
         password: "",
-      });
-      return;
+      }));
     }
-  }, [isSaveUserInfoSuccess, state]);
+  }, [dispatch, isSaveUserInfoSuccess]);
 
   const handleCancel = useCallback(
     (e) => {
@@ -115,6 +119,7 @@ const AccountInfo = () => {
         email: state.originalEmail,
         password: "",
       });
+      setIsDataSaved(false);
     },
     [state, dispatch]
   );
@@ -126,6 +131,13 @@ const AccountInfo = () => {
 
     return { isNameChanged, isEmailChanged, isPasswordChanged };
   }, [state]);
+
+  useEffect(() => {
+    if (isNameChanged || isEmailChanged || isPasswordChanged) {
+      setIsDataSaved(false);
+    }
+  }, [isNameChanged, isEmailChanged, isPasswordChanged]);
+  
 
   return (
     <form className="page-form" onSubmit={handleSave}>
@@ -196,12 +208,11 @@ const AccountInfo = () => {
           Ошибка сохранения данных пользователя.
         </span>
       )}
-      {isSaveUserInfoSuccess &&
-        !(isNameChanged || isEmailChanged || isPasswordChanged) && (
-          <span className="mt-10 text text_type_main-default">
-            Данные успешно сохранены.
-          </span>
-        )}
+      {isDataSaved && (
+        <span className="mt-10 text text_type_main-default">
+          Данные успешно сохранены.
+        </span>
+      )}
     </form>
   );
 };
