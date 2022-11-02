@@ -35,7 +35,7 @@ const IngredientItem = ({ item, count }) => {
         <img
           className="ml-4 mr-4"
           src={item.image}
-          alt={item.name}
+          alt={`изображение ингредиента "${item.name}"`}
         />
         <p
           className={`text text_type_digits-default mt-1 mb-1 ${styles.price}`}
