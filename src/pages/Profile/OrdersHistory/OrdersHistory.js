@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setInfoText } from "../../services/slices/profileTextSlice";
+import { setInfoText } from "../../../services/slices/profileTextSlice";
 
 const OrdersHistory = () => {
   const dispatch = useDispatch();

@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
-import PageLayout from "../components/PageLayout/PageLayout";
-import { logout, resetLogout } from "../services/slices/authSlice";
-import { ROUTE_PROFILE, ROUTE_PROFILE_ORDERS } from "../utils/routes";
+import PageLayout from "../../components/PageLayout/PageLayout";
+import { logout, resetLogout } from "../../services/slices/authSlice";
+import { ROUTE_PROFILE, ROUTE_PROFILE_ORDERS } from "../../utils/routes";
 
 import styles from "./Profile.module.css";
 

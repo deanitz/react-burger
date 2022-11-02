@@ -1,21 +1,19 @@
 import AppMain from "../AppMain/AppMain";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import AppLayout from "../AppLayout/AppLayout";
-import {
-  NotFound,
-  Login,
-  Register,
-  ForgotPassword,
-  ResetPassword,
-  Profile,
-  IngredientInfo,
-} from "../../pages";
-import OrdersHistory from "../../pages/profile/OrdersHistory";
-import AccountInfo from "../../pages/profile/AccountInfo";
+import OrdersHistory from "../../pages/Profile/OrdersHistory/OrdersHistory";
+import AccountInfo from "../../pages/Profile/AccountInfo/AccountInfo";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { useIngredients } from "../../hooks/useIngredients";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Login from "../../pages/Login/Login";
+import Register from "../../pages/Register/Register";
+import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "../../pages/ForgotPassword/ResetPassword";
+import Profile from "../../pages/Profile/Profile";
+import IngredientInfo from "../../pages/IngredientInfo/IngredientInfo";
+import NotFound from "../../pages/NotFound/NotFound";
 
 const App = () => {
   useIngredients();

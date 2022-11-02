@@ -5,10 +5,10 @@ import {
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import PageLayout from "../components/PageLayout/PageLayout";
-import { useLoginProtection } from "../hooks/useLoginProtection";
-import { reset as resetPassword } from "../services/slices/resetPasswordSlice";
-import { ROUTE_LOGIN, ROUTE_RESET_PASSWORD } from "../utils/routes";
+import PageLayout from "../../components/PageLayout/PageLayout";
+import { useLoginProtection } from "../../hooks/useLoginProtection";
+import { reset as resetPassword } from "../../services/slices/resetPasswordSlice";
+import { ROUTE_LOGIN, ROUTE_RESET_PASSWORD } from "../../utils/routes";
 
 const ForgotPassword = () => {
   const { navigateIfLoggedIn } = useLoginProtection();

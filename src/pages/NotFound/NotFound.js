@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import PageLayout from "../components/PageLayout/PageLayout";
-import { ROUTE_ROOT } from "../utils/routes";
+import PageLayout from "../../components/PageLayout/PageLayout";
+import { ROUTE_ROOT } from "../../utils/routes";
 
 const NotFound = () => (
   <PageLayout>

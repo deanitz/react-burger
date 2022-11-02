@@ -7,10 +7,10 @@ import {
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import PageLayout from "../components/PageLayout/PageLayout";
-import { useLoginProtection } from "../hooks/useLoginProtection";
-import { register } from "../services/slices/authSlice";
-import { ROUTE_LOGIN, ROUTE_ROOT } from "../utils/routes";
+import PageLayout from "../../components/PageLayout/PageLayout";
+import { useLoginProtection } from "../../hooks/useLoginProtection";
+import { register } from "../../services/slices/authSlice";
+import { ROUTE_LOGIN, ROUTE_ROOT } from "../../utils/routes";
 
 const Register = () => {
   const { navigateIfLoggedIn } = useLoginProtection();

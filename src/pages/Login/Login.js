@@ -6,14 +6,14 @@ import {
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import PageLayout from "../components/PageLayout/PageLayout";
-import { useLoginProtection } from "../hooks/useLoginProtection";
-import { login, resetLogin } from "../services/slices/authSlice";
+import PageLayout from "../../components/PageLayout/PageLayout";
+import { useLoginProtection } from "../../hooks/useLoginProtection";
+import { login, resetLogin } from "../../services/slices/authSlice";
 import {
   ROUTE_FORGOT_PASSWORD,
   ROUTE_REGISTER,
   ROUTE_ROOT,
-} from "../utils/routes";
+} from "../../utils/routes";
 
 const Login = () => {
   const { navigateIfLoggedIn } = useLoginProtection();

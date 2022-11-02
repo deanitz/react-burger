@@ -11,8 +11,8 @@ import {
   resetGetUserInfo,
   resetUpdateUserInfo,
   updateUserInfo,
-} from "../../services/slices/profileSlice";
-import { setInfoText } from "../../services/slices/profileTextSlice";
+} from "../../../services/slices/profileSlice";
+import { setInfoText } from "../../../services/slices/profileTextSlice";
 
 const defaultAccountInfoState = {
   name: "",
