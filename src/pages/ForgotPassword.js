@@ -51,9 +51,8 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (isResetPasswordSuccess) {
       navigate(ROUTE_RESET_PASSWORD, { replace: false });
-      return;
     }
-  }, [isResetPasswordSuccess, dispatch, navigate]);
+  }, [isResetPasswordSuccess, navigate]);
 
   return (
     navigateIfLoggedIn() || (

@@ -137,7 +137,6 @@ const AccountInfo = () => {
       setIsDataSaved(false);
     }
   }, [isNameChanged, isEmailChanged, isPasswordChanged]);
-  
 
   return (
     <form className="page-form" onSubmit={handleSave}>

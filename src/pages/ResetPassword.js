@@ -12,17 +12,20 @@ import {
   renew as renewPassword,
   resetState,
 } from "../services/slices/resetPasswordSlice";
-import { ROUTE_LOGIN } from "../utils/routes";
+import { ROUTE_FORGOT_PASSWORD, ROUTE_LOGIN } from "../utils/routes";
 
 const ResetPassword = () => {
   const { navigateIfLoggedIn } = useLoginProtection();
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
+  const [isCompleted, setIsCompleted] = useState(false);
+
   const {
     isRenewPasswordSuccess,
     isRenewPasswordLoading,
     isRenewPasswordError,
+    isResetPasswordSuccess,
   } = useSelector(({ resetPassword }) => ({
     isRenewPasswordSuccess:
       resetPassword.renew.success &&
@@ -30,6 +33,7 @@ const ResetPassword = () => {
       !resetPassword.renew.error,
     isRenewPasswordError: resetPassword.renew.error,
     isRenewPasswordLoading: resetPassword.renew.loading,
+    isResetPasswordSuccess: resetPassword.reset.success,
   }));
 
   const [state, setState] = useState({
@@ -59,12 +63,26 @@ const ResetPassword = () => {
   );
 
   useEffect(() => {
-    if (isRenewPasswordSuccess) {
+    if (isCompleted) {
       dispatch(resetState());
       navigate(ROUTE_LOGIN, { replace: false });
       return;
     }
-  }, [isRenewPasswordSuccess, dispatch, navigate]);
+    if (isRenewPasswordSuccess && isResetPasswordSuccess && !isCompleted) {
+      setIsCompleted(true);
+      return;
+    }
+    if (!isResetPasswordSuccess && !isCompleted) {
+      navigate(ROUTE_FORGOT_PASSWORD, { replace: false });
+      return;
+    }
+  }, [
+    isCompleted,
+    isRenewPasswordSuccess,
+    isResetPasswordSuccess,
+    dispatch,
+    navigate,
+  ]);
 
   return (
     navigateIfLoggedIn() || (
