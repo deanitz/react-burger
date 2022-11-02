@@ -33,7 +33,7 @@ const IngredientDetails = () => {
         <img
           className={`${styles.ingredientDetailsImage} ml-4 mr-4`}
           src={item.image_large}
-          alt="Изображение ингредиента"
+          alt={item.name}
         />
         <p className="text text_type_main-medium mt-4 mb-8">{item.name}</p>
         <div className={styles.ingredientDetailsPropertiesContainer}>
