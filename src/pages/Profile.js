@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import PageLayout from "../components/PageLayout/PageLayout";
 import { logout, resetLogout } from "../services/slices/authSlice";
 import { ROUTE_PROFILE, ROUTE_PROFILE_ORDERS } from "../utils/routes";
-import { useLocation, matchPath } from "react-router-dom";
 
 import styles from "./Profile.module.css";
 
@@ -13,6 +12,10 @@ const Profile = () => {
 
   const { isLogoutLoading } = useSelector(({ auth }) => ({
     isLogoutLoading: auth.logout.loading,
+  }));
+
+  const { infoText } = useSelector(({ profileText }) => ({
+    infoText: profileText.info,
   }));
 
   const handleLogout = useCallback(
@@ -33,12 +36,6 @@ const Profile = () => {
       dispatch(resetLogout());
     };
   }, [dispatch]);
-
-  const { pathname } = useLocation();
-  const isProfileRoot = useMemo(
-    () => matchPath(pathname, ROUTE_PROFILE),
-    [pathname]
-  );
 
   return (
     <PageLayout>
@@ -82,13 +79,11 @@ const Profile = () => {
               </li>
             </ul>
           </nav>
-          {isProfileRoot && (
-            <span
-              className={`mt-20 text text_type_main-default ${styles.infoText}`}
-            >
-              В этом разделе вы можете изменить свои персональные данные
-            </span>
-          )}
+          <span
+            className={`mt-20 text text_type_main-default ${styles.infoText}`}
+          >
+            {infoText}
+          </span>
         </div>
         <Outlet />
       </section>

@@ -12,6 +12,7 @@ import {
   resetUpdateUserInfo,
   updateUserInfo,
 } from "../../services/slices/profileSlice";
+import { setInfoText } from "../../services/slices/profileTextSlice";
 
 const defaultAccountInfoState = {
   name: "",
@@ -138,6 +139,12 @@ const AccountInfo = () => {
     }
   }, [isNameChanged, isEmailChanged, isPasswordChanged]);
 
+  useEffect(() => {
+    dispatch(
+      setInfoText("В этом разделе вы можете изменить свои персональные данные")
+    );
+  }, [dispatch]);
+
   return (
     <form className="page-form" onSubmit={handleSave}>
       <div className="mt-6">
@@ -166,37 +173,38 @@ const AccountInfo = () => {
           name={"password"}
         />
       </div>
-      {(isNameChanged || isEmailChanged || isPasswordChanged) && (
-        <div className="mt-6">
-          <Button
-            type="primary"
-            size="medium"
-            htmlType="submit"
-            disabled={
-              !isGetUserInfoSuccess ||
-              isGetUserInfoLoading ||
-              isSaveUserInfoLoading ||
-              !state?.name?.length ||
-              !state?.email?.length
-            }
-          >
-            Сохранить
-          </Button>
-          <Button
-            type="secondary"
-            size="medium"
-            htmlType="button"
-            onClick={handleCancel}
-            disabled={
-              !isGetUserInfoSuccess ||
-              isGetUserInfoLoading ||
-              isSaveUserInfoLoading
-            }
-          >
-            Отменить
-          </Button>
-        </div>
-      )}
+      {(isNameChanged || isEmailChanged || isPasswordChanged) &&
+        isGetUserInfoSuccess && (
+          <div className="mt-6">
+            <Button
+              type="primary"
+              size="medium"
+              htmlType="submit"
+              disabled={
+                !isGetUserInfoSuccess ||
+                isGetUserInfoLoading ||
+                isSaveUserInfoLoading ||
+                !state?.name?.length ||
+                !state?.email?.length
+              }
+            >
+              Сохранить
+            </Button>
+            <Button
+              type="secondary"
+              size="medium"
+              htmlType="button"
+              onClick={handleCancel}
+              disabled={
+                !isGetUserInfoSuccess ||
+                isGetUserInfoLoading ||
+                isSaveUserInfoLoading
+              }
+            >
+              Отменить
+            </Button>
+          </div>
+        )}
       {isGetUserInfoError && (
         <span className="error-message mt-10 text text_type_main-default">
           Ошибка загрузки данных пользователя.

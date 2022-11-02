@@ -6,6 +6,7 @@ import selectedIngredientsTab from "../slices/selectedIngredientsTabSlice";
 import resetPassword from "../slices/resetPasswordSlice";
 import auth from "../slices/authSlice";
 import profile from "../slices/profileSlice";
+import profileText from "../slices/profileTextSlice";
 
 export const rootReducer = combineReducers({
   ingredients,
@@ -15,4 +16,5 @@ export const rootReducer = combineReducers({
   resetPassword,
   auth,
   profile,
+  profileText,
 });
