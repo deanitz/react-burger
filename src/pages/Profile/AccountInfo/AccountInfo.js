@@ -18,6 +18,8 @@ const defaultAccountInfoState = {
   name: "",
   email: "",
   password: "",
+  originalName: "",
+  originalEmail: "",
 };
 
 const AccountInfo = () => {
@@ -45,7 +47,6 @@ const AccountInfo = () => {
         name: userInfo.name,
         email: userInfo.email,
         password: "",
-
         originalName: userInfo.name,
         originalEmail: userInfo.email,
       });
