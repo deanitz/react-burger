@@ -2,3 +2,33 @@ body {
   margin: 0;
   background-color: #131316;
 }
+
+.page-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-form_link {
+  text-decoration: none;
+  color: #4c4cff;
+}
+
+.page-form_link:hover {
+  text-decoration: none;
+  color: #4c4cff;
+}
+
+.page-form_link:active {
+  text-decoration: none;
+  color: #4c4cff;
+}
+
+.page-form_link:visited {
+  text-decoration: none;
+  color: #4c4cff;
+}
+
+.error-message {
+  color: var(--colors-interface-error);
+}

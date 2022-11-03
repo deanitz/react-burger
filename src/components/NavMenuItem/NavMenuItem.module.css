@@ -1,10 +1,13 @@
-.active {
-  color: #f2f2f3;
-}
-
 .link {
   all: unset;
   display: flex;
   cursor: pointer;
+}
+
+.active {
+  color: #f2f2f3;
+}
+
+.normal {
   color: #8585ad;
 }

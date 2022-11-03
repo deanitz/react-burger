@@ -16,26 +16,30 @@ import {
 import InnerIngredient from "./InnerIngredient";
 import { useDrop } from "react-dnd";
 import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
+import { ROUTE_LOGIN } from "../../utils/routes";
+import { useAuth } from "../../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const { orderNumber, isOrderLoaded, isOrderLoading, isOrderLoadingError } =
-    useSelector((store) => ({
-      orderNumber: store.order.orderInfo?.order?.number,
+    useSelector(({ order }) => ({
+      orderNumber: order.orderInfo?.number,
       isOrderLoaded:
-        Boolean(store.order.orderInfo) &&
-        !store.order.orderInfoLoading &&
-        !store.order.orderInfoError,
-      isOrderLoadingError: store.order.orderInfoError,
-      isOrderLoading: store.order.orderInfoLoading,
+        order.orderInfo && !order.orderInfoLoading && !order.orderInfoError,
+      isOrderLoadingError: order.orderInfoError,
+      isOrderLoading: order.orderInfoLoading,
     }));
 
-  const { selectedIngredients } = useSelector((store) => ({
-    selectedIngredients: store.selectedIngredients.selectedIngredients,
-  }));
+  const selectedIngredients = useSelector(
+    ({ selectedIngredients }) => selectedIngredients
+  );
 
   const {
     isDisplayed: isModal,
@@ -49,7 +53,7 @@ const BurgerConstructor = () => {
       return;
     }
     if (isOrderLoadingError) {
-      alert("Что-то пошло не так. Попробуйте еще раз.");
+      alert("Ошибка создания заказа. Попробуйте еще раз.");
       dispatch(resetOrderInfo());
     }
   }, [isOrderLoaded, isModal, showModal, isOrderLoadingError, dispatch]);
@@ -84,6 +88,21 @@ const BurgerConstructor = () => {
   );
 
   const handleBurgerCheckoutClick = useCallback(() => {
+    if (!user.isAuthenticated) {
+      if (
+        !window.confirm(
+          "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?"
+        )
+      ) {
+        return;
+      }
+      navigate(ROUTE_LOGIN, {
+        replace: false,
+        state: { returnPath: pathname },
+      });
+      return;
+    }
+
     const order = {
       ingredients: [
         bun._id,
@@ -92,7 +111,7 @@ const BurgerConstructor = () => {
     };
 
     dispatch(getOrderInfo(order));
-  }, [dispatch, bun, innerIngredients]);
+  }, [dispatch, bun, innerIngredients, navigate, pathname, user]);
 
   const handleCloseModal = useCallback(() => {
     dispatch(resetOrderInfo());
@@ -139,7 +158,7 @@ const BurgerConstructor = () => {
 
   const burgerTop = useMemo(
     () =>
-      Boolean(bun) && (
+      bun && (
         <div className="ml-8">
           <ConstructorElement
             type="top"
@@ -155,7 +174,7 @@ const BurgerConstructor = () => {
 
   const burgerBottom = useMemo(
     () =>
-      Boolean(bun) && (
+      bun && (
         <div className="ml-8">
           <ConstructorElement
             type="bottom"
@@ -170,7 +189,7 @@ const BurgerConstructor = () => {
   );
 
   const isCheckoutDisabled = useMemo(
-    () => isOrderLoading || !Boolean(bun) || !Boolean(innerIngredients.length),
+    () => isOrderLoading || !bun || !innerIngredients.length,
     [isOrderLoading, bun, innerIngredients]
   );
 
@@ -206,7 +225,7 @@ const BurgerConstructor = () => {
         ref={dropIngredientTarget}
       >
         <div className={styles.selectedIngredientsContainer}>
-          {Boolean(bun) ? (
+          {bun ? (
             <>
               {burgerTop}
               {burgerInner}
