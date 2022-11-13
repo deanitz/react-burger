@@ -8,7 +8,7 @@ import { ROUTE_PROFILE } from "../../utils/routes";
 const NavRightSide = () => {
   const { pathname } = useLocation();
   const getIconType = useCallback(
-    (path) =>
+    (path: string) =>
       matchPath(
         {
           path,

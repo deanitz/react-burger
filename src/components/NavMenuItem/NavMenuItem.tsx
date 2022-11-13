@@ -1,9 +1,19 @@
-import PropTypes from "prop-types";
+import { ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 
 import styles from "./NavMenuItem.module.css";
 
-const NavMenuItem = ({ icon, text, to, end }) => (
+const NavMenuItem = ({
+  icon,
+  text,
+  to,
+  end,
+}: {
+  icon: ReactElement;
+  text: string;
+  to: string;
+  end?: boolean;
+}) => (
   <li className="p-5">
     <NavLink
       to={to}
@@ -17,12 +27,5 @@ const NavMenuItem = ({ icon, text, to, end }) => (
     </NavLink>
   </li>
 );
-
-NavMenuItem.propTypes = {
-  icon: PropTypes.element.isRequired,
-  text: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
-  end: PropTypes.bool,
-};
 
 export default NavMenuItem;

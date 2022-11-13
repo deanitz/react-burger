@@ -1,15 +1,10 @@
 import { FC } from "react";
 import styles from "./IngredientPropertyItem.module.css";
 
-export interface IIngredientPropertyItemProps {
+const IngredientPropertyItem: FC<{
   name: string;
   value: string;
-}
-
-const IngredientPropertyItem: FC<IIngredientPropertyItemProps> = ({
-  name,
-  value,
-}) => {
+}> = ({ name, value }) => {
   return (
     <div className={styles.propertyContainer}>
       <p className="text text_type_main-default mb-1">{name}</p>

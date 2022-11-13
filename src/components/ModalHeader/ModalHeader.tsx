@@ -1,9 +1,11 @@
-import PropTypes from "prop-types";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-
+import { FC, ReactNode } from "react";
 import styles from "./ModalHeader.module.css";
 
-const ModalHeader = ({ children, onClose }) => {
+const ModalHeader: FC<{
+  children: ReactNode;
+  onClose: () => void;
+}> = ({ children, onClose }) => {
   return (
     <section className={styles.headerContainer}>
       <div className={styles.childrenContainer}>{children}</div>
@@ -12,11 +14,6 @@ const ModalHeader = ({ children, onClose }) => {
       </div>
     </section>
   );
-};
-
-ModalHeader.propTypes = {
-  children: PropTypes.element,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default ModalHeader;

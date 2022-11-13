@@ -11,7 +11,7 @@ import { ROUTE_ORDERS_FLOW, ROUTE_ROOT } from "../../utils/routes";
 const NavLeftSide = () => {
   const { pathname } = useLocation();
   const getIconType = useCallback(
-    (path) => (matchPath(pathname, path) ? "primary" : "secondary"),
+    (path: string) => (matchPath(pathname, path) ? "primary" : "secondary"),
     [pathname]
   );
   return (
