@@ -1,11 +1,16 @@
 const ACCESS_TOKEN = "ACCESS_TOKEN";
 const REFRESH_TOKEN = "REFRESH_TOKEN";
 
-const extractToken = (stringValue) => {
-  return stringValue.split("Bearer ")[1];
+const extractToken = (headerValue: string) => {
+  return headerValue.split("Bearer ")[1];
 };
 
-export const storeTokens = (response) => {
+export interface ITokensBody {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const storeTokens = (response: ITokensBody) => {
   if (response.accessToken) {
     localStorage.setItem(ACCESS_TOKEN, extractToken(response.accessToken));
   }
