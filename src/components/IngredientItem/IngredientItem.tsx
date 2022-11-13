@@ -1,5 +1,4 @@
-import PropTypes from "prop-types";
-import dataShape from "../../utils/dataShape";
+import { Ingredient } from "../../utils/dataShape";
 import {
   CurrencyIcon,
   Counter,
@@ -9,7 +8,13 @@ import { Link, useLocation } from "react-router-dom";
 
 import styles from "./IngredientItem.module.css";
 
-const IngredientItem = ({ item, count }) => {
+const IngredientItem = ({
+  item,
+  count,
+}: {
+  item: Ingredient;
+  count: number;
+}) => {
   const location = useLocation();
 
   const [{ isDrag }, dragRef] = useDrag({
@@ -50,11 +55,6 @@ const IngredientItem = ({ item, count }) => {
       </div>
     </Link>
   );
-};
-
-IngredientItem.propTypes = {
-  item: dataShape.isRequired,
-  count: PropTypes.number.isRequired,
 };
 
 export default IngredientItem;

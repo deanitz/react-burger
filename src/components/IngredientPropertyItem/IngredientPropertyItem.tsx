@@ -3,7 +3,7 @@ import styles from "./IngredientPropertyItem.module.css";
 
 const IngredientPropertyItem: FC<{
   name: string;
-  value: string;
+  value: number;
 }> = ({ name, value }) => {
   return (
     <div className={styles.propertyContainer}>
