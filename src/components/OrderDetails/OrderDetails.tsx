@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 
 import styles from "./OrderDetails.module.css";
 
-const OrderDetails = ({ orderNumber }) => {
+export interface OrderDetailsProps {
+  orderNumber: number;
+}
+
+const OrderDetails = ({ orderNumber }: OrderDetailsProps) => {
   return (
     <div className={styles.orderModalContentContainer}>
       <h1
