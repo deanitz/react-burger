@@ -7,11 +7,13 @@ import styles from "./Modal.module.css";
 
 const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-const Modal: FC<{
+export type ModalProps = {
   children: ReactNode;
   header: ReactNode;
   onClose: () => void;
-}> = ({ children, header, onClose }) => {
+};
+
+const Modal: FC<ModalProps> = ({ children, header, onClose }) => {
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") {

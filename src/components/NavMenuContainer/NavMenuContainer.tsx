@@ -2,10 +2,9 @@ import { FC, ReactNode } from "react";
 
 import styles from "./NavMenuContainer.module.css";
 
-const NavMenuContainer: FC<{ right?: boolean; children: ReactNode }> = ({
-  children,
-  right,
-}) => (
+export type NavMenuContainerProps = { right?: boolean; children: ReactNode };
+
+const NavMenuContainer: FC<NavMenuContainerProps> = ({ children, right }) => (
   <ul
     className={`${styles.menuContainer} mt-4 mb-4 ${
       right ? styles.right : styles.left

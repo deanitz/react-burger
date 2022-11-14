@@ -8,16 +8,16 @@ import { logError } from "../logService";
 
 interface IProfileState {
   getUserInfo: {
-    info: null | object, //TODO: type
-    loading: boolean,
-    error: boolean,
-  },
+    info: null | object; //TODO: type
+    loading: boolean;
+    error: boolean;
+  };
   updateUserInfo: {
-    success: null | object, //TODO: type
-    loading: boolean,
-    error: boolean,
-  },
-};
+    success: null | object; //TODO: type
+    loading: boolean;
+    error: boolean;
+  };
+}
 
 const initialState: IProfileState = {
   getUserInfo: {

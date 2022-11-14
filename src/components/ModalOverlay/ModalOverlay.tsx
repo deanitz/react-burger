@@ -1,10 +1,10 @@
 import styles from "./ModalOverlay.module.css";
 
-const ModalOverlay = ({
-  onClose,
-}: {
+export type ModalOverlayProps = {
   onClose: React.MouseEventHandler<HTMLDivElement>;
-}) => {
+};
+
+const ModalOverlay = ({ onClose }: ModalOverlayProps) => {
   return <div className={styles.modalOverlay} onClick={onClose} />;
 };
 

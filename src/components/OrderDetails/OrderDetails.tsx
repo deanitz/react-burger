@@ -1,9 +1,10 @@
 import doneImage from "../../images/done.png";
-import PropTypes from "prop-types";
 
 import styles from "./OrderDetails.module.css";
 
-const OrderDetails = ({ orderNumber }: { orderNumber: number }) => {
+export type OrderDetailsProps = { orderNumber: number };
+
+const OrderDetails = ({ orderNumber }: OrderDetailsProps) => {
   return (
     <div className={styles.orderModalContentContainer}>
       <h1
@@ -25,10 +26,6 @@ const OrderDetails = ({ orderNumber }: { orderNumber: number }) => {
       </p>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.number.isRequired,
 };
 
 export default OrderDetails;

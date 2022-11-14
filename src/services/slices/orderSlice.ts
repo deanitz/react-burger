@@ -3,10 +3,10 @@ import { placeOrder } from "../burgerApi";
 import { logError } from "../logService";
 
 interface IOrderState {
-  orderInfo: null | object, //TODO type
-  orderInfoLoading: boolean,
-  orderInfoError: boolean,
-};
+  orderInfo: null | object; //TODO type
+  orderInfoLoading: boolean;
+  orderInfoError: boolean;
+}
 
 const initialState: IOrderState = {
   orderInfo: null,

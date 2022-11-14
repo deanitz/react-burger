@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IProfileTextState {
-  info: string,
-};
+  info: string;
+}
 
 const initialState: IProfileTextState = {
   info: "",

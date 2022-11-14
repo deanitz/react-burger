@@ -3,9 +3,9 @@ import { Ingredient } from "../../utils/dataShape";
 import { addUniqueId } from "../../utils/dataUtils";
 
 interface ISelectedIngredientsState {
-  bun: Ingredient | null,
-  inner: Ingredient[],
-};
+  bun: Ingredient | null;
+  inner: Ingredient[];
+}
 
 const initialState: ISelectedIngredientsState = {
   bun: null,
@@ -29,7 +29,11 @@ const selectedIngredientsSlice = createSlice({
       );
     },
     reorderSelectedIngredients: (state, action) => {
-      const { draggedIngredient, staticIngredient }: {draggedIngredient: Ingredient, staticIngredient: Ingredient} = action.payload;
+      const {
+        draggedIngredient,
+        staticIngredient,
+      }: { draggedIngredient: Ingredient; staticIngredient: Ingredient } =
+        action.payload;
 
       const isDraggingDown =
         state.inner.findIndex(

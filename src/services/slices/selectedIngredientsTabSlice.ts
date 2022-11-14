@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface ISelectedIngredientsTabState {
-  value: string | null,
-};
+  value: string | null;
+}
 
 const initialState: ISelectedIngredientsTabState = {
   value: null,

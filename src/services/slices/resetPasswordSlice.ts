@@ -7,16 +7,16 @@ import { logError } from "../logService";
 
 interface IResetPasswordState {
   reset: {
-    success: boolean | null,
-    loading: boolean,
-    error: boolean,
-  },
+    success: boolean | null;
+    loading: boolean;
+    error: boolean;
+  };
   renew: {
-    success: boolean | null,
-    loading: boolean,
-    error: boolean,
-  },
-};
+    success: boolean | null;
+    loading: boolean;
+    error: boolean;
+  };
+}
 
 const initialState: IResetPasswordState = {
   reset: {
@@ -44,18 +44,21 @@ export const reset = createAsyncThunk("resetPassword/reset", (email) => {
     });
 });
 
-export const renew = createAsyncThunk("resetPassword/renew", (params: object) => {
-  return apiRenewPassword({
-    ...params,
-  })
-    .then((response) => {
-      return response;
+export const renew = createAsyncThunk(
+  "resetPassword/renew",
+  (params: object) => {
+    return apiRenewPassword({
+      ...params,
     })
-    .catch((error) => {
-      logError(error);
-      throw error;
-    });
-});
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        logError(error);
+        throw error;
+      });
+  }
+);
 
 const resetPasswordSlice = createSlice({
   name: "resetPassword",

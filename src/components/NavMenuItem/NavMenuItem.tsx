@@ -3,17 +3,14 @@ import { NavLink } from "react-router-dom";
 
 import styles from "./NavMenuItem.module.css";
 
-const NavMenuItem = ({
-  icon,
-  text,
-  to,
-  end,
-}: {
+export type NavMenuItemProps = {
   icon: ReactElement;
   text: string;
   to: string;
   end?: boolean;
-}) => (
+};
+
+const NavMenuItem = ({ icon, text, to, end }: NavMenuItemProps) => (
   <li className="p-5">
     <NavLink
       to={to}

@@ -8,13 +8,12 @@ import { Link, useLocation } from "react-router-dom";
 
 import styles from "./IngredientItem.module.css";
 
-const IngredientItem = ({
-  item,
-  count,
-}: {
+export type IngredientItemProps = {
   item: Ingredient;
   count: number;
-}) => {
+};
+
+const IngredientItem = ({ item, count }: IngredientItemProps) => {
   const location = useLocation();
 
   const [{ isDrag }, dragRef] = useDrag({
