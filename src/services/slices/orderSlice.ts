@@ -2,7 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { placeOrder } from "../burgerApi";
 import { logError } from "../logService";
 
-const initialState = {
+interface IOrderState {
+  orderInfo: null | object, //TODO type
+  orderInfoLoading: boolean,
+  orderInfoError: boolean,
+};
+
+const initialState: IOrderState = {
   orderInfo: null,
   orderInfoLoading: false,
   orderInfoError: false,
@@ -25,12 +31,12 @@ const orderSlice = createSlice({
   reducers: {
     resetOrderInfo: () => initialState,
   },
-  extraReducers: {
-    [getOrderInfo.pending]: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(getOrderInfo.pending, (state) => {
       state.orderInfoLoading = true;
       state.orderInfoError = false;
-    },
-    [getOrderInfo.fulfilled]: (state, { payload }) => {
+    });
+    builder.addCase(getOrderInfo.fulfilled, (state, { payload }) => {
       state.orderInfoLoading = false;
       state.orderInfoError = !payload.success;
       state.orderInfo = payload.success
@@ -39,12 +45,12 @@ const orderSlice = createSlice({
             number: payload.order.number,
           }
         : initialState.orderInfo;
-    },
-    [getOrderInfo.rejected]: (state) => {
+    });
+    builder.addCase(getOrderInfo.rejected, (state) => {
       state.orderInfo = initialState.orderInfo;
       state.orderInfoLoading = false;
       state.orderInfoError = true;
-    },
+    });
   },
 });
 

@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface IProfileTextState {
+  info: string,
+};
+
+const initialState: IProfileTextState = {
   info: "",
 };
 

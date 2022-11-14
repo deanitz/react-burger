@@ -11,7 +11,25 @@ import {
 } from "../burgerApi";
 import { logError } from "../logService";
 
-const initialState = {
+interface ILoginState {
+  login: {
+    success: boolean | null;
+    loading: boolean;
+    error: boolean;
+  };
+  logout: {
+    success: boolean | null;
+    loading: boolean;
+    error: boolean;
+  };
+  register: {
+    success: boolean | null;
+    loading: boolean;
+    error: boolean;
+  };
+}
+
+const initialState: ILoginState = {
   login: {
     success: null,
     loading: false,
@@ -24,16 +42,6 @@ const initialState = {
   },
   register: {
     success: null,
-    loading: false,
-    error: false,
-  },
-  token: {
-    success: null,
-    loading: false,
-    error: false,
-  },
-  user: {
-    info: null,
     loading: false,
     error: false,
   },
@@ -90,50 +98,52 @@ const authSlice = createSlice({
       state.logout = initialState.logout;
     },
   },
-  extraReducers: {
-    [login.pending]: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(login.pending, (state) => {
       state.login.loading = true;
       state.login.error = false;
-    },
-    [login.fulfilled]: (state, { payload }) => {
+    });
+    builder.addCase(login.fulfilled, (state, { payload }) => {
       state.login.loading = false;
       state.login.success = payload.success;
       state.login.error = !payload.success;
-    },
-    [login.rejected]: (state) => {
+    });
+    builder.addCase(login.rejected, (state) => {
       state.login.loading = false;
       state.login.success = initialState.login.success;
       state.login.error = true;
-    },
-    [logout.pending]: (state) => {
+    });
+
+    builder.addCase(logout.pending, (state) => {
       state.logout.success = initialState.logout.success;
       state.logout.loading = true;
       state.logout.error = false;
-    },
-    [logout.fulfilled]: (state, { payload }) => {
+    });
+    builder.addCase(logout.fulfilled, (state, { payload }) => {
       state.logout.loading = false;
       state.logout.success = payload.success;
       state.logout.error = !payload.success;
-    },
-    [logout.rejected]: (state) => {
+    });
+    builder.addCase(logout.rejected, (state) => {
       state.logout.loading = false;
       state.logout.success = initialState.logout.success;
       state.logout.error = true;
-    },
-    [register.pending]: (state) => {
+    });
+
+    builder.addCase(register.pending, (state) => {
       state.register.loading = true;
       state.register.error = false;
-    },
-    [register.fulfilled]: (state, { payload }) => {
+    });
+    builder.addCase(register.fulfilled, (state, { payload }) => {
       state.register.loading = false;
       state.register.success = payload.success;
       state.register.error = !payload.success;
-    },
-    [register.rejected]: (state) => {
+    });
+    builder.addCase(register.rejected, (state) => {
       state.register.loading = false;
       state.register.success = initialState.register.success;
       state.register.error = true;
-    },
+    });
   },
 });
 

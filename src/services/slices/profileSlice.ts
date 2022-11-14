@@ -6,7 +6,20 @@ import {
 } from "../burgerApi";
 import { logError } from "../logService";
 
-const initialState = {
+interface IProfileState {
+  getUserInfo: {
+    info: null | object, //TODO: type
+    loading: boolean,
+    error: boolean,
+  },
+  updateUserInfo: {
+    success: null | object, //TODO: type
+    loading: boolean,
+    error: boolean,
+  },
+};
+
+const initialState: IProfileState = {
   getUserInfo: {
     info: null,
     loading: false,
@@ -57,38 +70,39 @@ const profileSlice = createSlice({
       state.updateUserInfo = initialState.updateUserInfo;
     },
   },
-  extraReducers: {
-    [getUserInfo.pending]: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(getUserInfo.pending, (state) => {
       state.getUserInfo.loading = true;
       state.getUserInfo.error = false;
-    },
-    [getUserInfo.fulfilled]: (state, { payload }) => {
+    });
+    builder.addCase(getUserInfo.fulfilled, (state, { payload }) => {
       state.getUserInfo.loading = false;
       state.getUserInfo.info = payload.success
         ? payload.user
         : initialState.getUserInfo.info;
       state.getUserInfo.error = !payload.success;
-    },
-    [getUserInfo.rejected]: (state) => {
+    });
+    builder.addCase(getUserInfo.rejected, (state) => {
       state.getUserInfo.loading = false;
-      state.getUserInfo.success = initialState.getUserInfo.info;
+      state.getUserInfo.info = initialState.getUserInfo.info;
       state.getUserInfo.error = true;
-    },
-    [updateUserInfo.pending]: (state) => {
-      state.updateUserInfo.success = false;
+    });
+
+    builder.addCase(updateUserInfo.pending, (state) => {
+      state.updateUserInfo.success = initialState.updateUserInfo.success;
       state.updateUserInfo.loading = true;
       state.updateUserInfo.error = false;
-    },
-    [updateUserInfo.fulfilled]: (state, { payload }) => {
+    });
+    builder.addCase(updateUserInfo.fulfilled, (state, { payload }) => {
       state.updateUserInfo.loading = false;
       state.updateUserInfo.success = payload.success;
       state.updateUserInfo.error = !payload.success;
-    },
-    [updateUserInfo.rejected]: (state) => {
+    });
+    builder.addCase(updateUserInfo.rejected, (state) => {
       state.updateUserInfo.loading = false;
       state.updateUserInfo.success = initialState.updateUserInfo.success;
       state.updateUserInfo.error = true;
-    },
+    });
   },
 });
 

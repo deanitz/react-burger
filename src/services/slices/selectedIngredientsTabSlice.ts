@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+interface ISelectedIngredientsTabState {
+  value: string | null,
+};
+
+const initialState: ISelectedIngredientsTabState = {
   value: null,
 };
 
