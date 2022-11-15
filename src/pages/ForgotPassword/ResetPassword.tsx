@@ -4,7 +4,6 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
@@ -12,12 +11,14 @@ import {
   renew as renewPassword,
   resetState,
 } from "../../services/slices/resetPasswordSlice";
+import { InputChangeEventFunc, FormSubmitEventFunc } from "../../utils/dataShape";
 import { ROUTE_FORGOT_PASSWORD, ROUTE_LOGIN } from "../../utils/routes";
+import { useAppDispatch, useAppSelector } from "../../utils/store";
 
 const ResetPassword = () => {
   const { navigateIfLoggedIn } = useLoginProtection();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -26,7 +27,7 @@ const ResetPassword = () => {
     isRenewPasswordLoading,
     isRenewPasswordError,
     isResetPasswordSuccess,
-  } = useSelector(({ resetPassword }) => ({
+  } = useAppSelector(({ resetPassword }) => ({
     isRenewPasswordSuccess:
       resetPassword.renew.success &&
       !resetPassword.renew.loading &&
@@ -40,7 +41,7 @@ const ResetPassword = () => {
     newPassword: "",
     code: "",
   });
-  const onChange = (e) => {
+  const onChange = (e: InputChangeEventFunc) => {
     const name = e.target.name;
     const value = e.target.value;
     setState({
@@ -50,7 +51,7 @@ const ResetPassword = () => {
   };
 
   const handleRenewPassword = useCallback(
-    (e) => {
+    (e: FormSubmitEventFunc) => {
       e.preventDefault();
       dispatch(
         renewPassword({

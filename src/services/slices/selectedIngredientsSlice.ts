@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Ingredient } from "../../utils/dataShape";
 import { addUniqueId } from "../../utils/dataUtils";
 
@@ -16,26 +16,25 @@ const selectedIngredientsSlice = createSlice({
   name: "selectedIngredients",
   initialState,
   reducers: {
-    setBun: (state, action: { payload: Ingredient }) => {
+    setBun: (state, action: PayloadAction<Ingredient>) => {
       state.bun = action.payload;
     },
-    addSelectedIngredient: (state, action: { payload: Ingredient }) => {
+    addSelectedIngredient: (state, action: PayloadAction<Ingredient>) => {
       const uniqueItem = addUniqueId(action.payload);
       state.inner.unshift(uniqueItem);
     },
-    removeSelectedIngredient: (state, action: { payload: string }) => {
+    removeSelectedIngredient: (state, action: PayloadAction<string>) => {
       state.inner = state.inner.filter(
         (ingredient) => ingredient.uniqueId !== action.payload
       );
     },
+    // TODO type
     reorderSelectedIngredients: (
       state,
-      action: {
-        payload: {
-          draggedIngredient: Ingredient;
-          staticIngredient: Ingredient;
-        };
-      }
+      action: PayloadAction<{
+        draggedIngredient: Ingredient;
+        staticIngredient: Ingredient;
+      }>
     ) => {
       const { draggedIngredient, staticIngredient } = action.payload;
 

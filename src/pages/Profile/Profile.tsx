@@ -1,27 +1,25 @@
 import { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Outlet } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { logout, resetLogout } from "../../services/slices/authSlice";
 import { ROUTE_PROFILE, ROUTE_PROFILE_ORDERS } from "../../utils/routes";
+import { useAppDispatch, useAppSelector } from "../../utils/store";
 
 import styles from "./Profile.module.css";
 
 const Profile = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { isLogoutLoading } = useSelector(({ auth }) => ({
+  const { isLogoutLoading } = useAppSelector(({ auth }) => ({
     isLogoutLoading: auth.logout.loading,
   }));
 
-  const { infoText } = useSelector(({ profileText }) => ({
+  const { infoText } = useAppSelector(({ profileText }) => ({
     infoText: profileText.info,
   }));
 
   const handleLogout = useCallback(
-    (e) => {
-      e.preventDefault();
-
+    () => {
       if (isLogoutLoading) {
         return;
       }
@@ -70,12 +68,12 @@ const Profile = () => {
                 </NavLink>
               </li>
               <li className="pt-2 pb-2">
-                <NavLink
-                  className={`text text_type_main-medium ${styles.navLink}`}
+                <span
+                  className={`text text_type_main-medium ${styles.navLink} ${styles.logout}`}
                   onClick={handleLogout}
                 >
                   Выход
-                </NavLink>
+                </span>
               </li>
             </ul>
           </nav>

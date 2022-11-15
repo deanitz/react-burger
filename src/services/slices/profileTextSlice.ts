@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IProfileTextState {
   info: string;
@@ -12,7 +12,7 @@ const profileTextSlice = createSlice({
   name: "profileText",
   initialState,
   reducers: {
-    setInfoText: (state, action) => {
+    setInfoText: (state, action: PayloadAction<string>) => {
       state.info = action.payload;
     },
   },

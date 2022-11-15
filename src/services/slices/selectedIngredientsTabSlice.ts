@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ISelectedIngredientsTabState {
   value: string | null;
@@ -12,7 +12,7 @@ const selectedIngredientsTabSlice = createSlice({
   name: "selectedIngredientsTab",
   initialState,
   reducers: {
-    setSelectedTab: (state, action: { payload: string }) => {
+    setSelectedTab: (state, action: PayloadAction<string>) => {
       state.value = action.payload;
     },
   },

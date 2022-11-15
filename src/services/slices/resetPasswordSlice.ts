@@ -31,7 +31,7 @@ const initialState: IResetPasswordState = {
   },
 };
 
-export const reset = createAsyncThunk("resetPassword/reset", (email) => {
+export const reset = createAsyncThunk("resetPassword/reset", (email: string) => {
   return apiResetPassword({
     email,
   })

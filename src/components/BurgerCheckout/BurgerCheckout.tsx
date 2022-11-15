@@ -7,10 +7,7 @@ import styles from "./BurgerCheckout.module.css";
 
 export type BurgerCheckoutProps = {
   total: number;
-  onOrderClick:
-    | (() => void)
-    | ((e: React.SyntheticEvent<Element, Event>) => void)
-    | undefined;
+  onOrderClick: (e: React.SyntheticEvent<Element, Event>) => void;
   disabled: boolean;
 };
 

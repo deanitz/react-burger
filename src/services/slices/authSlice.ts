@@ -47,7 +47,11 @@ const initialState: ILoginState = {
   },
 };
 
-export const login = createAsyncThunk("auth/login", (params) => {
+//TODO: type
+export const login = createAsyncThunk("auth/login", (params: {
+  email: string,
+  password: string,
+}) => {
   return apiLogin(params)
     .then((response) => {
       storeTokens(response);
@@ -75,7 +79,11 @@ export const logout = createAsyncThunk("auth/logout", () => {
     });
 });
 
-export const register = createAsyncThunk("auth/register", (params) => {
+export const register = createAsyncThunk("auth/register", (params: {
+  email: string,
+  password: string,
+  name: string,
+}) => {
   return apiRegister(params)
     .then((response) => {
       storeTokens(response);

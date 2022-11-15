@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../services/slices/ingredientsSlice";
+import { useAppDispatch, useAppSelector } from "../utils/store";
 
 export const useIngredients = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { ingredientsDataError } = useSelector(({ ingredients }) => ({
+  const { ingredientsDataError } = useAppSelector(({ ingredients }) => ({
     ingredientsDataError: ingredients.ingredientsDataError,
   }));
 

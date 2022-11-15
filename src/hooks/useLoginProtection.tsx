@@ -4,11 +4,11 @@ import { useAuth } from "./useAuth";
 
 export function useLoginProtection() {
   const { user } = useAuth();
-  const { state: locationState } = useLocation();
+  const location = useLocation();
 
   const navigateIfLoggedIn = () =>
     user.isAuthenticated && (
-      <Navigate to={locationState?.returnPath || ROUTE_ROOT} replace={false} />
+      <Navigate to={location.state?.returnPath || ROUTE_ROOT} replace={false} />
     );
 
   return {

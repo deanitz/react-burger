@@ -8,7 +8,7 @@ import { logError } from "../logService";
 
 interface IProfileState {
   getUserInfo: {
-    info: null | object; //TODO: type
+    info: null | {name: string, email: string}; //TODO: type
     loading: boolean;
     error: boolean;
   };
@@ -44,9 +44,14 @@ export const getUserInfo = createAsyncThunk("profile/getUserInfo", () => {
     });
 });
 
+//TODO: type
 export const updateUserInfo = createAsyncThunk(
   "profile/updateUserInfo",
-  (params) => {
+  (params: {
+    name: string,
+    email: string,
+    password: string,
+  }) => {
     const accessToken = getAccessToken();
     return apiUpdateUserInfo(params, accessToken)
       .then((response) => {

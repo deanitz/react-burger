@@ -5,19 +5,20 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { register } from "../../services/slices/authSlice";
+import { FormSubmitEventFunc, InputChangeEventFunc } from "../../utils/dataShape";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "../../utils/routes";
+import { useAppDispatch, useAppSelector } from "../../utils/store";
 
 const Register = () => {
   const { navigateIfLoggedIn } = useLoginProtection();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isRegistrationSuccess, isRegistrationLoading, isRegistrationError } =
-    useSelector(({ auth }) => ({
+    useAppSelector(({ auth }) => ({
       isRegistrationSuccess: auth.register.success,
       isRegistrationLoading: auth.register.loading,
       isRegistrationError: auth.register.error,
@@ -28,7 +29,7 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const onChange = (e) => {
+  const onChange = (e: InputChangeEventFunc) => {
     const name = e.target.name;
     const value = e.target.value;
     setState({
@@ -38,17 +39,15 @@ const Register = () => {
   };
 
   const handleRegistration = useCallback(
-    (e) => {
+    (e: FormSubmitEventFunc) => {
       e.preventDefault();
       dispatch(
         register({
-          email: state.email,
-          password: state.password,
-          name: state.name,
+          ...state
         })
       );
     },
-    [dispatch, state.email, state.password, state.name]
+    [dispatch, state]
   );
 
   useEffect(() => {

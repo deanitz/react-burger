@@ -4,24 +4,25 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { login, resetLogin } from "../../services/slices/authSlice";
+import { InputChangeEventFunc, FormSubmitEventFunc } from "../../utils/dataShape";
 import {
   ROUTE_FORGOT_PASSWORD,
   ROUTE_REGISTER,
   ROUTE_ROOT,
 } from "../../utils/routes";
+import { useAppDispatch, useAppSelector } from "../../utils/store";
 
 const Login = () => {
   const { navigateIfLoggedIn } = useLoginProtection();
   const { state: locationState } = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { isLoginSuccess, isLoginLoading, isLoginError } = useSelector(
+  const { isLoginSuccess, isLoginLoading, isLoginError } = useAppSelector(
     ({ auth }) => ({
       isLoginSuccess: auth.login.success,
       isLoginLoading: auth.login.loading,
@@ -34,7 +35,7 @@ const Login = () => {
     password: "",
   });
 
-  const onChange = (e) => {
+  const onChange = (e: InputChangeEventFunc) => {
     const name = e.target.name;
     const value = e.target.value;
     setState({
@@ -44,7 +45,7 @@ const Login = () => {
   };
 
   const handleLogin = useCallback(
-    (e) => {
+    (e: FormSubmitEventFunc) => {
       e.preventDefault();
       dispatch(
         login({

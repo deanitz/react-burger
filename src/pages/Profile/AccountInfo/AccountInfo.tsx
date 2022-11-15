@@ -5,7 +5,6 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import {
   getUserInfo,
   resetGetUserInfo,
@@ -13,8 +12,16 @@ import {
   updateUserInfo,
 } from "../../../services/slices/profileSlice";
 import { setInfoText } from "../../../services/slices/profileTextSlice";
+import { useAppDispatch, useAppSelector } from "../../../utils/store";
+import { FormSubmitEventFunc, InputChangeEventFunc } from "../../../utils/dataShape";
 
-const defaultAccountInfoState = {
+const defaultAccountInfoState: {
+  name: string,
+  email: string,
+  password: string,
+  originalName: string,
+  originalEmail: string,
+} = {
   name: "",
   email: "",
   password: "",
@@ -23,14 +30,14 @@ const defaultAccountInfoState = {
 };
 
 const AccountInfo = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     isGetUserInfoSuccess,
     isGetUserInfoLoading,
     isGetUserInfoError,
     userInfo,
-  } = useSelector(({ profile }) => ({
+  } = useAppSelector(({ profile }) => ({
     isGetUserInfoSuccess:
       profile.getUserInfo.info &&
       !profile.getUserInfo.loading &&
@@ -44,11 +51,11 @@ const AccountInfo = () => {
     if (isGetUserInfoSuccess) {
       setIsDataSaved(false);
       setState({
-        name: userInfo.name,
-        email: userInfo.email,
+        name: userInfo?.name ?? "",
+        email: userInfo?.email ?? "",
         password: "",
-        originalName: userInfo.name,
-        originalEmail: userInfo.email,
+        originalName: userInfo?.name ?? "",
+        originalEmail: userInfo?.email ?? "",
       });
       return;
     }
@@ -67,7 +74,7 @@ const AccountInfo = () => {
   const [state, setState] = useState(defaultAccountInfoState);
   const [isDataSaved, setIsDataSaved] = useState(false);
 
-  const onChange = (e) => {
+  const onChange = (e: InputChangeEventFunc) => {
     const name = e.target.name;
     const value = e.target.value;
     setState({
@@ -77,14 +84,14 @@ const AccountInfo = () => {
   };
 
   const { isSaveUserInfoSuccess, isSaveUserInfoLoading, isSaveUserInfoError } =
-    useSelector(({ profile }) => ({
+    useAppSelector(({ profile }) => ({
       isSaveUserInfoSuccess: profile.updateUserInfo.success,
       isSaveUserInfoLoading: profile.updateUserInfo.loading,
       isSaveUserInfoError: profile.updateUserInfo.error,
     }));
 
   const handleSave = useCallback(
-    (e) => {
+    (e: FormSubmitEventFunc) => {
       e.preventDefault();
 
       setIsDataSaved(false);
@@ -111,7 +118,7 @@ const AccountInfo = () => {
   }, [dispatch, isSaveUserInfoSuccess]);
 
   const handleCancel = useCallback(
-    (e) => {
+    (e: React.SyntheticEvent<Element, Event>) => {
       e.preventDefault();
 
       dispatch(resetUpdateUserInfo());
@@ -156,7 +163,7 @@ const AccountInfo = () => {
           value={state.name}
           name={"name"}
           errorText={"Ошибка ввода имени"}
-          icon={isNameChanged ? "EditIcon" : ""}
+          icon={isNameChanged ? "EditIcon" : "HideIcon"}
         />
       </div>
       <div className="mt-6">
@@ -164,7 +171,7 @@ const AccountInfo = () => {
           onChange={onChange}
           value={state.email}
           name={"email"}
-          icon={isEmailChanged ? "EditIcon" : ""}
+          isIcon={isEmailChanged}
         />
       </div>
       <div className="mt-6">

@@ -3,7 +3,6 @@ import { useMemo, useEffect } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { ROUTE_NOT_FOUND } from "../../utils/routes";
-import { Ingredient } from "../../utils/dataShape";
 import styles from "./IngredientDetails.module.css";
 import { useAppSelector } from "../../utils/store";
 

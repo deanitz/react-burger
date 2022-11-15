@@ -3,21 +3,22 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { reset as resetPassword } from "../../services/slices/resetPasswordSlice";
+import { InputChangeEventFunc, FormSubmitEventFunc } from "../../utils/dataShape";
 import { ROUTE_LOGIN, ROUTE_RESET_PASSWORD } from "../../utils/routes";
+import { useAppDispatch, useAppSelector } from "../../utils/store";
 
 const ForgotPassword = () => {
   const { navigateIfLoggedIn } = useLoginProtection();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     isResetPasswordSuccess,
     isResetPasswordLoading,
     isResetPasswordError,
-  } = useSelector(({ resetPassword }) => ({
+  } = useAppSelector(({ resetPassword }) => ({
     isResetPasswordSuccess:
       resetPassword.reset.success &&
       !resetPassword.reset.loading &&
@@ -31,7 +32,7 @@ const ForgotPassword = () => {
   const [state, setState] = useState({
     email: "",
   });
-  const onChange = (e) => {
+  const onChange = (e: InputChangeEventFunc) => {
     const name = e.target.name;
     const value = e.target.value;
     setState({
@@ -40,7 +41,7 @@ const ForgotPassword = () => {
     });
   };
 
-  const handleResetPassword = useCallback(
+  const handleResetPassword = useCallback<(e: FormSubmitEventFunc) => void>(
     (e) => {
       e.preventDefault();
       dispatch(resetPassword(state.email));
