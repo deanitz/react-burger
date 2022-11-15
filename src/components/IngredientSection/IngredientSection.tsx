@@ -12,7 +12,7 @@ export type IngredientSectionProps = {
 const IngredientSection = forwardRef(
   (
     { name, data }: IngredientSectionProps,
-    ref: React.LegacyRef<HTMLHeadingElement>
+    ref: React.Ref<HTMLHeadingElement>
   ) => {
     const selectedIngredients = useAppSelector(
       ({ selectedIngredients }) => selectedIngredients

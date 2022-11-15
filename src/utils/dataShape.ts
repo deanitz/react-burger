@@ -34,3 +34,7 @@ type IngredientShape = {
 };
 
 export type Ingredient = Readonly<IngredientShape> & { uniqueId: string };
+
+export interface IDropItem<TItem> {
+  item: TItem;
+}

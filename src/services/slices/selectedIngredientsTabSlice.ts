@@ -12,7 +12,7 @@ const selectedIngredientsTabSlice = createSlice({
   name: "selectedIngredientsTab",
   initialState,
   reducers: {
-    setSelectedTab: (state, action) => {
+    setSelectedTab: (state, action: { payload: string }) => {
       state.value = action.payload;
     },
   },

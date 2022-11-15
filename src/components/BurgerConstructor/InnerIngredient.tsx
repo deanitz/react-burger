@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import dataShape from "../../utils/dataShape";
+import dataShape, { Ingredient } from "../../utils/dataShape";
 import { useDrag, useDrop } from "react-dnd";
 import {
   ConstructorElement,
@@ -9,7 +9,17 @@ import { TYPE_CONSTRUCTOR_INNER_INGREDIENT } from "../../utils/dataUtils";
 
 import styles from "./InnerIngredient.module.css";
 
-const InnerIngredient = ({ data, handleRemove, handleReorder }) => {
+export type InnerIngredientProps = {
+  data: Ingredient;
+  handleRemove: (data: Ingredient) => void;
+  handleReorder: (draggedData: Ingredient, data: Ingredient) => void;
+};
+
+const InnerIngredient = ({
+  data,
+  handleRemove,
+  handleReorder,
+}: InnerIngredientProps) => {
   const [{ isDrag }, dragRef] = useDrag({
     type: TYPE_CONSTRUCTOR_INNER_INGREDIENT,
     item: { draggedData: data },
@@ -20,7 +30,7 @@ const InnerIngredient = ({ data, handleRemove, handleReorder }) => {
 
   const [, dropRef] = useDrop(() => ({
     accept: TYPE_CONSTRUCTOR_INNER_INGREDIENT,
-    hover({ draggedData }) {
+    hover({ draggedData }: { draggedData: Ingredient }) {
       handleReorder(draggedData, data);
     },
   }));

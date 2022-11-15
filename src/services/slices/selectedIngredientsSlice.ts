@@ -16,24 +16,28 @@ const selectedIngredientsSlice = createSlice({
   name: "selectedIngredients",
   initialState,
   reducers: {
-    setBun: (state, action) => {
+    setBun: (state, action: { payload: Ingredient }) => {
       state.bun = action.payload;
     },
-    addSelectedIngredient: (state, action) => {
+    addSelectedIngredient: (state, action: { payload: Ingredient }) => {
       const uniqueItem = addUniqueId(action.payload);
       state.inner.unshift(uniqueItem);
     },
-    removeSelectedIngredient: (state, action) => {
+    removeSelectedIngredient: (state, action: { payload: string }) => {
       state.inner = state.inner.filter(
         (ingredient) => ingredient.uniqueId !== action.payload
       );
     },
-    reorderSelectedIngredients: (state, action) => {
-      const {
-        draggedIngredient,
-        staticIngredient,
-      }: { draggedIngredient: Ingredient; staticIngredient: Ingredient } =
-        action.payload;
+    reorderSelectedIngredients: (
+      state,
+      action: {
+        payload: {
+          draggedIngredient: Ingredient;
+          staticIngredient: Ingredient;
+        };
+      }
+    ) => {
+      const { draggedIngredient, staticIngredient } = action.payload;
 
       const isDraggingDown =
         state.inner.findIndex(

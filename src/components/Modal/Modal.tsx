@@ -9,7 +9,7 @@ const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
 export type ModalProps = {
   children: ReactNode;
-  header: ReactNode;
+  header?: ReactNode;
   onClose: () => void;
 };
 

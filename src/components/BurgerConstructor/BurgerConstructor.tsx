@@ -5,7 +5,6 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
 import { getBurgerTotalPrice } from "./BurgerConstructor.utils";
-import { useDispatch, useSelector } from "react-redux";
 import { getOrderInfo, resetOrderInfo } from "../../services/slices/orderSlice";
 import {
   addSelectedIngredient,
@@ -19,17 +18,18 @@ import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
 import { ROUTE_LOGIN } from "../../utils/routes";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useAppDispatch, useAppSelector } from "../../utils/store";
+import { IDropItem, Ingredient } from "../../utils/dataShape";
 import styles from "./BurgerConstructor.module.css";
 
 const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { user } = useAuth();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const { orderNumber, isOrderLoaded, isOrderLoading, isOrderLoadingError } =
-    useSelector(({ order }) => ({
+    useAppSelector(({ order }) => ({
       orderNumber: order.orderInfo?.number,
       isOrderLoaded:
         order.orderInfo && !order.orderInfoLoading && !order.orderInfoError,
@@ -37,7 +37,7 @@ const BurgerConstructor = () => {
       isOrderLoading: order.orderInfoLoading,
     }));
 
-  const selectedIngredients = useSelector(
+  const selectedIngredients = useAppSelector(
     ({ selectedIngredients }) => selectedIngredients
   );
 
@@ -69,14 +69,14 @@ const BurgerConstructor = () => {
   }, [selectedIngredients]);
 
   const handleIngredientRemove = useCallback(
-    (innerIngredient) => {
+    (innerIngredient: Ingredient) => {
       dispatch(removeSelectedIngredient(innerIngredient.uniqueId));
     },
     [dispatch]
   );
 
   const handleIngredientReorder = useCallback(
-    (draggedIngredient, staticIngredient) => {
+    (draggedIngredient: Ingredient, staticIngredient: Ingredient) => {
       if (draggedIngredient === staticIngredient) {
         return;
       }
@@ -105,7 +105,7 @@ const BurgerConstructor = () => {
 
     const order = {
       ingredients: [
-        bun._id,
+        bun?._id,
         ...innerIngredients.map((ingredient) => ingredient._id),
       ],
     };
@@ -130,14 +130,14 @@ const BurgerConstructor = () => {
 
   const [, dropIngredientTarget] = useDrop({
     accept: bun ? [TYPE_BUN, TYPE_SAUCE, TYPE_MAIN] : TYPE_BUN,
-    drop(item) {
+    drop(item: IDropItem<Ingredient>) {
       handleDrop(item);
     },
   });
 
   const handleDrop = useCallback(
-    (item) => {
-      const dropped = item.item;
+    (item: IDropItem<Ingredient>) => {
+      const dropped = item.item as Ingredient;
       if (dropped.type === TYPE_BUN) {
         dispatch(setBun(dropped));
       } else {

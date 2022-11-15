@@ -3,7 +3,7 @@ import { placeOrder } from "../burgerApi";
 import { logError } from "../logService";
 
 interface IOrderState {
-  orderInfo: null | object; //TODO type
+  orderInfo: null | any; //TODO type
   orderInfoLoading: boolean;
   orderInfoError: boolean;
 }
@@ -14,16 +14,20 @@ const initialState: IOrderState = {
   orderInfoError: false,
 };
 
-export const getOrderInfo = createAsyncThunk("order/getOrderInfo", (order) => {
-  return placeOrder(order)
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      logError(error);
-      throw error;
-    });
-});
+export const getOrderInfo = createAsyncThunk<any, any>(
+  "order/getOrderInfo",
+  (order) => {
+    // TODO: type
+    return placeOrder(order)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        logError(error);
+        throw error;
+      });
+  }
+);
 
 const orderSlice = createSlice({
   name: "order",

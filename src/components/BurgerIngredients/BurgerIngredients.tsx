@@ -1,5 +1,4 @@
 import { useRef, useEffect, useMemo, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import IngredientSection from "../IngredientSection/IngredientSection";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
@@ -13,21 +12,21 @@ import {
 import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
 import { setSelectedTab } from "../../services/slices/selectedIngredientsTabSlice";
 import { getIntersectionObserverSettings } from "../../utils/intersectionObserverUtils";
-
+import { useAppDispatch, useAppSelector } from "../../utils/store";
 import styles from "./BurgerIngredients.module.css";
 
 const BurgerIngredients = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { ingredientsData, selectedTab } = useSelector((store) => ({
+  const { ingredientsData, selectedTab } = useAppSelector((store) => ({
     ingredientsData: store.ingredients.ingredientsData,
     selectedTab: store.selectedIngredientsTab.value,
   }));
 
-  const viewportRef = useRef(null);
-  const bunsRef = useRef(null);
-  const saucesRef = useRef(null);
-  const mainsRef = useRef(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const bunsRef = useRef<HTMLHeadingElement>(null);
+  const saucesRef = useRef<HTMLHeadingElement>(null);
+  const mainsRef = useRef<HTMLHeadingElement>(null);
 
   const sections = useMemo(
     () => [
@@ -58,7 +57,7 @@ const BurgerIngredients = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const intersectionCallback = (entries) => {
+    const intersectionCallback = (entries: IntersectionObserverEntry[]) => {
       const intersectingEntry = entries.find((entry) => entry.isIntersecting);
 
       if (!intersectingEntry) {
@@ -68,26 +67,26 @@ const BurgerIngredients = () => {
       const intersectedSection = sections.find(
         (section) => section.ref.current === intersectingEntry.target
       );
-      dispatch(setSelectedTab(intersectedSection.tabName));
+      dispatch(setSelectedTab(intersectedSection?.tabName ?? TAB_BUNS));
     };
     const observer = new IntersectionObserver(
       intersectionCallback,
-      getIntersectionObserverSettings(viewportRef.current)
+      getIntersectionObserverSettings(viewportRef.current!)
     );
     const currentRefs = sections.map((section) => section.ref.current);
-    currentRefs.map((curRef) => observer.observe(curRef));
+    currentRefs.map((curRef) => observer.observe(curRef!));
 
     return () => {
-      currentRefs.map((curRef) => observer.unobserve(curRef));
+      currentRefs.map((curRef) => observer.unobserve(curRef!));
     };
   }, [sections, dispatch]);
 
   const handleTabClick = useCallback(
-    (tabName) => {
+    (tabName: string) => {
       dispatch(setSelectedTab(tabName));
-      const refToScroll = sections.find(
+      const refToScroll: HTMLHeadingElement = sections.find(
         (section) => section.tabName === tabName
-      ).ref?.current;
+      )?.ref?.current!;
       refToScroll?.scrollIntoView({ behavior: "smooth" });
     },
     [dispatch, sections]
