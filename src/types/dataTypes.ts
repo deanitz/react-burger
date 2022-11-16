@@ -42,7 +42,7 @@ export type RenewPasswordRequest = Readonly<{
 
 export type UpdateUserInfoRequest = RegistrationRequest;
 
-export type GetUserInfoResponseData = { 
+export type GetUserInfoResponseData = {
   name: string;
-  email: string
+  email: string;
 };

@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetUserInfoResponseData, UpdateUserInfoRequest } from "../../types/dataTypes";
+import {
+  GetUserInfoResponseData,
+  UpdateUserInfoRequest,
+} from "../../types/dataTypes";
 import { Nullable } from "../../types/utilityTypes";
 import { getAccessToken } from "../../utils/localStorageUtils";
 import {
