@@ -9,10 +9,11 @@ import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { register } from "../../services/slices/authSlice";
+import { RegistrationRequest } from "../../types/dataTypes";
 import {
   FormSubmitEventFunc,
   InputChangeEventFunc,
-} from "../../utils/dataShape";
+} from "../../types/utilityTypes";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 
@@ -27,12 +28,7 @@ const Register = () => {
       isRegistrationError: auth.register.error,
     }));
 
-  //todo type
-  const [state, setState] = useState<{
-    name: string;
-    email: string;
-    password: string;
-  }>({
+  const [state, setState] = useState<RegistrationRequest>({
     name: "",
     email: "",
     password: "",

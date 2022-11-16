@@ -1,7 +1,8 @@
-import { Ingredient } from "../../utils/dataShape";
+import { Ingredient } from "../../types/dataTypes";
+import { Nullable } from "../../types/utilityTypes";
 
 export const getBurgerTotalPrice = (
-  bun: Ingredient | null,
+  bun: Nullable<Ingredient>,
   innerIngredients: Ingredient[]
 ) => {
   return (

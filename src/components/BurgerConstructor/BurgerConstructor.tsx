@@ -19,8 +19,9 @@ import { ROUTE_LOGIN } from "../../utils/routes";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
-import { IDropItem, Ingredient } from "../../utils/dataShape";
+import { Ingredient, OrderRequest } from "../../types/dataTypes";
 import styles from "./BurgerConstructor.module.css";
+import { IDropItem } from "../../types/utilityTypes";
 
 const BurgerConstructor = () => {
   const dispatch = useAppDispatch();
@@ -103,10 +104,7 @@ const BurgerConstructor = () => {
       return;
     }
 
-    //TODO type
-    const order: {
-      ingredients: string[];
-    } = {
+    const order: OrderRequest = {
       ingredients: [
         bun?._id!,
         ...innerIngredients.map((ingredient) => ingredient._id),

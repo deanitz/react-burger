@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "../../../utils/store";
 import {
   FormSubmitEventFunc,
   InputChangeEventFunc,
-} from "../../../utils/dataShape";
+} from "../../../types/utilityTypes";
 
 const defaultAccountInfoState: {
   name: string;

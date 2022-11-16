@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { Ingredient } from "./dataShape";
+import { Ingredient } from "../types/dataTypes";
 
 // TODO mb enum
 export const TYPE_BUN = "bun";

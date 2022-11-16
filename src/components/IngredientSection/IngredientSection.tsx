@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Ingredient } from "../../utils/dataShape";
+import { Ingredient } from "../../types/dataTypes";
 import IngredientItem from "../IngredientItem/IngredientItem";
 import { useAppSelector } from "../../utils/store";
 import styles from "./IngredientSection.module.css";

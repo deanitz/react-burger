@@ -10,7 +10,7 @@ import { reset as resetPassword } from "../../services/slices/resetPasswordSlice
 import {
   InputChangeEventFunc,
   FormSubmitEventFunc,
-} from "../../utils/dataShape";
+} from "../../types/utilityTypes";
 import { ROUTE_LOGIN, ROUTE_RESET_PASSWORD } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 

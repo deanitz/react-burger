@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Nullable } from "../../types/utilityTypes";
 
 interface ISelectedIngredientsTabState {
-  value: string | null;
+  value: Nullable<string>;
 }
 
 const initialState: ISelectedIngredientsTabState = {

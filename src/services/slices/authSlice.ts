@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { LoginRequest, RegistrationRequest } from "../../types/dataTypes";
+import { Nullable } from "../../types/utilityTypes";
 import {
   getRefreshToken,
   removeTokens,
@@ -13,17 +15,17 @@ import { logError } from "../logService";
 
 interface ILoginState {
   login: {
-    success: boolean | null;
+    success: Nullable<boolean>;
     loading: boolean;
     error: boolean;
   };
   logout: {
-    success: boolean | null;
+    success: Nullable<boolean>;
     loading: boolean;
     error: boolean;
   };
   register: {
-    success: boolean | null;
+    success: Nullable<boolean>;
     loading: boolean;
     error: boolean;
   };
@@ -47,21 +49,17 @@ const initialState: ILoginState = {
   },
 };
 
-//TODO: type
-export const login = createAsyncThunk(
-  "auth/login",
-  (params: { email: string; password: string }) => {
-    return apiLogin(params)
-      .then((response) => {
-        storeTokens(response);
-        return response;
-      })
-      .catch((error) => {
-        logError(error);
-        throw error;
-      });
-  }
-);
+export const login = createAsyncThunk("auth/login", (params: LoginRequest) => {
+  return apiLogin(params)
+    .then((response) => {
+      storeTokens(response);
+      return response;
+    })
+    .catch((error) => {
+      logError(error);
+      throw error;
+    });
+});
 
 export const logout = createAsyncThunk("auth/logout", () => {
   const params = {
@@ -79,10 +77,9 @@ export const logout = createAsyncThunk("auth/logout", () => {
     });
 });
 
-//todo type
 export const register = createAsyncThunk(
   "auth/register",
-  (params: { email: string; password: string; name: string }) => {
+  (params: RegistrationRequest) => {
     return apiRegister(params)
       .then((response) => {
         storeTokens(response);

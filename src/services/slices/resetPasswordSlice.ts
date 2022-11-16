@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { RenewPasswordRequest } from "../../types/dataTypes";
+import { Nullable } from "../../types/utilityTypes";
 import {
   resetPassword as apiResetPassword,
   renewPassword as apiRenewPassword,
@@ -7,12 +9,12 @@ import { logError } from "../logService";
 
 interface IResetPasswordState {
   reset: {
-    success: boolean | null;
+    success: Nullable<boolean>;
     loading: boolean;
     error: boolean;
   };
   renew: {
-    success: boolean | null;
+    success: Nullable<boolean>;
     loading: boolean;
     error: boolean;
   };
@@ -45,10 +47,9 @@ export const reset = createAsyncThunk(
   }
 );
 
-//TODO type
 export const renew = createAsyncThunk(
   "resetPassword/renew",
-  (params: { password: string; token: string }) => {
+  (params: RenewPasswordRequest) => {
     return apiRenewPassword({
       ...params,
     })

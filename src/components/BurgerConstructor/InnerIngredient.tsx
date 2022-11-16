@@ -1,4 +1,4 @@
-import { Ingredient } from "../../utils/dataShape";
+import { Ingredient } from "../../types/dataTypes";
 import { useDrag, useDrop } from "react-dnd";
 import {
   ConstructorElement,

@@ -14,7 +14,7 @@ import {
 import {
   InputChangeEventFunc,
   FormSubmitEventFunc,
-} from "../../utils/dataShape";
+} from "../../types/utilityTypes";
 import { ROUTE_FORGOT_PASSWORD, ROUTE_LOGIN } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 

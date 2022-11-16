@@ -2,7 +2,7 @@ import doneImage from "../../images/done.png";
 
 import styles from "./OrderDetails.module.css";
 
-export type OrderDetailsProps = { orderNumber: number };
+export type OrderDetailsProps = { orderNumber?: string | number };
 
 const OrderDetails = ({ orderNumber }: OrderDetailsProps) => {
   return (

@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { GetUserInfoResponseData, UpdateUserInfoRequest } from "../../types/dataTypes";
+import { Nullable } from "../../types/utilityTypes";
 import { getAccessToken } from "../../utils/localStorageUtils";
 import {
   getUserInfo as apiGetUserInfo,
@@ -8,12 +10,12 @@ import { logError } from "../logService";
 
 interface IProfileState {
   getUserInfo: {
-    info: null | { name: string; email: string }; //TODO: type
+    info: Nullable<GetUserInfoResponseData>;
     loading: boolean;
     error: boolean;
   };
   updateUserInfo: {
-    success: null | object; //TODO: type
+    success: Nullable<boolean>;
     loading: boolean;
     error: boolean;
   };
@@ -44,10 +46,9 @@ export const getUserInfo = createAsyncThunk("profile/getUserInfo", () => {
     });
 });
 
-//TODO: type
 export const updateUserInfo = createAsyncThunk(
   "profile/updateUserInfo",
-  (params: { name: string; email: string; password: string }) => {
+  (params: UpdateUserInfoRequest) => {
     const accessToken = getAccessToken();
     return apiUpdateUserInfo(params, accessToken)
       .then((response) => {

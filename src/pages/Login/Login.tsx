@@ -8,10 +8,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { login, resetLogin } from "../../services/slices/authSlice";
+import { LoginRequest } from "../../types/dataTypes";
 import {
   InputChangeEventFunc,
   FormSubmitEventFunc,
-} from "../../utils/dataShape";
+} from "../../types/utilityTypes";
 import {
   ROUTE_FORGOT_PASSWORD,
   ROUTE_REGISTER,
@@ -33,11 +34,7 @@ const Login = () => {
     })
   );
 
-  //todo type
-  const [state, setState] = useState<{
-    email: string;
-    password: string;
-  }>({
+  const [state, setState] = useState<LoginRequest>({
     email: "",
     password: "",
   });

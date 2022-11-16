@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Ingredient } from "../../utils/dataShape";
+import { Ingredient } from "../../types/dataTypes";
+import { Nullable } from "../../types/utilityTypes";
 import { addUniqueId } from "../../utils/dataUtils";
 
 interface ISelectedIngredientsState {
-  bun: Ingredient | null;
+  bun: Nullable<Ingredient>;
   inner: Ingredient[];
 }
 

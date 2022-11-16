@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Ingredient } from "../../utils/dataShape";
+import { Ingredient } from "../../types/dataTypes";
 import { getIngredients } from "../burgerApi";
 import { logError } from "../logService";
 
