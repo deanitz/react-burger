@@ -31,22 +31,24 @@ const initialState: IResetPasswordState = {
   },
 };
 
-export const reset = createAsyncThunk("resetPassword/reset", (email: string) => {
-  return apiResetPassword({
-    email,
-  })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      logError(error);
-      throw error;
-    });
-});
+export const reset = createAsyncThunk(
+  "resetPassword/reset",
+  (email: string) => {
+    return apiResetPassword(email)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        logError(error);
+        throw error;
+      });
+  }
+);
 
+//TODO type
 export const renew = createAsyncThunk(
   "resetPassword/renew",
-  (params: object) => {
+  (params: { password: string; token: string }) => {
     return apiRenewPassword({
       ...params,
     })

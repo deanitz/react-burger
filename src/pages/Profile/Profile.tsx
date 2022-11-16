@@ -18,16 +18,13 @@ const Profile = () => {
     infoText: profileText.info,
   }));
 
-  const handleLogout = useCallback(
-    () => {
-      if (isLogoutLoading) {
-        return;
-      }
+  const handleLogout = useCallback(() => {
+    if (isLogoutLoading) {
+      return;
+    }
 
-      dispatch(logout());
-    },
-    [dispatch, isLogoutLoading]
-  );
+    dispatch(logout());
+  }, [dispatch, isLogoutLoading]);
 
   useEffect(() => {
     return () => {

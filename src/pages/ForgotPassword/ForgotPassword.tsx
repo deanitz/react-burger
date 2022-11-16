@@ -7,7 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { reset as resetPassword } from "../../services/slices/resetPasswordSlice";
-import { InputChangeEventFunc, FormSubmitEventFunc } from "../../utils/dataShape";
+import {
+  InputChangeEventFunc,
+  FormSubmitEventFunc,
+} from "../../utils/dataShape";
 import { ROUTE_LOGIN, ROUTE_RESET_PASSWORD } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 

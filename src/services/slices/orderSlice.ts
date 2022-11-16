@@ -14,20 +14,20 @@ const initialState: IOrderState = {
   orderInfoError: false,
 };
 
-export const getOrderInfo = createAsyncThunk<any, any>(
-  "order/getOrderInfo",
-  (order) => {
-    // TODO: type
-    return placeOrder(order)
-      .then((response) => {
-        return response;
-      })
-      .catch((error) => {
-        logError(error);
-        throw error;
-      });
-  }
-);
+//TODO: type
+export const getOrderInfo = createAsyncThunk("order/getOrderInfo", (order: {
+  ingredients: string[];
+}) => {
+  // TODO: type
+  return placeOrder(order)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      logError(error);
+      throw error;
+    });
+});
 
 const orderSlice = createSlice({
   name: "order",

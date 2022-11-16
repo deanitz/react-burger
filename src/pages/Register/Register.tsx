@@ -9,7 +9,10 @@ import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { register } from "../../services/slices/authSlice";
-import { FormSubmitEventFunc, InputChangeEventFunc } from "../../utils/dataShape";
+import {
+  FormSubmitEventFunc,
+  InputChangeEventFunc,
+} from "../../utils/dataShape";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 
@@ -24,7 +27,12 @@ const Register = () => {
       isRegistrationError: auth.register.error,
     }));
 
-  const [state, setState] = useState({
+  //todo type
+  const [state, setState] = useState<{
+    name: string;
+    email: string;
+    password: string;
+  }>({
     name: "",
     email: "",
     password: "",
@@ -43,7 +51,7 @@ const Register = () => {
       e.preventDefault();
       dispatch(
         register({
-          ...state
+          ...state,
         })
       );
     },

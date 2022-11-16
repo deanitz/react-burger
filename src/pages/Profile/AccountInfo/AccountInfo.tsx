@@ -13,14 +13,17 @@ import {
 } from "../../../services/slices/profileSlice";
 import { setInfoText } from "../../../services/slices/profileTextSlice";
 import { useAppDispatch, useAppSelector } from "../../../utils/store";
-import { FormSubmitEventFunc, InputChangeEventFunc } from "../../../utils/dataShape";
+import {
+  FormSubmitEventFunc,
+  InputChangeEventFunc,
+} from "../../../utils/dataShape";
 
 const defaultAccountInfoState: {
-  name: string,
-  email: string,
-  password: string,
-  originalName: string,
-  originalEmail: string,
+  name: string;
+  email: string;
+  password: string;
+  originalName: string;
+  originalEmail: string;
 } = {
   name: "",
   email: "",

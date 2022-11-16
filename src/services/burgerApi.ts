@@ -2,23 +2,32 @@ import { getRefreshToken, storeTokens } from "../utils/localStorageUtils";
 
 const API_URL = "https://norma.nomoreparties.space/api";
 
-const checkResponse = (response) => {
+//TODO generic
+const checkResponse = (response: Response) => {
   return response.ok
     ? response.json()
     : response.json().then((error) => Promise.reject(error));
 };
 
-export const fetchWithRefresh = async (url, options) => {
+//TODO separate file
+interface ILimitedRequestInit extends Omit<RequestInit, "headers"> {
+  headers?: Record<string, string>;
+}
+
+export const fetchWithRefresh = async (
+  url: string,
+  options: ILimitedRequestInit
+) => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === "jwt expired") {
       const { refreshToken, accessToken } = await refreshTokenRequest();
 
       storeTokens({ refreshToken, accessToken });
 
-      options.headers["Authorization"] = accessToken;
+      options.headers!["Authorization"] = accessToken;
 
       const res = await fetch(url, options);
 
@@ -46,7 +55,8 @@ export const getIngredients = () => {
   return fetch(`${API_URL}/ingredients`).then(checkResponse);
 };
 
-export const placeOrder = (order) => {
+//TODO: type
+export const placeOrder = (order: { ingredients: string[] }) => {
   return fetch(`${API_URL}/orders`, {
     method: "POST",
     headers: {
@@ -56,17 +66,20 @@ export const placeOrder = (order) => {
   }).then(checkResponse);
 };
 
-export const resetPassword = (email) => {
+export const resetPassword = (email: string) => {
   return fetch(`${API_URL}/password-reset`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(email),
+    body: JSON.stringify({
+      email,
+    }),
   }).then(checkResponse);
 };
 
-export const renewPassword = (params) => {
+//TODO type
+export const renewPassword = (params: { password: string; token: string }) => {
   return fetch(`${API_URL}/password-reset/reset`, {
     method: "POST",
     headers: {
@@ -76,7 +89,12 @@ export const renewPassword = (params) => {
   }).then(checkResponse);
 };
 
-export const register = (params) => {
+//TODO type
+export const register = (params: {
+  name: string;
+  email: string;
+  password: string;
+}) => {
   return fetch(`${API_URL}/auth/register`, {
     method: "POST",
     headers: {
@@ -86,7 +104,8 @@ export const register = (params) => {
   }).then(checkResponse);
 };
 
-export const login = (params) => {
+//TODO type
+export const login = (params: { email: string; password: string }) => {
   return fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: {
@@ -96,7 +115,8 @@ export const login = (params) => {
   }).then(checkResponse);
 };
 
-export const logout = (params) => {
+//TODO: type
+export const logout = (params: { token: string | null }) => {
   return fetch(`${API_URL}/auth/logout`, {
     method: "POST",
     headers: {
@@ -106,7 +126,7 @@ export const logout = (params) => {
   }).then(checkResponse);
 };
 
-export const getUserInfo = (accessToken) => {
+export const getUserInfo = (accessToken: string | null) => {
   return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "GET",
     headers: {
@@ -115,7 +135,15 @@ export const getUserInfo = (accessToken) => {
   });
 };
 
-export const updateUserInfo = (params, accessToken) => {
+//TODO type
+export const updateUserInfo = (
+  params: {
+    name: string;
+    email: string;
+    password: string;
+  },
+  accessToken: string | null
+) => {
   return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "PATCH",
     headers: {

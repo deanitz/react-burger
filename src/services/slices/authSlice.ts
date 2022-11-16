@@ -48,20 +48,20 @@ const initialState: ILoginState = {
 };
 
 //TODO: type
-export const login = createAsyncThunk("auth/login", (params: {
-  email: string,
-  password: string,
-}) => {
-  return apiLogin(params)
-    .then((response) => {
-      storeTokens(response);
-      return response;
-    })
-    .catch((error) => {
-      logError(error);
-      throw error;
-    });
-});
+export const login = createAsyncThunk(
+  "auth/login",
+  (params: { email: string; password: string }) => {
+    return apiLogin(params)
+      .then((response) => {
+        storeTokens(response);
+        return response;
+      })
+      .catch((error) => {
+        logError(error);
+        throw error;
+      });
+  }
+);
 
 export const logout = createAsyncThunk("auth/logout", () => {
   const params = {
@@ -79,21 +79,21 @@ export const logout = createAsyncThunk("auth/logout", () => {
     });
 });
 
-export const register = createAsyncThunk("auth/register", (params: {
-  email: string,
-  password: string,
-  name: string,
-}) => {
-  return apiRegister(params)
-    .then((response) => {
-      storeTokens(response);
-      return response;
-    })
-    .catch((error) => {
-      logError(error);
-      throw error;
-    });
-});
+//todo type
+export const register = createAsyncThunk(
+  "auth/register",
+  (params: { email: string; password: string; name: string }) => {
+    return apiRegister(params)
+      .then((response) => {
+        storeTokens(response);
+        return response;
+      })
+      .catch((error) => {
+        logError(error);
+        throw error;
+      });
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",

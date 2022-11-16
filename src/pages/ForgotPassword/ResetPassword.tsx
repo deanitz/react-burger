@@ -11,7 +11,10 @@ import {
   renew as renewPassword,
   resetState,
 } from "../../services/slices/resetPasswordSlice";
-import { InputChangeEventFunc, FormSubmitEventFunc } from "../../utils/dataShape";
+import {
+  InputChangeEventFunc,
+  FormSubmitEventFunc,
+} from "../../utils/dataShape";
 import { ROUTE_FORGOT_PASSWORD, ROUTE_LOGIN } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 

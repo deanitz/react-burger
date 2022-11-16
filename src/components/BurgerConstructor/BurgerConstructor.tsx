@@ -103,9 +103,12 @@ const BurgerConstructor = () => {
       return;
     }
 
-    const order = {
+    //TODO type
+    const order: {
+      ingredients: string[];
+    } = {
       ingredients: [
-        bun?._id,
+        bun?._id!,
         ...innerIngredients.map((ingredient) => ingredient._id),
       ],
     };
