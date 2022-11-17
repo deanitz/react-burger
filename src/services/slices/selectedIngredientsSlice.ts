@@ -29,7 +29,6 @@ const selectedIngredientsSlice = createSlice({
         (ingredient) => ingredient.uniqueId !== action.payload
       );
     },
-    // TODO type
     reorderSelectedIngredients: (
       state,
       action: PayloadAction<{

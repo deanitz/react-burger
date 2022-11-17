@@ -1,48 +1,63 @@
 import {
+  GetIngredientsResponse,
+  GetUserInfoResponseData,
   LoginRequest,
   OrderRequest,
+  OrderResponseData,
+  RefreshTokenResponseData,
   RegistrationRequest,
   RenewPasswordRequest,
   UpdateUserInfoRequest,
 } from "../types/dataTypes";
-import { ILimitedRequestInit, Nullable } from "../types/utilityTypes";
+import {
+  ILimitedRequestInit,
+  IResponseWithSuccess,
+  Nullable,
+} from "../types/utilityTypes";
 import { getRefreshToken, storeTokens } from "../utils/localStorageUtils";
 
 const API_URL = "https://norma.nomoreparties.space/api";
 
-//TODO generic
-const checkResponse = (response: Response) => {
-  return response.ok
-    ? response.json().then((data) => data)
-    : response.json().then((error) => Promise.reject(error));
+const checkResponse = async <T>(response: Response): Promise<T> => {
+  if (!response.ok) {
+    const error = await response.json();
+    throw error;
+  }
+  return await response.json();
 };
 
-
-export const fetchWithRefresh = async (
+export const fetchWithRefresh = async <T>(
   url: string,
   options: ILimitedRequestInit
-) => {
+): Promise<T> => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
   } catch (err: any) {
     if (err.message === "jwt expired") {
-      const { refreshToken, accessToken } = await refreshTokenRequest();
+      let refreshResult: RefreshTokenResponseData;
 
-      storeTokens({ refreshToken, accessToken });
+      try {
+        refreshResult = await refreshTokenRequest();
+        const { refreshToken, accessToken } = refreshResult;
 
-      options.headers!["Authorization"] = accessToken;
+        storeTokens({ refreshToken, accessToken });
 
-      const res = await fetch(url, options);
+        options.headers!["Authorization"] = accessToken;
 
-      return await checkResponse(res);
+        const res = await fetch(url, options);
+
+        return await checkResponse(res);
+      } catch (err: any) {
+        return Promise.reject(err);
+      }
     } else {
       return Promise.reject(err);
     }
   }
 };
 
-export const refreshTokenRequest = () => {
+export const refreshTokenRequest = (): Promise<RefreshTokenResponseData> => {
   const params = {
     token: getRefreshToken(),
   };
@@ -55,22 +70,23 @@ export const refreshTokenRequest = () => {
   }).then((res) => checkResponse(res));
 };
 
-//TODO return types!
-export const getIngredients = () => {
-  return fetch(`${API_URL}/ingredients`).then(checkResponse);
+export const getIngredients = (): Promise<GetIngredientsResponse> => {
+  return fetch(`${API_URL}/ingredients`).then((res) => checkResponse(res));
 };
 
-export const placeOrder = (order: OrderRequest) => {
+export const placeOrder = (
+  order: OrderRequest
+): Promise<IResponseWithSuccess & OrderResponseData> => {
   return fetch(`${API_URL}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(order),
-  }).then(checkResponse);
+  }).then((res) => checkResponse(res));
 };
 
-export const resetPassword = (email: string) => {
+export const resetPassword = (email: string): Promise<IResponseWithSuccess> => {
   return fetch(`${API_URL}/password-reset`, {
     method: "POST",
     headers: {
@@ -79,50 +95,60 @@ export const resetPassword = (email: string) => {
     body: JSON.stringify({
       email,
     }),
-  }).then(checkResponse);
+  }).then((res) => checkResponse(res));
 };
 
-export const renewPassword = (params: RenewPasswordRequest) => {
+export const renewPassword = (
+  params: RenewPasswordRequest
+): Promise<IResponseWithSuccess> => {
   return fetch(`${API_URL}/password-reset/reset`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  }).then(checkResponse);
+  }).then((res) => checkResponse(res));
 };
 
-export const register = (params: RegistrationRequest) => {
+export const register = (
+  params: RegistrationRequest
+): Promise<IResponseWithSuccess & RefreshTokenResponseData> => {
   return fetch(`${API_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  }).then(checkResponse);
+  }).then((res) => checkResponse(res));
 };
 
-export const login = (params: LoginRequest) => {
+export const login = (
+  params: LoginRequest
+): Promise<IResponseWithSuccess & RefreshTokenResponseData> => {
   return fetch(`${API_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  }).then(checkResponse);
+  }).then((res) => checkResponse(res));
 };
 
-export const logout = (params: { token: Nullable<string> }) => {
+export const logout = (params: {
+  token: Nullable<string>;
+}): Promise<IResponseWithSuccess> => {
   return fetch(`${API_URL}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  }).then(checkResponse);
+  }).then((res) => checkResponse(res));
 };
 
-export const getUserInfo = (accessToken: Nullable<string>) => {
+export const getUserInfo = (
+  accessToken: Nullable<string>
+): Promise<IResponseWithSuccess & GetUserInfoResponseData> => {
   return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "GET",
     headers: {
@@ -134,7 +160,7 @@ export const getUserInfo = (accessToken: Nullable<string>) => {
 export const updateUserInfo = (
   params: UpdateUserInfoRequest,
   accessToken: Nullable<string>
-) => {
+): Promise<IResponseWithSuccess> => {
   return fetchWithRefresh(`${API_URL}/auth/user`, {
     method: "PATCH",
     headers: {

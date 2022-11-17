@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import { Ingredient } from "../types/dataTypes";
 
-// TODO mb enum
+// TODO mb enum or literal union
 export const TYPE_BUN = "bun";
 export const TYPE_SAUCE = "sauce";
 export const TYPE_MAIN = "main";

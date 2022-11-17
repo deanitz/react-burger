@@ -15,6 +15,10 @@ type IngredientShape = {
 
 export type Ingredient = Readonly<IngredientShape> & { uniqueId: string };
 
+export type GetIngredientsResponse = {
+  data: Array<Ingredient>;
+};
+
 export type OrderRequest = Readonly<{
   ingredients: readonly string[];
 }>;

@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { LoginRequest, RegistrationRequest } from "../../types/dataTypes";
-import { IResponseWithSuccess, Nullable } from "../../types/utilityTypes";
+import { Nullable } from "../../types/utilityTypes";
 import {
   getRefreshToken,
   removeTokens,
@@ -108,14 +108,11 @@ const authSlice = createSlice({
       state.login.loading = true;
       state.login.error = false;
     });
-    builder.addCase(
-      login.fulfilled,
-      (state, { payload }: PayloadAction<IResponseWithSuccess>) => {
-        state.login.loading = false;
-        state.login.success = payload.success;
-        state.login.error = !payload.success;
-      }
-    );
+    builder.addCase(login.fulfilled, (state, { payload }) => {
+      state.login.loading = false;
+      state.login.success = payload.success;
+      state.login.error = !payload.success;
+    });
     builder.addCase(login.rejected, (state) => {
       state.login.loading = false;
       state.login.success = initialState.login.success;
@@ -127,14 +124,11 @@ const authSlice = createSlice({
       state.logout.loading = true;
       state.logout.error = false;
     });
-    builder.addCase(
-      logout.fulfilled,
-      (state, { payload }: PayloadAction<IResponseWithSuccess>) => {
-        state.logout.loading = false;
-        state.logout.success = payload.success;
-        state.logout.error = !payload.success;
-      }
-    );
+    builder.addCase(logout.fulfilled, (state, { payload }) => {
+      state.logout.loading = false;
+      state.logout.success = payload.success;
+      state.logout.error = !payload.success;
+    });
     builder.addCase(logout.rejected, (state) => {
       state.logout.loading = false;
       state.logout.success = initialState.logout.success;
@@ -145,14 +139,11 @@ const authSlice = createSlice({
       state.register.loading = true;
       state.register.error = false;
     });
-    builder.addCase(
-      register.fulfilled,
-      (state, { payload }: PayloadAction<IResponseWithSuccess>) => {
-        state.register.loading = false;
-        state.register.success = payload.success;
-        state.register.error = !payload.success;
-      }
-    );
+    builder.addCase(register.fulfilled, (state, { payload }) => {
+      state.register.loading = false;
+      state.register.success = payload.success;
+      state.register.error = !payload.success;
+    });
     builder.addCase(register.rejected, (state) => {
       state.register.loading = false;
       state.register.success = initialState.register.success;
