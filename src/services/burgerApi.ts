@@ -13,9 +13,10 @@ const API_URL = "https://norma.nomoreparties.space/api";
 //TODO generic
 const checkResponse = (response: Response) => {
   return response.ok
-    ? response.json()
+    ? response.json().then((data) => data)
     : response.json().then((error) => Promise.reject(error));
 };
+
 
 export const fetchWithRefresh = async (
   url: string,
@@ -51,7 +52,7 @@ export const refreshTokenRequest = () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params),
-  }).then(checkResponse);
+  }).then((res) => checkResponse(res));
 };
 
 //TODO return types!

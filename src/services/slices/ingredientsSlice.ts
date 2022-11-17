@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Ingredient } from "../../types/dataTypes";
 import { getIngredients } from "../burgerApi";
 import { logError } from "../logService";
@@ -38,11 +38,14 @@ const ingredientsSlice = createSlice({
       state.ingredientsDataLoading = true;
       state.ingredientsDataError = false;
     });
-    builder.addCase(fetchIngredients.fulfilled, (state, { payload }) => {
-      state.ingredientsDataLoading = false;
-      state.ingredientsDataError = false;
-      state.ingredientsData = payload.data;
-    });
+    builder.addCase(
+      fetchIngredients.fulfilled,
+      (state, { payload }: PayloadAction<{ data: Array<Ingredient> }>) => {
+        state.ingredientsDataLoading = false;
+        state.ingredientsDataError = false;
+        state.ingredientsData = payload.data;
+      }
+    );
     builder.addCase(fetchIngredients.rejected, (state) => {
       state.ingredientsData = initialState.ingredientsData;
       state.ingredientsDataLoading = false;

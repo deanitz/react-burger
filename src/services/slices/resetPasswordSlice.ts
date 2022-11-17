@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RenewPasswordRequest } from "../../types/dataTypes";
-import { Nullable } from "../../types/utilityTypes";
+import { IResponseWithSuccess, Nullable } from "../../types/utilityTypes";
 import {
   resetPassword as apiResetPassword,
   renewPassword as apiRenewPassword,
@@ -77,11 +77,14 @@ const resetPasswordSlice = createSlice({
       state.reset.loading = true;
       state.reset.error = false;
     });
-    builder.addCase(reset.fulfilled, (state, { payload }) => {
-      state.reset.loading = false;
-      state.reset.success = payload.success;
-      state.reset.error = !payload.success;
-    });
+    builder.addCase(
+      reset.fulfilled,
+      (state, { payload }: PayloadAction<IResponseWithSuccess>) => {
+        state.reset.loading = false;
+        state.reset.success = payload.success;
+        state.reset.error = !payload.success;
+      }
+    );
     builder.addCase(reset.rejected, (state) => {
       state.reset.loading = false;
       state.reset.success = false;
@@ -93,11 +96,14 @@ const resetPasswordSlice = createSlice({
       state.renew.loading = true;
       state.renew.error = false;
     });
-    builder.addCase(renew.fulfilled, (state, { payload }) => {
-      state.renew.loading = false;
-      state.renew.success = payload.success;
-      state.renew.error = !payload.success;
-    });
+    builder.addCase(
+      renew.fulfilled,
+      (state, { payload }: PayloadAction<IResponseWithSuccess>) => {
+        state.renew.loading = false;
+        state.renew.success = payload.success;
+        state.renew.error = !payload.success;
+      }
+    );
     builder.addCase(renew.rejected, (state) => {
       state.renew.loading = false;
       state.renew.success = false;

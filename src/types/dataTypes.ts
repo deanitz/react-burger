@@ -19,9 +19,16 @@ export type OrderRequest = Readonly<{
   ingredients: readonly string[];
 }>;
 
-export type OrderResponseData = Readonly<{
+export type OrderData = Readonly<{
   name: string;
   number: string | number;
+}>;
+
+export type OrderResponseData = Readonly<{
+  name: string;
+  order: {
+    number: string | number;
+  };
 }>;
 
 export type LoginRequest = Readonly<{
@@ -42,7 +49,16 @@ export type RenewPasswordRequest = Readonly<{
 
 export type UpdateUserInfoRequest = RegistrationRequest;
 
-export type GetUserInfoResponseData = {
+export type UserInfo = {
   name: string;
   email: string;
+};
+
+export type GetUserInfoResponseData = {
+  user: UserInfo;
+};
+
+export type RefreshTokenResponseData = {
+  refreshToken: string;
+  accessToken: string;
 };

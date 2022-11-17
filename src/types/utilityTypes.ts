@@ -11,3 +11,7 @@ export interface ILimitedRequestInit extends Omit<RequestInit, "headers"> {
 type ChangeEventFunc<T extends HTMLElement> = React.ChangeEvent<T>;
 export type InputChangeEventFunc = ChangeEventFunc<HTMLInputElement>;
 export type FormSubmitEventFunc = React.FormEvent<HTMLFormElement>;
+
+export interface IResponseWithSuccess {
+  success: boolean;
+}

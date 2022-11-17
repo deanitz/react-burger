@@ -1,9 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
-  GetUserInfoResponseData,
+  UserInfo,
   UpdateUserInfoRequest,
+  GetUserInfoResponseData,
 } from "../../types/dataTypes";
-import { Nullable } from "../../types/utilityTypes";
+import { IResponseWithSuccess, Nullable } from "../../types/utilityTypes";
 import { getAccessToken } from "../../utils/localStorageUtils";
 import {
   getUserInfo as apiGetUserInfo,
@@ -13,7 +14,7 @@ import { logError } from "../logService";
 
 interface IProfileState {
   getUserInfo: {
-    info: Nullable<GetUserInfoResponseData>;
+    info: Nullable<UserInfo>;
     loading: boolean;
     error: boolean;
   };
@@ -80,13 +81,21 @@ const profileSlice = createSlice({
       state.getUserInfo.loading = true;
       state.getUserInfo.error = false;
     });
-    builder.addCase(getUserInfo.fulfilled, (state, { payload }) => {
-      state.getUserInfo.loading = false;
-      state.getUserInfo.info = payload.success
-        ? payload.user
-        : initialState.getUserInfo.info;
-      state.getUserInfo.error = !payload.success;
-    });
+    builder.addCase(
+      getUserInfo.fulfilled,
+      (
+        state,
+        {
+          payload,
+        }: PayloadAction<IResponseWithSuccess & GetUserInfoResponseData>
+      ) => {
+        state.getUserInfo.loading = false;
+        state.getUserInfo.info = payload.success
+          ? payload.user
+          : initialState.getUserInfo.info;
+        state.getUserInfo.error = !payload.success;
+      }
+    );
     builder.addCase(getUserInfo.rejected, (state) => {
       state.getUserInfo.loading = false;
       state.getUserInfo.info = initialState.getUserInfo.info;
@@ -98,11 +107,14 @@ const profileSlice = createSlice({
       state.updateUserInfo.loading = true;
       state.updateUserInfo.error = false;
     });
-    builder.addCase(updateUserInfo.fulfilled, (state, { payload }) => {
-      state.updateUserInfo.loading = false;
-      state.updateUserInfo.success = payload.success;
-      state.updateUserInfo.error = !payload.success;
-    });
+    builder.addCase(
+      updateUserInfo.fulfilled,
+      (state, { payload }: PayloadAction<IResponseWithSuccess>) => {
+        state.updateUserInfo.loading = false;
+        state.updateUserInfo.success = payload.success;
+        state.updateUserInfo.error = !payload.success;
+      }
+    );
     builder.addCase(updateUserInfo.rejected, (state) => {
       state.updateUserInfo.loading = false;
       state.updateUserInfo.success = initialState.updateUserInfo.success;

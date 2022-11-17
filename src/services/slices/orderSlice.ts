@@ -1,11 +1,15 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { OrderRequest, OrderResponseData } from "../../types/dataTypes";
-import { Nullable } from "../../types/utilityTypes";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  OrderRequest,
+  OrderData,
+  OrderResponseData,
+} from "../../types/dataTypes";
+import { IResponseWithSuccess, Nullable } from "../../types/utilityTypes";
 import { placeOrder } from "../burgerApi";
 import { logError } from "../logService";
 
 interface IOrderState {
-  orderInfo: Nullable<OrderResponseData>;
+  orderInfo: Nullable<OrderData>;
   orderInfoLoading: boolean;
   orderInfoError: boolean;
 }
@@ -41,17 +45,22 @@ const orderSlice = createSlice({
       state.orderInfoLoading = true;
       state.orderInfoError = false;
     });
-    builder.addCase(getOrderInfo.fulfilled, (state, { payload }) => {
-      state.orderInfoLoading = false;
-      state.orderInfoError = !payload.success;
-      //TODO type
-      state.orderInfo = payload.success
-        ? {
-            name: payload.name,
-            number: payload.order.number,
-          }
-        : initialState.orderInfo;
-    });
+    builder.addCase(
+      getOrderInfo.fulfilled,
+      (
+        state,
+        { payload }: PayloadAction<IResponseWithSuccess & OrderResponseData>
+      ) => {
+        state.orderInfoLoading = false;
+        state.orderInfoError = !payload.success;
+        state.orderInfo = payload.success
+          ? {
+              name: payload.name,
+              number: payload.order.number,
+            }
+          : initialState.orderInfo;
+      }
+    );
     builder.addCase(getOrderInfo.rejected, (state) => {
       state.orderInfo = initialState.orderInfo;
       state.orderInfoLoading = false;
