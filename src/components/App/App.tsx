@@ -21,7 +21,7 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const background: Location | undefined = location.state
-    ?.background as Location;
+    ?.background;
 
   const handleCloseModal = () => {
     navigate(-1);
