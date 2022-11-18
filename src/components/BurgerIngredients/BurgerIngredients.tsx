@@ -9,11 +9,11 @@ import {
   CAPTION_SAUCES,
   CAPTION_MAINS,
 } from "./BurgerIngredients.utils";
-import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
 import { setSelectedTab } from "../../services/slices/selectedIngredientsTabSlice";
 import { getIntersectionObserverSettings } from "../../utils/intersectionObserverUtils";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 import styles from "./BurgerIngredients.module.css";
+import { IngredientTypes } from "../../types/dataTypes";
 
 const BurgerIngredients = () => {
   const dispatch = useAppDispatch();
@@ -33,19 +33,25 @@ const BurgerIngredients = () => {
       {
         name: CAPTION_BUNS,
         tabName: TAB_BUNS,
-        item: ingredientsData.filter((item) => item.type === TYPE_BUN),
+        item: ingredientsData.filter(
+          (item) => item.type === IngredientTypes.bun
+        ),
         ref: bunsRef,
       },
       {
         name: CAPTION_SAUCES,
         tabName: TAB_SAUCES,
-        item: ingredientsData.filter((item) => item.type === TYPE_SAUCE),
+        item: ingredientsData.filter(
+          (item) => item.type === IngredientTypes.sauce
+        ),
         ref: saucesRef,
       },
       {
         name: CAPTION_MAINS,
         tabName: TAB_MAINS,
-        item: ingredientsData.filter((item) => item.type === TYPE_MAIN),
+        item: ingredientsData.filter(
+          (item) => item.type === IngredientTypes.main
+        ),
         ref: mainsRef,
       },
     ],

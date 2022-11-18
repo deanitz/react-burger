@@ -1,7 +1,17 @@
+export enum IngredientTypes {
+  bun = "bun",
+  sauce = "sauce",
+  main = "main",
+}
+
+export const TYPE_CONSTRUCTOR_INNER_INGREDIENT = "constructorInnerIngredient";
+
+export type IngredientType = "bun" | "sauce" | "main";
+
 type IngredientShape = {
   _id: string;
   name: string;
-  type: string;
+  type: IngredientType;
   proteins: number;
   fat: number;
   carbohydrates: number;

@@ -1,10 +1,12 @@
-import { Ingredient } from "../../types/dataTypes";
+import {
+  Ingredient,
+  TYPE_CONSTRUCTOR_INNER_INGREDIENT,
+} from "../../types/dataTypes";
 import { useDrag, useDrop } from "react-dnd";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { TYPE_CONSTRUCTOR_INNER_INGREDIENT } from "../../utils/dataUtils";
 
 import styles from "./InnerIngredient.module.css";
 

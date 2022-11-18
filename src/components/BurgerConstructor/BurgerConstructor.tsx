@@ -14,12 +14,15 @@ import {
 } from "../../services/slices/selectedIngredientsSlice";
 import InnerIngredient from "./InnerIngredient";
 import { useDrop } from "react-dnd";
-import { TYPE_BUN, TYPE_SAUCE, TYPE_MAIN } from "../../utils/dataUtils";
 import { ROUTE_LOGIN } from "../../utils/routes";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
-import { Ingredient, OrderRequest } from "../../types/dataTypes";
+import {
+  Ingredient,
+  IngredientTypes,
+  OrderRequest,
+} from "../../types/dataTypes";
 import styles from "./BurgerConstructor.module.css";
 import { IDropItem } from "../../types/utilityTypes";
 
@@ -130,7 +133,9 @@ const BurgerConstructor = () => {
   );
 
   const [, dropIngredientTarget] = useDrop({
-    accept: bun ? [TYPE_BUN, TYPE_SAUCE, TYPE_MAIN] : TYPE_BUN,
+    accept: bun
+      ? [IngredientTypes.bun, IngredientTypes.sauce, IngredientTypes.main]
+      : IngredientTypes.bun,
     drop(item: IDropItem<Ingredient>) {
       handleDrop(item);
     },
@@ -139,7 +144,7 @@ const BurgerConstructor = () => {
   const handleDrop = useCallback(
     (item: IDropItem<Ingredient>) => {
       const dropped = item.item as Ingredient;
-      if (dropped.type === TYPE_BUN) {
+      if (dropped.type === IngredientTypes.bun) {
         dispatch(setBun(dropped));
       } else {
         dispatch(addSelectedIngredient(dropped));
