@@ -6,15 +6,13 @@ import {
 import { useState, useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
+import { useForm } from "../../hooks/useForm";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import {
   renew as renewPassword,
   resetState,
 } from "../../services/slices/resetPasswordSlice";
-import {
-  InputChangeEventFunc,
-  FormSubmitEventFunc,
-} from "../../types/utilityTypes";
+import { FormSubmitEventFunc } from "../../types/utilityTypes";
 import { ROUTE_FORGOT_PASSWORD, ROUTE_LOGIN } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 
@@ -40,30 +38,22 @@ const ResetPassword = () => {
     isResetPasswordSuccess: resetPassword.reset.success,
   }));
 
-  const [state, setState] = useState({
+  const { values, handleChange } = useForm({
     newPassword: "",
     code: "",
   });
-  const onChange = (e: InputChangeEventFunc) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
 
   const handleRenewPassword = useCallback(
     (e: FormSubmitEventFunc) => {
       e.preventDefault();
       dispatch(
         renewPassword({
-          password: state.newPassword,
-          token: state.code,
+          password: values.newPassword,
+          token: values.code,
         })
       );
     },
-    [dispatch, state.code, state.newPassword]
+    [dispatch, values.code, values.newPassword]
   );
 
   useEffect(() => {
@@ -97,8 +87,8 @@ const ResetPassword = () => {
           </h1>
           <div className="mt-6">
             <PasswordInput
-              onChange={onChange}
-              value={state.newPassword}
+              onChange={handleChange}
+              value={values.newPassword}
               placeholder={"Введите новый пароль"}
               name={"newPassword"}
             />
@@ -107,8 +97,8 @@ const ResetPassword = () => {
             <Input
               type={"text"}
               placeholder={"Введите код из письма"}
-              onChange={onChange}
-              value={state.code}
+              onChange={handleChange}
+              value={values.code}
               name={"code"}
               errorText={"Ошибка ввода кода"}
             />
@@ -121,8 +111,8 @@ const ResetPassword = () => {
               disabled={
                 isRenewPasswordLoading ||
                 isRenewPasswordSuccess ||
-                !state?.newPassword?.length ||
-                !state?.code?.length
+                !values?.newPassword?.length ||
+                !values?.code?.length
               }
             >
               Сохранить

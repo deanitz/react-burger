@@ -2,15 +2,13 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
+import { useForm } from "../../hooks/useForm";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { reset as resetPassword } from "../../services/slices/resetPasswordSlice";
-import {
-  InputChangeEventFunc,
-  FormSubmitEventFunc,
-} from "../../types/utilityTypes";
+import { FormSubmitEventFunc } from "../../types/utilityTypes";
 import { ROUTE_LOGIN, ROUTE_RESET_PASSWORD } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 
@@ -32,24 +30,16 @@ const ForgotPassword = () => {
 
   const navigate = useNavigate();
 
-  const [state, setState] = useState({
+  const { values, handleChange } = useForm({
     email: "",
   });
-  const onChange = (e: InputChangeEventFunc) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
 
   const handleResetPassword = useCallback<(e: FormSubmitEventFunc) => void>(
     (e) => {
       e.preventDefault();
-      dispatch(resetPassword(state.email));
+      dispatch(resetPassword(values.email));
     },
-    [dispatch, state.email]
+    [dispatch, values.email]
   );
 
   useEffect(() => {
@@ -67,8 +57,8 @@ const ForgotPassword = () => {
           </h1>
           <div className="mt-6">
             <EmailInput
-              onChange={onChange}
-              value={state.email}
+              onChange={handleChange}
+              value={values.email}
               name={"email"}
             />
           </div>
@@ -79,7 +69,7 @@ const ForgotPassword = () => {
               disabled={
                 isResetPasswordLoading ||
                 isResetPasswordSuccess ||
-                !state?.email?.length
+                !values?.email?.length
               }
               htmlType="submit"
             >

@@ -3,16 +3,13 @@ import {
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
+import { useForm } from "../../hooks/useForm";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { login, resetLogin } from "../../services/slices/authSlice";
-import { LoginRequest } from "../../types/dataTypes";
-import {
-  InputChangeEventFunc,
-  FormSubmitEventFunc,
-} from "../../types/utilityTypes";
+import { FormSubmitEventFunc } from "../../types/utilityTypes";
 import {
   ROUTE_FORGOT_PASSWORD,
   ROUTE_REGISTER,
@@ -34,31 +31,22 @@ const Login = () => {
     })
   );
 
-  const [state, setState] = useState<LoginRequest>({
+  const { values, handleChange } = useForm({
     email: "",
     password: "",
   });
-
-  const onChange = (e: InputChangeEventFunc) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
 
   const handleLogin = useCallback(
     (e: FormSubmitEventFunc) => {
       e.preventDefault();
       dispatch(
         login({
-          email: state.email,
-          password: state.password,
+          email: values.email,
+          password: values.password,
         })
       );
     },
-    [dispatch, state.email, state.password]
+    [dispatch, values.email, values.password]
   );
 
   useEffect(() => {
@@ -75,15 +63,15 @@ const Login = () => {
           <h1 className="text text_type_main-medium mt-10 mb-5">Вход</h1>
           <div className="mt-6">
             <EmailInput
-              onChange={onChange}
-              value={state.email}
+              onChange={handleChange}
+              value={values.email}
               name={"email"}
             />
           </div>
           <div className="mt-6">
             <PasswordInput
-              onChange={onChange}
-              value={state.password}
+              onChange={handleChange}
+              value={values.password}
               name={"password"}
             />
           </div>
@@ -94,8 +82,8 @@ const Login = () => {
               htmlType="submit"
               disabled={
                 isLoginLoading ||
-                !state?.email?.length ||
-                !state?.password.length
+                !values?.email?.length ||
+                !values?.password.length
               }
             >
               Войти
