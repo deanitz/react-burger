@@ -31,3 +31,7 @@
 .infoText {
   opacity: 0.4;
 }
+
+.logout {
+  cursor: pointer;
+}
