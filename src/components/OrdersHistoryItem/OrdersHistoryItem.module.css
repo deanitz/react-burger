@@ -28,13 +28,13 @@
   overflow: hidden;
 
   background: linear-gradient(#131316 0 0) padding-box,
-    /*this is your grey background*/ linear-gradient(to top, #801ab3, #4c4cff)
-      border-box;
+    linear-gradient(45deg, #801ab3, #4c4cff) border-box;
   padding: 10px;
   border: 2px solid transparent;
   border-radius: 50%;
 
-  margin-left: -20px;
+  margin-left: -16px;
+  z-index: 1;
 }
 
 .ingredientsContainer {
@@ -45,4 +45,14 @@
 
 .smallIngredientIconImage {
   height: 56px;
+}
+
+.more {
+  opacity: 30%;
+}
+
+.moreText {
+  position: absolute;
+  font-size: 1.4rem;
+  z-index: 1;
 }
