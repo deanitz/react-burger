@@ -1,21 +1,20 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { OrderDataHistorical } from "../../types/dataTypes";
 import { WebsocketStatus } from "../../types/utilityTypes";
 
-interface IOrdersHistoryState {
+interface IOrdersFeedState {
   status: WebsocketStatus;
   connectionError: string;
-  orders: Array<OrderDataHistorical>;
+  orders: Array<any>;
 }
 
-const initialState: IOrdersHistoryState = {
+const initialState: IOrdersFeedState = {
   status: WebsocketStatus.OFFLINE,
   connectionError: "",
   orders: [],
 };
 
-const ordersHistorySlice = createSlice({
-  name: "ordersHistory",
+const ordersFeedSlice = createSlice({
+  name: "ordersFeed",
   initialState,
   reducers: {
     wsConnecting: (state) => {
@@ -31,17 +30,17 @@ const ordersHistorySlice = createSlice({
       state.connectionError = action.payload;
     },
     wsMessage: (state, action: PayloadAction<any>) => {
-      state.orders = action.payload.orders;
+      state.orders = action.payload;
     },
   },
 });
 
 export const { wsConnecting, wsOpen, wsClose, wsError, wsMessage } =
-  ordersHistorySlice.actions;
+  ordersFeedSlice.actions;
 
-export const connect = createAction<string, "ORDERS_HISTORY_CONNECT">(
-  "ORDERS_HISTORY_CONNECT"
+export const connect = createAction<string, "ORDERS_FEED_CONNECT">(
+  "ORDERS_FEED_CONNECT"
 );
-export const disconnect = createAction("ORDERS_HISTORY_DISCONNECT");
+export const disconnect = createAction("ORDERS_FEED_DISCONNECT");
 
-export default ordersHistorySlice.reducer;
+export default ordersFeedSlice.reducer;

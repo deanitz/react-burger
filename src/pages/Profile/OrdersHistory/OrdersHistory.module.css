@@ -1,6 +1,11 @@
-.ordersListContainer {
+.pageContainer {
   grid-column: span 2;
 
+  display: flex;
+  flex-direction: column;
+}
+
+.ordersListContainer {
   display: flex;
   flex-direction: column;
   row-gap: calc(var(--offset-base-size) * 4);

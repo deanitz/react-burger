@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { OrderRequest, OrderData } from "../../types/dataTypes";
+import { OrderRequest, OrderDataBrief } from "../../types/dataTypes";
 import { Nullable } from "../../types/utilityTypes";
+import { getAccessToken } from "../../utils/localStorageUtils";
 import { placeOrder } from "../burgerApi";
 import { logError } from "../logService";
 
 interface IOrderState {
-  orderInfo: Nullable<OrderData>;
+  orderInfo: Nullable<OrderDataBrief>;
   orderInfoLoading: boolean;
   orderInfoError: boolean;
 }
@@ -19,7 +20,8 @@ const initialState: IOrderState = {
 export const getOrderInfo = createAsyncThunk(
   "order/getOrderInfo",
   (order: OrderRequest) => {
-    return placeOrder(order)
+    const token = getAccessToken();
+    return placeOrder(order, token)
       .then((response) => {
         return response;
       })

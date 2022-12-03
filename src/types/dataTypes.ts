@@ -1,8 +1,24 @@
+import { IUniqueId } from "./utilityTypes";
+
 export enum IngredientTypes {
   bun = "bun",
   sauce = "sauce",
   main = "main",
 }
+
+export enum OrderStatuses {
+  created = "created",
+  pending = "pending",
+  done = "done",
+  cancelled = "cancelled",
+}
+
+export const OrderStatusesDescriptions = new Map<string, string>([
+  [OrderStatuses.created, "Создан"],
+  [OrderStatuses.pending, "Готовится"],
+  [OrderStatuses.done, "Выполнен"],
+  [OrderStatuses.cancelled, "Отменён"],
+]);
 
 export const TYPE_CONSTRUCTOR_INNER_INGREDIENT = "constructorInnerIngredient";
 
@@ -23,7 +39,7 @@ type IngredientShape = {
   __v?: number;
 };
 
-export type Ingredient = Readonly<IngredientShape> & { uniqueId: string };
+export type Ingredient = Readonly<IngredientShape> & IUniqueId;
 
 export type GetIngredientsResponse = {
   data: Array<Ingredient>;
@@ -33,9 +49,19 @@ export type OrderRequest = Readonly<{
   ingredients: readonly string[];
 }>;
 
-export type OrderData = Readonly<{
+export type OrderDataBrief = Readonly<{
   name: string;
   number: string | number;
+}>;
+
+export type OrderDataHistorical = Readonly<{
+  createdAt: string;
+  ingredients: ReadonlyArray<string>;
+  name: string;
+  number: number;
+  status: OrderStatuses;
+  updatedAt: string;
+  _id: string;
 }>;
 
 export type OrderResponseData = Readonly<{

@@ -35,6 +35,7 @@
 
   margin-left: -16px;
   z-index: 1;
+  position: relative;
 }
 
 .ingredientsContainer {
@@ -55,4 +56,20 @@
   position: absolute;
   font-size: 1.4rem;
   z-index: 1;
+}
+
+.statusCreated {
+  color: #f2f2f3;
+}
+
+.statusPending {
+  color: #f2f2f3;
+}
+
+.statusDone {
+  color: #00cccc;
+}
+
+.statusCancelled {
+  color: #cc0000;
 }

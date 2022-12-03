@@ -25,7 +25,6 @@ import {
 } from "../../types/dataTypes";
 import styles from "./BurgerConstructor.module.css";
 import { IDropItem } from "../../types/utilityTypes";
-import { addOrdersHistory } from "../../services/slices/ordersHistorySlice";
 
 const BurgerConstructor = () => {
   const dispatch = useAppDispatch();
@@ -33,20 +32,14 @@ const BurgerConstructor = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const {
-    orderNumber,
-    orderInfo,
-    isOrderLoaded,
-    isOrderLoading,
-    isOrderLoadingError,
-  } = useAppSelector(({ order }) => ({
-    orderNumber: order.orderInfo?.number,
-    orderInfo: order.orderInfo,
-    isOrderLoaded:
-      order.orderInfo && !order.orderInfoLoading && !order.orderInfoError,
-    isOrderLoadingError: order.orderInfoError,
-    isOrderLoading: order.orderInfoLoading,
-  }));
+  const { orderNumber, isOrderLoaded, isOrderLoading, isOrderLoadingError } =
+    useAppSelector(({ order }) => ({
+      orderNumber: order.orderInfo?.number,
+      isOrderLoaded:
+        order.orderInfo && !order.orderInfoLoading && !order.orderInfoError,
+      isOrderLoadingError: order.orderInfoError,
+      isOrderLoading: order.orderInfoLoading,
+    }));
 
   const selectedIngredients = useAppSelector(
     ({ selectedIngredients }) => selectedIngredients
@@ -68,13 +61,6 @@ const BurgerConstructor = () => {
       dispatch(resetOrderInfo());
     }
   }, [isOrderLoaded, isModal, showModal, isOrderLoadingError, dispatch]);
-
-  useEffect(() => {
-    if (!orderInfo) {
-      return;
-    }
-    dispatch(addOrdersHistory(orderInfo));
-  }, [dispatch, orderInfo]);
 
   const { bun, innerIngredients, totalPrice } = useMemo(() => {
     const { bun, inner: innerIngredients } = selectedIngredients;

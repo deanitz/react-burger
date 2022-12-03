@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import ingredients from "../slices/ingredientsSlice";
 import order from "../slices/orderSlice";
 import ordersHistory from "../slices/ordersHistorySlice";
+import ordersFeed from "../slices/ordersFeedSlice";
 import selectedIngredients from "../slices/selectedIngredientsSlice";
 import selectedIngredientsTab from "../slices/selectedIngredientsTabSlice";
 import resetPassword from "../slices/resetPasswordSlice";
@@ -13,6 +14,7 @@ export const rootReducer = combineReducers({
   ingredients,
   order,
   ordersHistory,
+  ordersFeed,
   selectedIngredients,
   selectedIngredientsTab,
   resetPassword,
