@@ -21,7 +21,7 @@ import {
   wsError as ordersFeedError,
   wsMessage as ordersFeedMessage,
 } from "../services/slices/ordersFeedSlice";
-import { OrderDataBrief } from "../types/dataTypes";
+import { OrdersMessageData } from "../types/dataTypes";
 
 const ordersHistoryActions = {
   connect: ordersHistoryConnect,
@@ -44,9 +44,9 @@ const ordersFeedActions = {
 };
 
 const historyWebsocketMiddleware: Middleware =
-  createSocketMiddleware<OrderDataBrief>(ordersHistoryActions);
+  createSocketMiddleware<OrdersMessageData>(ordersHistoryActions);
 const feedWebsocketMiddleware: Middleware =
-  createSocketMiddleware<OrderDataBrief>(ordersFeedActions);
+  createSocketMiddleware<OrdersMessageData>(ordersFeedActions);
 
 const preloadedState = {};
 

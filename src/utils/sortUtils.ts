@@ -1,8 +1,4 @@
-import {
-  Ingredient,
-  IngredientTypes,
-  OrderDataHistorical,
-} from "../types/dataTypes";
+import { Ingredient, IngredientTypes, OrderData } from "../types/dataTypes";
 import { IUniqueId } from "../types/utilityTypes";
 
 export const sortBunFirst = (
@@ -18,10 +14,7 @@ export const sortBunFirst = (
   return 0;
 };
 
-export const sortByDateDesc = (
-  a: OrderDataHistorical,
-  b: OrderDataHistorical
-) => {
+export const sortByDateDesc = (a: OrderData, b: OrderData) => {
   return new Date(a.updatedAt).getTime() > new Date(b.updatedAt).getTime()
     ? -1
     : 1;

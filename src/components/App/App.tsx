@@ -1,4 +1,4 @@
-import AppMain from "../AppMain/AppMain";
+import AppMain from "../../pages/AppMain/AppMain";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import AppLayout from "../AppLayout/AppLayout";
 import OrdersHistory from "../../pages/Profile/OrdersHistory/OrdersHistory";
@@ -31,7 +31,6 @@ const App = () => {
     <>
       <Routes location={background || location}>
         <Route path="/" element={<AppLayout />}>
-          {/* TODO AppMain to page */}
           <Route index element={<AppMain />} />
           <Route path="feed" element={<OrdersFeed />} />
           <Route path="login" element={<Login />} />

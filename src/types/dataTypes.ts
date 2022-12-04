@@ -54,15 +54,14 @@ export type OrderDataBrief = Readonly<{
   number: string | number;
 }>;
 
-export type OrderDataHistorical = Readonly<{
-  createdAt: string;
-  ingredients: ReadonlyArray<string>;
-  name: string;
-  number: number;
-  status: OrderStatuses;
-  updatedAt: string;
-  _id: string;
-}>;
+export type OrderData = OrderDataBrief &
+  Readonly<{
+    createdAt: string;
+    ingredients: Array<string>;
+    status: OrderStatuses;
+    updatedAt: string;
+    _id: string;
+  }>;
 
 export type OrderResponseData = Readonly<{
   name: string;
@@ -101,4 +100,10 @@ export type GetUserInfoResponseData = {
 export type RefreshTokenResponseData = {
   refreshToken: string;
   accessToken: string;
+};
+
+export type OrdersMessageData = {
+  orders: Array<OrderData>;
+  total: number;
+  totalToday: number;
 };

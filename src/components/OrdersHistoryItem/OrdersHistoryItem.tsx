@@ -2,7 +2,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useMemo } from "react";
 import {
   Ingredient,
-  OrderDataHistorical,
+  OrderData,
   OrderStatuses,
   OrderStatusesDescriptions,
 } from "../../types/dataTypes";
@@ -24,7 +24,7 @@ const OrderStatusesClasses = new Map<string, string>([
 ]);
 
 export type OrdersHistoryItemProps = {
-  order: OrderDataHistorical;
+  order: OrderData;
   showStatus?: boolean;
 };
 

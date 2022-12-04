@@ -34,7 +34,7 @@ const OrdersFeed = () => {
   }, [dispatch]);
 
   return (
-    <div className={`${styles.pageContainer}`}>
+    <main className={`${styles.pageContainer}`}>
       <div className={`${styles.pageInnerContainer} `}>
         <h1 className="text text_type_main-large mt-10 mb-5 ml-5">
           Лента заказов
@@ -58,7 +58,7 @@ const OrdersFeed = () => {
           <span className="text text_type_main-small">{status}</span>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 
