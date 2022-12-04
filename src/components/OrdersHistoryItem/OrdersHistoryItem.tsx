@@ -25,9 +25,13 @@ const OrderStatusesClasses = new Map<string, string>([
 
 export type OrdersHistoryItemProps = {
   order: OrderDataHistorical;
+  showStatus?: boolean;
 };
 
-const OrdersHistoryItem = ({ order }: OrdersHistoryItemProps) => {
+const OrdersHistoryItem = ({
+  order,
+  showStatus = true,
+}: OrdersHistoryItemProps) => {
   const { ingredientsData } = useAppSelector(({ ingredients }) => ({
     ingredientsData: order.ingredients
       .map((ingredientId) =>
@@ -106,6 +110,16 @@ const OrdersHistoryItem = ({ order }: OrdersHistoryItemProps) => {
     );
   }, [ingredientsData]);
 
+  const status = (
+    <span
+      className={`text text_type_main-small mt-2 ${OrderStatusesClasses.get(
+        order.status
+      )}`}
+    >
+      {OrderStatusesDescriptions.get(order.status)}
+    </span>
+  );
+
   return (
     <section className={styles.contentContainer}>
       <div className={styles.spacedLineContainer}>
@@ -115,14 +129,8 @@ const OrdersHistoryItem = ({ order }: OrdersHistoryItemProps) => {
         </span>
       </div>
       <span className="text text_type_main-medium mt-6">{order.name}</span>
-      <span
-        className={`text text_type_main-small mt-2 mb-6 ${OrderStatusesClasses.get(
-          order.status
-        )}`}
-      >
-        {OrderStatusesDescriptions.get(order.status)}
-      </span>
-      <div className={styles.spacedLineContainer}>
+      {showStatus && status}
+      <div className={`${styles.spacedLineContainer} mt-6`}>
         <div className={styles.ingredientsContainer}>
           {ingredientsRoundIcons}
         </div>

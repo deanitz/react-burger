@@ -6,4 +6,4 @@ export const ROUTE_PROFILE = "/profile";
 export const ROUTE_RESET_PASSWORD = "/reset-password";
 export const ROUTE_FORGOT_PASSWORD = "/forgot-password";
 export const ROUTE_PROFILE_ORDERS = "/profile/orders";
-export const ROUTE_ORDERS_FLOW = "/orders-flow";
+export const ROUTE_ORDERS_FEED = "/feed";

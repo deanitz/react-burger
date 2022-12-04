@@ -5,13 +5,10 @@ import {
   connect as ordersHistoryConnect,
   disconnect as ordersHistoryDisconnect,
 } from "../../../services/slices/ordersHistorySlice";
-import { OrderDataHistorical } from "../../../types/dataTypes";
 import { useAppDispatch, useAppSelector } from "../../../utils/store";
-
 import styles from "./OrdersHistory.module.css";
 import { useAuth } from "../../../hooks/useAuth";
 import { WebsocketStatus } from "../../../types/utilityTypes";
-import { sortByDateDesc } from "../../../utils/sortUtils";
 
 const ORDERS_HISTORY_SERVER_URL = "wss://norma.nomoreparties.space/orders";
 
@@ -49,12 +46,9 @@ const OrdersHistory = () => {
         >
           {orders
             ?.slice()
-            .sort(sortByDateDesc)
+            .reverse()
             .map((order) => (
-              <OrdersHistoryItem
-                order={order as OrderDataHistorical}
-                key={(order as OrderDataHistorical).number}
-              />
+              <OrdersHistoryItem order={order} key={order.number} />
             ))}
         </div>
       ) : (

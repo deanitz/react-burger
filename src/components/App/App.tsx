@@ -14,6 +14,7 @@ import ResetPassword from "../../pages/ForgotPassword/ResetPassword";
 import Profile from "../../pages/Profile/Profile";
 import IngredientInfo from "../../pages/IngredientInfo/IngredientInfo";
 import NotFound from "../../pages/NotFound/NotFound";
+import OrdersFeed from "../../pages/OrdersFeed/OrdersFeed";
 
 const App = () => {
   useIngredients();
@@ -30,7 +31,9 @@ const App = () => {
     <>
       <Routes location={background || location}>
         <Route path="/" element={<AppLayout />}>
+          {/* TODO AppMain to page */}
           <Route index element={<AppMain />} />
+          <Route path="feed" element={<OrdersFeed />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="forgot-password" element={<ForgotPassword />} />

@@ -30,6 +30,7 @@ const ordersHistorySlice = createSlice({
     wsError: (state, action: PayloadAction<string>) => {
       state.connectionError = action.payload;
     },
+    //TODO type
     wsMessage: (state, action: PayloadAction<any>) => {
       state.orders = action.payload.orders;
     },

@@ -1,10 +1,11 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { OrderDataHistorical } from "../../types/dataTypes";
 import { WebsocketStatus } from "../../types/utilityTypes";
 
 interface IOrdersFeedState {
   status: WebsocketStatus;
   connectionError: string;
-  orders: Array<any>;
+  orders: Array<OrderDataHistorical>;
 }
 
 const initialState: IOrdersFeedState = {
@@ -29,8 +30,9 @@ const ordersFeedSlice = createSlice({
     wsError: (state, action: PayloadAction<string>) => {
       state.connectionError = action.payload;
     },
+    //TODO type
     wsMessage: (state, action: PayloadAction<any>) => {
-      state.orders = action.payload;
+      state.orders = action.payload.orders;
     },
   },
 });
