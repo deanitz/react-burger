@@ -14,8 +14,10 @@ const OrdersFeedInfo = () => {
     return orders
       .filter((order) => order.status === OrderStatuses.done)
       .map((order) => (
-        <span key={order.number}
-          className={`text text_type_digits-default ${styles.orderDone}`}>
+        <span
+          key={order.number}
+          className={`text text_type_digits-default ${styles.orderDone}`}
+        >
           {order.number}
         </span>
       ));
@@ -25,8 +27,10 @@ const OrdersFeedInfo = () => {
     return orders
       .filter((order) => order.status === OrderStatuses.pending)
       .map((order) => (
-        <span key={order.number}
-          className={`text text_type_digits-default ${styles.orderPending}`}>
+        <span
+          key={order.number}
+          className={`text text_type_digits-default ${styles.orderPending}`}
+        >
           {order.number}
         </span>
       ));
@@ -36,20 +40,12 @@ const OrdersFeedInfo = () => {
     <section className={styles.sectionContainer}>
       <div className={styles.orderNumbersContainer}>
         <div>
-          <h2 className="text text_type_main-medium mb-6">
-            Готовы
-          </h2>
-          <div className={styles.orderNumbersGrid}>
-            {ordersDone}
-          </div>
+          <h2 className="text text_type_main-medium mb-6">Готовы</h2>
+          <div className={styles.orderNumbersGrid}>{ordersDone}</div>
         </div>
         <div>
-          <h2  className="text text_type_main-medium mb-6">
-            В работе
-          </h2>
-          <div className={styles.orderNumbersGrid}>
-            {ordersPending}
-          </div>
+          <h2 className="text text_type_main-medium mb-6">В работе</h2>
+          <div className={styles.orderNumbersGrid}>{ordersPending}</div>
         </div>
       </div>
       <div>

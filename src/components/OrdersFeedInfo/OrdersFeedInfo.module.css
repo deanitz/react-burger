@@ -1,13 +1,13 @@
 .sectionContainer {
   display: flex;
-    flex-direction: column;
-    width: 600px;
+  flex-direction: column;
+  width: 600px;
 }
 
 .orderNumbersContainer {
   display: flex;
-    flex-direction: row;
-    column-gap: 36px;
+  flex-direction: row;
+  column-gap: 36px;
 }
 
 .orderNumbersGrid {
@@ -22,7 +22,7 @@
 
 .orderDone {
   font-size: 1.1rem;
-  color: #00CCCC;
+  color: #00cccc;
 }
 
 .orderPending {
