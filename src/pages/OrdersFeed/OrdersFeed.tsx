@@ -8,6 +8,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 import styles from "./OrdersFeed.module.css";
 import { WebsocketStatus } from "../../types/utilityTypes";
+import OrdersFeedInfo from "../../components/OrdersFeedInfo/OrdersFeedInfo";
 
 const ORDERS_FEED_SERVER_URL = "wss://norma.nomoreparties.space/orders/all";
 
@@ -38,9 +39,8 @@ const OrdersFeed = () => {
         <h1 className="text text_type_main-large mt-10 mb-5 ml-5">
           Лента заказов
         </h1>
-
-        <div className={`${styles.contentContainer}`}>
-          {status === WebsocketStatus.ONLINE ? (
+        {status === WebsocketStatus.ONLINE ? (
+          <div className={`${styles.contentContainer}`}>
             <section
               className={`${styles.ordersListContainer} custom-scroll mt-2 pl-5 pr-2`}
             >
@@ -52,10 +52,11 @@ const OrdersFeed = () => {
                 />
               ))}
             </section>
-          ) : (
-            <span className="text text_type_main-small">{status}</span>
-          )}
-        </div>
+            <OrdersFeedInfo></OrdersFeedInfo>
+          </div>
+        ) : (
+          <span className="text text_type_main-small">{status}</span>
+        )}
       </div>
     </div>
   );

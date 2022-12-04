@@ -6,12 +6,16 @@ interface IOrdersFeedState {
   status: WebsocketStatus;
   connectionError: string;
   orders: Array<OrderDataHistorical>;
+  total: number;
+  totalToday: number;
 }
 
 const initialState: IOrdersFeedState = {
   status: WebsocketStatus.OFFLINE,
   connectionError: "",
   orders: [],
+  total: 0,
+  totalToday: 0,
 };
 
 const ordersFeedSlice = createSlice({
@@ -33,6 +37,8 @@ const ordersFeedSlice = createSlice({
     //TODO type
     wsMessage: (state, action: PayloadAction<any>) => {
       state.orders = action.payload.orders;
+      state.total = action.payload.total;
+      state.totalToday = action.payload.totalToday;
     },
   },
 });
