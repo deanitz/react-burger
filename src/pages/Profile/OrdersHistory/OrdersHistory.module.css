@@ -13,3 +13,8 @@
   min-height: 300px;
   overflow-y: auto;
 }
+
+.link {
+  text-decoration: none;
+  color: unset;
+}

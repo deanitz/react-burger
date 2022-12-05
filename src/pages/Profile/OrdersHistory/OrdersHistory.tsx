@@ -9,10 +9,12 @@ import { useAppDispatch, useAppSelector } from "../../../utils/store";
 import styles from "./OrdersHistory.module.css";
 import { useAuth } from "../../../hooks/useAuth";
 import { WebsocketStatus } from "../../../types/utilityTypes";
+import { Link, useLocation } from "react-router-dom";
 
 const ORDERS_HISTORY_SERVER_URL = "wss://norma.nomoreparties.space/orders";
 
 const OrdersHistory = () => {
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const { user } = useAuth();
   const { orders, status } = useAppSelector(({ ordersHistory }) => ({
@@ -48,7 +50,16 @@ const OrdersHistory = () => {
             ?.slice()
             .reverse()
             .map((order) => (
-              <OrdersHistoryItem order={order} key={order.number} />
+              <Link
+                    to={`${location.pathname}/${order._id}`}
+                    state={{
+                      background: location,
+                    }}
+                    className={styles.link}
+                  >
+                      <OrdersHistoryItem order={order} key={order.number} />
+                  </Link>
+              
             ))}
         </div>
       ) : (

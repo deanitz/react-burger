@@ -26,3 +26,8 @@
   overflow-y: auto;
   width: 580px;
 }
+
+.link {
+  text-decoration: none;
+  color: unset;
+}

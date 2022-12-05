@@ -48,7 +48,9 @@ const App = () => {
             <Route index element={<AccountInfo />} />
             <Route path="orders" element={<OrdersHistory />} />
           </Route>
+          <Route path="profile/orders/:id" element={<div>orders/:id</div>} />
           <Route path="ingredients/:id" element={<IngredientInfo />} />
+          <Route path="feed/:id" element={<div>feed/:id</div>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
@@ -66,6 +68,36 @@ const App = () => {
                 onClose={handleCloseModal}
               >
                 <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:id"
+            element={
+              <Modal
+                header={
+                  <h1 className="text text_type_digits-medium">
+                    # добавить компонент с номером из стора
+                  </h1>
+                }
+                onClose={handleCloseModal}
+              >
+                <div>Будет контрол модалки заказа</div>
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal
+                header={
+                  <h1 className="text text_type_digits-medium">
+                    # добавить компонент с номером из стора 2
+                  </h1>
+                }
+                onClose={handleCloseModal}
+              >
+                <div>Будет контрол модалки заказа 2</div>
               </Modal>
             }
           />
