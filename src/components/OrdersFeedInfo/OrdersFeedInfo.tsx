@@ -3,6 +3,8 @@ import { OrderStatuses } from "../../types/dataTypes";
 import { useAppSelector } from "../../utils/store";
 import styles from "./OrdersFeedInfo.module.css";
 
+const MAX_ORDER_NUMBERS = 10;
+
 const OrdersFeedInfo = () => {
   const { orders, total, totalToday } = useAppSelector(({ ordersFeed }) => ({
     orders: ordersFeed.orders,
@@ -13,6 +15,7 @@ const OrdersFeedInfo = () => {
   const ordersDone = useMemo(() => {
     return orders
       .filter((order) => order.status === OrderStatuses.done)
+      .slice(0, MAX_ORDER_NUMBERS)
       .map((order) => (
         <span
           key={order.number}
@@ -26,6 +29,7 @@ const OrdersFeedInfo = () => {
   const ordersPending = useMemo(() => {
     return orders
       .filter((order) => order.status === OrderStatuses.pending)
+      .slice(0, MAX_ORDER_NUMBERS)
       .map((order) => (
         <span
           key={order.number}
