@@ -4,10 +4,12 @@ import { storeOrders as storeOrdersInLocalStorage } from "../../utils/localStora
 
 interface IOrderDetailsState {
   orderData?: OrderData;
+  isOrderLoaded: boolean;
 }
 
 const initialState: IOrderDetailsState = {
   orderData: undefined,
+  isOrderLoaded: false,
 };
 
 export const storeOrders = createAsyncThunk(
@@ -23,10 +25,15 @@ const orderDataSlice = createSlice({
   reducers: {
     setOrder: (state, action: PayloadAction<OrderData | undefined>) => {
       state.orderData = action.payload;
+      state.isOrderLoaded = true;
+    },
+    resetOrder: (state) => {
+      state.orderData = initialState.orderData;
+      state.isOrderLoaded = initialState.isOrderLoaded;
     },
   },
 });
 
-export const { setOrder } = orderDataSlice.actions;
+export const { setOrder, resetOrder } = orderDataSlice.actions;
 
 export default orderDataSlice.reducer;

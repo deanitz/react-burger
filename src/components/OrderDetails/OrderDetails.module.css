@@ -1,5 +1,88 @@
-.totalContainer {
+.contentContainer {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.spacedLineContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  justify-content: flex-end;
+}
+
+.smallIngredientIcon {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+
+  background: linear-gradient(#131316 0 0) padding-box,
+    linear-gradient(45deg, #801ab3, #4c4cff) border-box;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  z-index: 1;
+  position: relative;
+}
+
+.ingredientsContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 4);
+  max-height: 312px;
+  overflow-x: auto;
+}
+
+.smallIngredientIconImage {
+  height: 56px;
+}
+
+.ingredientRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ingredientRowLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.more {
+  opacity: 30%;
+}
+
+.moreText {
+  position: absolute;
+  font-size: 1.4rem;
+  z-index: 1;
+}
+
+.total {
+  display: flex;
+}
+
+.statusCreated {
+  color: #f2f2f3;
+}
+
+.statusPending {
+  color: #f2f2f3;
+}
+
+.statusDone {
+  color: #00cccc;
+}
+
+.statusCancelled {
+  color: #cc0000;
 }

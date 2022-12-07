@@ -16,6 +16,7 @@ import IngredientInfo from "../../pages/IngredientInfo/IngredientInfo";
 import NotFound from "../../pages/NotFound/NotFound";
 import OrdersFeed from "../../pages/OrdersFeed/OrdersFeed";
 import OrderDetails from "../OrderDetails/OrderDetails";
+import OrderDetailsHeader from "../OrderDetailsHeader/OrderDetailsHeader";
 
 const App = () => {
   useIngredients();
@@ -75,14 +76,7 @@ const App = () => {
           <Route
             path="/feed/:id"
             element={
-              <Modal
-                header={
-                  <h1 className="text text_type_digits-medium">
-                    # добавить компонент с номером из стора
-                  </h1>
-                }
-                onClose={handleCloseModal}
-              >
+              <Modal header={<OrderDetailsHeader />} onClose={handleCloseModal}>
                 <OrderDetails />
               </Modal>
             }
@@ -90,14 +84,7 @@ const App = () => {
           <Route
             path="/profile/orders/:id"
             element={
-              <Modal
-                header={
-                  <h1 className="text text_type_digits-medium">
-                    # добавить компонент с номером из стора 2
-                  </h1>
-                }
-                onClose={handleCloseModal}
-              >
+              <Modal header={<OrderDetailsHeader />} onClose={handleCloseModal}>
                 <OrderDetails />
               </Modal>
             }
