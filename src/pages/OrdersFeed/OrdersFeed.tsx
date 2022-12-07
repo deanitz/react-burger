@@ -54,12 +54,9 @@ const OrdersFeed = () => {
                       background: location,
                     }}
                     className={styles.link}
+                    key={order.number}
                   >
-                    <OrdersHistoryItem
-                      order={order}
-                      key={order.number}
-                      showStatus={false}
-                    />
+                    <OrdersHistoryItem order={order} showStatus={false} />
                   </Link>
                 ))}
               </section>

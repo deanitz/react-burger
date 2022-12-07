@@ -3,6 +3,7 @@ import ingredients from "../slices/ingredientsSlice";
 import order from "../slices/orderSlice";
 import ordersHistory from "../slices/ordersHistorySlice";
 import ordersFeed from "../slices/ordersFeedSlice";
+import orderDetails from "../slices/orderDetailsSlice";
 import selectedIngredients from "../slices/selectedIngredientsSlice";
 import selectedIngredientsTab from "../slices/selectedIngredientsTabSlice";
 import resetPassword from "../slices/resetPasswordSlice";
@@ -15,6 +16,7 @@ export const rootReducer = combineReducers({
   order,
   ordersHistory,
   ordersFeed,
+  orderDetails,
   selectedIngredients,
   selectedIngredientsTab,
   resetPassword,

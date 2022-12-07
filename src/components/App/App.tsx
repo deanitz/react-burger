@@ -15,6 +15,7 @@ import Profile from "../../pages/Profile/Profile";
 import IngredientInfo from "../../pages/IngredientInfo/IngredientInfo";
 import NotFound from "../../pages/NotFound/NotFound";
 import OrdersFeed from "../../pages/OrdersFeed/OrdersFeed";
+import OrderDetails from "../OrderDetails/OrderDetails";
 
 const App = () => {
   useIngredients();
@@ -48,9 +49,9 @@ const App = () => {
             <Route index element={<AccountInfo />} />
             <Route path="orders" element={<OrdersHistory />} />
           </Route>
-          <Route path="profile/orders/:id" element={<div>orders/:id</div>} />
+          <Route path="profile/orders/:id" element={<OrderDetails />} />
           <Route path="ingredients/:id" element={<IngredientInfo />} />
-          <Route path="feed/:id" element={<div>feed/:id</div>} />
+          <Route path="feed/:id" element={<OrderDetails />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
@@ -82,7 +83,7 @@ const App = () => {
                 }
                 onClose={handleCloseModal}
               >
-                <div>Будет контрол модалки заказа</div>
+                <OrderDetails />
               </Modal>
             }
           />
@@ -97,7 +98,7 @@ const App = () => {
                 }
                 onClose={handleCloseModal}
               >
-                <div>Будет контрол модалки заказа 2</div>
+                <OrderDetails />
               </Modal>
             }
           />

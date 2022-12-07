@@ -1,4 +1,4 @@
-import { Middleware } from "@reduxjs/toolkit";
+import { AnyAction, Middleware } from "@reduxjs/toolkit";
 import { IWebsocketActions } from "../../types/utilityTypes";
 import { RootState } from "../../utils/store";
 import { logError, logInfo } from "../logService";
@@ -15,7 +15,7 @@ export const createSocketMiddleware = <TData>(
     let isConnected = false;
     let reconnectTimer = 0;
 
-    return (next) => (action) => {
+    return (next) => (action: AnyAction) => {
       const { dispatch } = store;
       const {
         connect,
@@ -25,6 +25,7 @@ export const createSocketMiddleware = <TData>(
         wsError,
         wsMessage,
         wsOpen,
+        storeMessage,
       } = wsActions;
 
       if (connect.match(action)) {
@@ -48,6 +49,7 @@ export const createSocketMiddleware = <TData>(
         socket.onmessage = (event: MessageEvent) => {
           const { data } = event;
           const parsedData = JSON.parse(data) as TData;
+          dispatch(storeMessage(parsedData));
           dispatch(wsMessage(parsedData));
         };
 

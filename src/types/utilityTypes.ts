@@ -33,6 +33,7 @@ export interface IWebsocketActions<TData> {
   wsClose: ActionCreatorWithoutPayload;
   wsError: ActionCreatorWithPayload<string>;
   wsMessage: ActionCreatorWithPayload<TData>;
+  storeMessage: ActionCreatorWithPayload<TData>;
 }
 
 export enum WebsocketStatus {

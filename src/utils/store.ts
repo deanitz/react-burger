@@ -22,6 +22,8 @@ import {
   wsMessage as ordersFeedMessage,
 } from "../services/slices/ordersFeedSlice";
 import { OrdersMessageData } from "../types/dataTypes";
+import { saveOrders } from "../services/actions/orderStorageActions";
+import { createOrderStorageMiddleware } from "../services/middleware/orderStorageMiddleware";
 
 const ordersHistoryActions = {
   connect: ordersHistoryConnect,
@@ -31,6 +33,7 @@ const ordersHistoryActions = {
   wsClose: ordersHistoryClose,
   wsError: ordersHistoryError,
   wsMessage: ordersHistoryMessage,
+  storeMessage: saveOrders,
 };
 
 const ordersFeedActions = {
@@ -41,12 +44,15 @@ const ordersFeedActions = {
   wsClose: ordersFeedClose,
   wsError: ordersFeedError,
   wsMessage: ordersFeedMessage,
+  storeMessage: saveOrders,
 };
 
 const historyWebsocketMiddleware: Middleware =
   createSocketMiddleware<OrdersMessageData>(ordersHistoryActions);
 const feedWebsocketMiddleware: Middleware =
   createSocketMiddleware<OrdersMessageData>(ordersFeedActions);
+
+const orderStorageMiddleware: Middleware = createOrderStorageMiddleware();
 
 const preloadedState = {};
 
@@ -55,7 +61,8 @@ export const rootStore = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(historyWebsocketMiddleware)
-      .concat(feedWebsocketMiddleware),
+      .concat(feedWebsocketMiddleware)
+      .concat(orderStorageMiddleware),
   devTools: process.env.NODE_ENV !== "production",
   preloadedState,
 });

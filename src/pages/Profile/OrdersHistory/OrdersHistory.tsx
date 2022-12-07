@@ -51,15 +51,15 @@ const OrdersHistory = () => {
             .reverse()
             .map((order) => (
               <Link
-                    to={`${location.pathname}/${order._id}`}
-                    state={{
-                      background: location,
-                    }}
-                    className={styles.link}
-                  >
-                      <OrdersHistoryItem order={order} key={order.number} />
-                  </Link>
-              
+                to={`${location.pathname}/${order._id}`}
+                state={{
+                  background: location,
+                }}
+                className={styles.link}
+                key={order.number}
+              >
+                <OrdersHistoryItem order={order} />
+              </Link>
             ))}
         </div>
       ) : (
