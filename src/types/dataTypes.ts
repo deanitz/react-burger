@@ -41,6 +41,11 @@ type IngredientShape = {
 
 export type Ingredient = Readonly<IngredientShape> & IUniqueId;
 
+export type IngredientWithCount = {
+  ingredient: Ingredient | undefined;
+  count: number;
+}
+
 export type GetIngredientsResponse = {
   data: Array<Ingredient>;
 };

@@ -4,15 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { loadOrder } from "../../services/actions/orderStorageActions";
 import { resetOrder } from "../../services/slices/orderDetailsSlice";
 import {
-  Ingredient,
+  IngredientWithCount,
   OrderStatuses,
   OrderStatusesDescriptions,
 } from "../../types/dataTypes";
-import { IUniqueId } from "../../types/utilityTypes";
-import { addUniqueId, getUniqueIdObject } from "../../utils/dataUtils";
 import { getDateDescription } from "../../utils/dateTimeUtils";
 import { ROUTE_NOT_FOUND } from "../../utils/routes";
-import { sortBunFirst } from "../../utils/sortUtils";
+import { sortBunFirst } from "../../utils/collectionUtils";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 import styles from "./OrderDetails.module.css";
 
@@ -52,15 +50,22 @@ const OrderDetails = () => {
     }
   }, [order, isOrderLoaded, navigate]);
 
-  const { ingredientsData } = useAppSelector(({ ingredients }) => ({
+  const { ingredientsData, allIngredients } = useAppSelector(({ ingredients }) => ({
+    allIngredients: ingredients.ingredientsData,
     ingredientsData: order
       ? order.ingredients
-          .map((ingredientId) =>
-            ingredients.ingredientsData.find((i) => i._id === ingredientId)
-          )
-          .map((ingredient) =>
-            ingredient ? addUniqueId(ingredient) : getUniqueIdObject()
-          )
+          .map((ingredientId) => ({
+            ingredient: ingredients.ingredientsData.find((i) => i._id === ingredientId),
+            count: 1
+          }))
+          .reduce((acc: Array<IngredientWithCount>, cur: IngredientWithCount) => {
+            const stored = acc.find(el => el.ingredient?._id === cur.ingredient?._id);
+            if (stored) {
+              stored.count += 1;
+              return acc;
+            }
+            return [...acc, cur];
+          }, [])
           .sort(sortBunFirst)
       : [],
   }));
@@ -75,45 +80,43 @@ const OrderDetails = () => {
     </span>
   );
 
-  const ingredientRow = (ingredient: Ingredient) => (
-    <div className={`${styles.ingredientRow} mr-6`}>
+  const ingredientRow = (item: IngredientWithCount) => (
+    <div className={`${styles.ingredientRow} mr-6`} key={item.ingredient?._id}>
       <div className={styles.ingredientRowLeft}>
-        <div className={styles.smallIngredientIcon} key={ingredient.uniqueId}>
+        <div className={styles.smallIngredientIcon}>
           <img
             className={styles.smallIngredientIconImage}
-            src={(ingredient as Ingredient)?.image_mobile}
+            src={item.ingredient?.image_mobile}
             alt={`изображение ингредиента "${
-              (ingredient as Ingredient)?.name ?? "не найдено"
+              item.ingredient?.name ?? "не найдено"
             }"`}
           />
         </div>
         <span className="text text_type_main-small ml-4">
-          {ingredient.name}
+          {item.ingredient?.name}
         </span>
       </div>
-      <div className={`${styles.total} text text_type_digits-default mr-10`}>
-        <span>1x</span>
-        <span className="mr-2">{ingredient.price}</span>
+      <div className={`${styles.total} text text_type_digits-default mr-10 ml-4`}>
+        <span>{item.count}x</span>
+        <span className="mr-2">{item.ingredient?.price}</span>
         <CurrencyIcon type="primary" />
       </div>
     </div>
   );
 
-  //TODO types
-  const ingredients = useMemo(
+  const ingredients = 
     () => (
       <div className={`${styles.ingredientsContainer} custom-scroll mt-6`}>
-        {ingredientsData.map((ingredient: Ingredient | IUniqueId) =>
-          ingredientRow(ingredient as Ingredient)
+        {ingredientsData.map((ingredient: IngredientWithCount) =>
+          ingredientRow(ingredient)
         )}
       </div>
-    ),
-    [ingredientsData]
-  );
+    )
+  ;
 
   const total = useMemo(() => {
     const totalPrice = ingredientsData.reduce(
-      (acc, cur) => (acc += (cur as Ingredient)?.price ?? 0),
+      (acc, cur) => (acc += cur.ingredient ? cur.ingredient.price * cur.count : 0),
       0
     );
     return (
@@ -124,13 +127,13 @@ const OrderDetails = () => {
     );
   }, [ingredientsData]);
 
-  return order ? (
+  return order && allIngredients.length ? (
     <section className={styles.contentContainer}>
       <span className="text text_type_main-medium">{order.name}</span>
       {status}
       <div className="mt-15 mb-6">
         <span className="text text_type_main-medium">Состав:</span>
-        {ingredients}
+        {ingredients()}
       </div>
       <div className={`${styles.spacedLineContainer} mt-6`}>
         <span className="text text_type_main-default text_color_inactive">
@@ -140,7 +143,7 @@ const OrderDetails = () => {
       </div>
     </section>
   ) : (
-    <></>
+    <div>Загрузка...</div>
   );
 };
 

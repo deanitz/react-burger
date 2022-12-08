@@ -17,6 +17,7 @@ import NotFound from "../../pages/NotFound/NotFound";
 import OrdersFeed from "../../pages/OrdersFeed/OrdersFeed";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import OrderDetailsHeader from "../OrderDetailsHeader/OrderDetailsHeader";
+import OrderInfo from "../../pages/OrderInfo/OrderInfo";
 
 const App = () => {
   useIngredients();
@@ -50,9 +51,9 @@ const App = () => {
             <Route index element={<AccountInfo />} />
             <Route path="orders" element={<OrdersHistory />} />
           </Route>
-          <Route path="profile/orders/:id" element={<OrderDetails />} />
+          <Route path="profile/orders/:id" element={<OrderInfo />} />
+          <Route path="feed/:id" element={<OrderInfo />} />
           <Route path="ingredients/:id" element={<IngredientInfo />} />
-          <Route path="feed/:id" element={<OrderDetails />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

@@ -5,7 +5,7 @@ const OrderDetailsHeader = () => {
     order: orderDetails.orderData,
   }));
 
-  return <h1 className="text text_type_digits-default">#{order?.number}</h1>;
+  return <h1 className="text text_type_digits-default mb-10">#{order?.number}</h1>;
 };
 
 export default OrderDetailsHeader;

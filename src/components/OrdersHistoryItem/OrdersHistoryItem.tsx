@@ -9,7 +9,7 @@ import {
 import { IUniqueId } from "../../types/utilityTypes";
 import { addUniqueId, getUniqueIdObject } from "../../utils/dataUtils";
 import { getDateDescription } from "../../utils/dateTimeUtils";
-import { sortBunFirst } from "../../utils/sortUtils";
+import { sortBunFirst } from "../../utils/collectionUtils";
 import { useAppSelector } from "../../utils/store";
 
 import styles from "./OrdersHistoryItem.module.css";
@@ -38,7 +38,7 @@ const OrdersHistoryItem = ({
         ingredients.ingredientsData.find((i) => i._id === ingredientId)
       )
       .map((ingredient) =>
-        ingredient ? addUniqueId(ingredient) : getUniqueIdObject()
+        (ingredient ? addUniqueId(ingredient) : getUniqueIdObject()) as IUniqueId | Ingredient
       )
       .sort(sortBunFirst),
   }));
