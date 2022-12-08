@@ -37,8 +37,11 @@ const OrdersHistoryItem = ({
       .map((ingredientId) =>
         ingredients.ingredientsData.find((i) => i._id === ingredientId)
       )
-      .map((ingredient) =>
-        (ingredient ? addUniqueId(ingredient) : getUniqueIdObject()) as IUniqueId | Ingredient
+      .map(
+        (ingredient) =>
+          (ingredient ? addUniqueId(ingredient) : getUniqueIdObject()) as
+            | IUniqueId
+            | Ingredient
       )
       .sort(sortBunFirst),
   }));

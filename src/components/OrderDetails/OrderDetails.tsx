@@ -50,25 +50,34 @@ const OrderDetails = () => {
     }
   }, [order, isOrderLoaded, navigate]);
 
-  const { ingredientsData, allIngredients } = useAppSelector(({ ingredients }) => ({
-    allIngredients: ingredients.ingredientsData,
-    ingredientsData: order
-      ? order.ingredients
-          .map((ingredientId) => ({
-            ingredient: ingredients.ingredientsData.find((i) => i._id === ingredientId),
-            count: 1
-          }))
-          .reduce((acc: Array<IngredientWithCount>, cur: IngredientWithCount) => {
-            const stored = acc.find(el => el.ingredient?._id === cur.ingredient?._id);
-            if (stored) {
-              stored.count += 1;
-              return acc;
-            }
-            return [...acc, cur];
-          }, [])
-          .sort(sortBunFirst)
-      : [],
-  }));
+  const { ingredientsData, allIngredients } = useAppSelector(
+    ({ ingredients }) => ({
+      allIngredients: ingredients.ingredientsData,
+      ingredientsData: order
+        ? order.ingredients
+            .map((ingredientId) => ({
+              ingredient: ingredients.ingredientsData.find(
+                (i) => i._id === ingredientId
+              ),
+              count: 1,
+            }))
+            .reduce(
+              (acc: Array<IngredientWithCount>, cur: IngredientWithCount) => {
+                const stored = acc.find(
+                  (el) => el.ingredient?._id === cur.ingredient?._id
+                );
+                if (stored) {
+                  stored.count += 1;
+                  return acc;
+                }
+                return [...acc, cur];
+              },
+              []
+            )
+            .sort(sortBunFirst)
+        : [],
+    })
+  );
 
   const status = order && (
     <span
@@ -96,7 +105,9 @@ const OrderDetails = () => {
           {item.ingredient?.name}
         </span>
       </div>
-      <div className={`${styles.total} text text_type_digits-default mr-10 ml-4`}>
+      <div
+        className={`${styles.total} text text_type_digits-default mr-10 ml-4`}
+      >
         <span>{item.count}x</span>
         <span className="mr-2">{item.ingredient?.price}</span>
         <CurrencyIcon type="primary" />
@@ -104,19 +115,17 @@ const OrderDetails = () => {
     </div>
   );
 
-  const ingredients = 
-    () => (
-      <div className={`${styles.ingredientsContainer} custom-scroll mt-6`}>
-        {ingredientsData.map((ingredient: IngredientWithCount) =>
-          ingredientRow(ingredient)
-        )}
-      </div>
-    )
-  ;
-
+  const ingredients = () => (
+    <div className={`${styles.ingredientsContainer} custom-scroll mt-6`}>
+      {ingredientsData.map((ingredient: IngredientWithCount) =>
+        ingredientRow(ingredient)
+      )}
+    </div>
+  );
   const total = useMemo(() => {
     const totalPrice = ingredientsData.reduce(
-      (acc, cur) => (acc += cur.ingredient ? cur.ingredient.price * cur.count : 0),
+      (acc, cur) =>
+        (acc += cur.ingredient ? cur.ingredient.price * cur.count : 0),
       0
     );
     return (

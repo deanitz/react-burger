@@ -1,7 +1,15 @@
-import { Ingredient, IngredientTypes, IngredientWithCount } from "../types/dataTypes";
+import {
+  Ingredient,
+  IngredientTypes,
+  IngredientWithCount,
+} from "../types/dataTypes";
 import { IUniqueId, Nullable } from "../types/utilityTypes";
 
-type SortableIngredientLike = Ingredient | IngredientWithCount | IUniqueId | undefined
+type SortableIngredientLike =
+  | Ingredient
+  | IngredientWithCount
+  | IUniqueId
+  | undefined;
 export const sortBunFirst = (
   a: SortableIngredientLike,
   b: SortableIngredientLike
@@ -19,13 +27,13 @@ const getType = (item: SortableIngredientLike) => {
   if (!item) {
     return undefined;
   }
-  let ingredient = (item as IngredientWithCount).ingredient
+  let ingredient = (item as IngredientWithCount).ingredient;
   if (ingredient) {
     return ingredient.type;
   }
   ingredient = item as Ingredient;
   return ingredient?.type;
-}
+};
 
 export const getIngredientsCount = (
   item: Ingredient,
