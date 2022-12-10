@@ -1,7 +1,7 @@
 .profile {
   width: 1280px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 0.6fr 1fr 0.6fr;
 }
 
 .menuContainer {

@@ -1,0 +1,33 @@
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageInnerContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.contentContainer {
+  width: 1280px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: calc(var(--offset-base-size) * 15);
+}
+
+.ordersListContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: calc(var(--offset-base-size) * 4);
+  max-height: calc(100vh - 180px);
+  min-height: 300px;
+  overflow-y: auto;
+  width: 580px;
+}
+
+.link {
+  text-decoration: none;
+  color: unset;
+}

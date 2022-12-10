@@ -4,16 +4,13 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PageLayout from "../../components/PageLayout/PageLayout";
+import { useForm } from "../../hooks/useForm";
 import { useLoginProtection } from "../../hooks/useLoginProtection";
 import { register } from "../../services/slices/authSlice";
-import { RegistrationRequest } from "../../types/dataTypes";
-import {
-  FormSubmitEventFunc,
-  InputChangeEventFunc,
-} from "../../types/utilityTypes";
+import { FormSubmitEventFunc } from "../../types/utilityTypes";
 import { ROUTE_LOGIN, ROUTE_ROOT } from "../../utils/routes";
 import { useAppDispatch, useAppSelector } from "../../utils/store";
 
@@ -28,30 +25,22 @@ const Register = () => {
       isRegistrationError: auth.register.error,
     }));
 
-  const [state, setState] = useState<RegistrationRequest>({
+  const { values, handleChange } = useForm({
     name: "",
     email: "",
     password: "",
   });
-  const onChange = (e: InputChangeEventFunc) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
 
   const handleRegistration = useCallback(
     (e: FormSubmitEventFunc) => {
       e.preventDefault();
       dispatch(
         register({
-          ...state,
+          ...values,
         })
       );
     },
-    [dispatch, state]
+    [dispatch, values]
   );
 
   useEffect(() => {
@@ -70,23 +59,23 @@ const Register = () => {
             <Input
               type={"text"}
               placeholder={"Имя"}
-              onChange={onChange}
-              value={state.name}
+              onChange={handleChange}
+              value={values.name}
               name={"name"}
               errorText={"Ошибка ввода имени"}
             />
           </div>
           <div className="mt-6">
             <EmailInput
-              onChange={onChange}
-              value={state.email}
+              onChange={handleChange}
+              value={values.email}
               name={"email"}
             />
           </div>
           <div className="mt-6">
             <PasswordInput
-              onChange={onChange}
-              value={state.password}
+              onChange={handleChange}
+              value={values.password}
               name={"password"}
             />
           </div>
@@ -97,9 +86,9 @@ const Register = () => {
               htmlType="submit"
               disabled={
                 isRegistrationLoading ||
-                !state?.name?.length ||
-                !state?.email?.length ||
-                !state?.password.length
+                !values?.name?.length ||
+                !values?.email?.length ||
+                !values?.password.length
               }
             >
               Зарегистрироваться

@@ -3,6 +3,7 @@ import { Ingredient } from "../../types/dataTypes";
 import IngredientItem from "../IngredientItem/IngredientItem";
 import { useAppSelector } from "../../utils/store";
 import styles from "./IngredientSection.module.css";
+import { getIngredientsCount } from "../../utils/collectionUtils";
 
 export type IngredientSectionProps = {
   name: string;
@@ -19,10 +20,10 @@ const IngredientSection = forwardRef(
     );
 
     const getCount = (item: Ingredient) => {
-      return [selectedIngredients.bun, ...selectedIngredients.inner].reduce(
-        (acc, curr) => (curr ? (curr._id === item._id ? acc + 1 : acc) : acc),
-        0
-      );
+      return getIngredientsCount(item, [
+        selectedIngredients.bun,
+        ...selectedIngredients.inner,
+      ]);
     };
 
     return (

@@ -1,7 +1,7 @@
 import { useMemo, useCallback, useEffect } from "react";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerCheckout from "../BurgerCheckout/BurgerCheckout";
-import OrderDetails from "../OrderDetails/OrderDetails";
+import OrderCheckoutDetails from "../OrderCheckoutDetails/OrderCheckoutDetails";
 import Modal from "../Modal/Modal";
 import useModal from "../../hooks/useModal";
 import { getBurgerTotalPrice } from "./BurgerConstructor.utils";
@@ -126,7 +126,7 @@ const BurgerConstructor = () => {
     () =>
       isModal && (
         <Modal onClose={handleCloseModal}>
-          <OrderDetails orderNumber={orderNumber} />
+          <OrderCheckoutDetails orderNumber={orderNumber} />
         </Modal>
       ),
     [isModal, handleCloseModal, orderNumber]

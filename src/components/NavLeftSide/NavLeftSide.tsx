@@ -6,7 +6,7 @@ import {
   ListIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation, matchPath } from "react-router-dom";
-import { ROUTE_ORDERS_FLOW, ROUTE_ROOT } from "../../utils/routes";
+import { ROUTE_ORDERS_FEED, ROUTE_ROOT } from "../../utils/routes";
 
 const NavLeftSide = () => {
   const { pathname } = useLocation();
@@ -23,9 +23,9 @@ const NavLeftSide = () => {
         end
       />
       <NavMenuItem
-        icon={<ListIcon type={getIconType(ROUTE_ORDERS_FLOW)} />}
+        icon={<ListIcon type={getIconType(ROUTE_ORDERS_FEED)} />}
         text="Лента заказов"
-        to={ROUTE_ORDERS_FLOW}
+        to={ROUTE_ORDERS_FEED}
         end
       />
     </NavMenuContainer>

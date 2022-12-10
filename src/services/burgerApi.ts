@@ -75,15 +75,17 @@ export const getIngredients = (): Promise<GetIngredientsResponse> => {
 };
 
 export const placeOrder = (
-  order: OrderRequest
+  order: OrderRequest,
+  accessToken: Nullable<string>
 ): Promise<IResponseWithSuccess & OrderResponseData> => {
-  return fetch(`${API_URL}/orders`, {
+  return fetchWithRefresh(`${API_URL}/orders`, {
     method: "POST",
     headers: {
+      Authorization: "Bearer " + accessToken,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(order),
-  }).then((res) => checkResponse(res));
+  });
 };
 
 export const resetPassword = (email: string): Promise<IResponseWithSuccess> => {

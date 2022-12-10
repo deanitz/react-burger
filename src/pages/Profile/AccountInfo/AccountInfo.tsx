@@ -13,10 +13,8 @@ import {
 } from "../../../services/slices/profileSlice";
 import { setInfoText } from "../../../services/slices/profileTextSlice";
 import { useAppDispatch, useAppSelector } from "../../../utils/store";
-import {
-  FormSubmitEventFunc,
-  InputChangeEventFunc,
-} from "../../../types/utilityTypes";
+import { FormSubmitEventFunc } from "../../../types/utilityTypes";
+import { useForm } from "../../../hooks/useForm";
 
 const defaultAccountInfoState: {
   name: string;
@@ -53,7 +51,7 @@ const AccountInfo = () => {
   useEffect(() => {
     if (isGetUserInfoSuccess) {
       setIsDataSaved(false);
-      setState({
+      setValues({
         name: userInfo?.name ?? "",
         email: userInfo?.email ?? "",
         password: "",
@@ -65,7 +63,7 @@ const AccountInfo = () => {
   }, [isGetUserInfoSuccess, userInfo]);
 
   useEffect(() => {
-    setState(defaultAccountInfoState);
+    setValues(defaultAccountInfoState);
     dispatch(getUserInfo());
 
     return () => {
@@ -74,17 +72,8 @@ const AccountInfo = () => {
     };
   }, [dispatch]);
 
-  const [state, setState] = useState(defaultAccountInfoState);
   const [isDataSaved, setIsDataSaved] = useState(false);
-
-  const onChange = (e: InputChangeEventFunc) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setState({
-      ...state,
-      [name]: value,
-    });
-  };
+  const { values, handleChange, setValues } = useForm(defaultAccountInfoState);
 
   const { isSaveUserInfoSuccess, isSaveUserInfoLoading, isSaveUserInfoError } =
     useAppSelector(({ profile }) => ({
@@ -100,21 +89,21 @@ const AccountInfo = () => {
       setIsDataSaved(false);
       dispatch(
         updateUserInfo({
-          ...state,
+          ...values,
         })
       );
     },
-    [dispatch, state]
+    [dispatch, values]
   );
 
   useEffect(() => {
     if (isSaveUserInfoSuccess) {
       dispatch(resetUpdateUserInfo());
       setIsDataSaved(true);
-      setState((state) => ({
-        ...state,
-        originalName: state.name,
-        originalEmail: state.email,
+      setValues((values) => ({
+        ...values,
+        originalName: values.name,
+        originalEmail: values.email,
         password: "",
       }));
     }
@@ -125,24 +114,24 @@ const AccountInfo = () => {
       e.preventDefault();
 
       dispatch(resetUpdateUserInfo());
-      setState({
-        ...state,
-        name: state.originalName,
-        email: state.originalEmail,
+      setValues({
+        ...values,
+        name: values.originalName,
+        email: values.originalEmail,
         password: "",
       });
       setIsDataSaved(false);
     },
-    [state, dispatch]
+    [values, dispatch]
   );
 
   const { isNameChanged, isEmailChanged, isPasswordChanged } = useMemo(() => {
-    const isNameChanged = state.name !== state.originalName;
-    const isEmailChanged = state.email !== state.originalEmail;
-    const isPasswordChanged = Boolean(state.password.length);
+    const isNameChanged = values.name !== values.originalName;
+    const isEmailChanged = values.email !== values.originalEmail;
+    const isPasswordChanged = Boolean(values.password.length);
 
     return { isNameChanged, isEmailChanged, isPasswordChanged };
-  }, [state]);
+  }, [values]);
 
   useEffect(() => {
     if (isNameChanged || isEmailChanged || isPasswordChanged) {
@@ -162,8 +151,8 @@ const AccountInfo = () => {
         <Input
           type={"text"}
           placeholder={"Имя"}
-          onChange={onChange}
-          value={state.name}
+          onChange={handleChange}
+          value={values.name}
           name={"name"}
           errorText={"Ошибка ввода имени"}
           icon={isNameChanged ? "EditIcon" : "HideIcon"}
@@ -171,16 +160,16 @@ const AccountInfo = () => {
       </div>
       <div className="mt-6">
         <EmailInput
-          onChange={onChange}
-          value={state.email}
+          onChange={handleChange}
+          value={values.email}
           name={"email"}
           isIcon={isEmailChanged}
         />
       </div>
       <div className="mt-6">
         <PasswordInput
-          onChange={onChange}
-          value={state.password}
+          onChange={handleChange}
+          value={values.password}
           name={"password"}
         />
       </div>
@@ -195,8 +184,8 @@ const AccountInfo = () => {
                 !isGetUserInfoSuccess ||
                 isGetUserInfoLoading ||
                 isSaveUserInfoLoading ||
-                !state?.name?.length ||
-                !state?.email?.length
+                !values?.name?.length ||
+                !values?.email?.length
               }
             >
               Сохранить
