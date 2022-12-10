@@ -1,6 +1,0 @@
-.page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: calc(max(10vh, var(--offset-base-size) * 10));
-}
