@@ -48,6 +48,9 @@ const AccountInfo = () => {
     isGetUserInfoError: profile.getUserInfo.error,
   }));
 
+  const [isDataSaved, setIsDataSaved] = useState(false);
+  const { values, handleChange, setValues } = useForm(defaultAccountInfoState);
+
   useEffect(() => {
     if (isGetUserInfoSuccess) {
       setIsDataSaved(false);
@@ -60,7 +63,7 @@ const AccountInfo = () => {
       });
       return;
     }
-  }, [isGetUserInfoSuccess, userInfo]);
+  }, [isGetUserInfoSuccess, userInfo, setValues]);
 
   useEffect(() => {
     setValues(defaultAccountInfoState);
@@ -70,10 +73,7 @@ const AccountInfo = () => {
       dispatch(resetGetUserInfo());
       dispatch(resetUpdateUserInfo());
     };
-  }, [dispatch]);
-
-  const [isDataSaved, setIsDataSaved] = useState(false);
-  const { values, handleChange, setValues } = useForm(defaultAccountInfoState);
+  }, [dispatch, setValues]);
 
   const { isSaveUserInfoSuccess, isSaveUserInfoLoading, isSaveUserInfoError } =
     useAppSelector(({ profile }) => ({
@@ -107,7 +107,7 @@ const AccountInfo = () => {
         password: "",
       }));
     }
-  }, [dispatch, isSaveUserInfoSuccess]);
+  }, [dispatch, isSaveUserInfoSuccess, setValues]);
 
   const handleCancel = useCallback(
     (e: React.SyntheticEvent<Element, Event>) => {
@@ -122,7 +122,7 @@ const AccountInfo = () => {
       });
       setIsDataSaved(false);
     },
-    [values, dispatch]
+    [values, dispatch, setValues]
   );
 
   const { isNameChanged, isEmailChanged, isPasswordChanged } = useMemo(() => {

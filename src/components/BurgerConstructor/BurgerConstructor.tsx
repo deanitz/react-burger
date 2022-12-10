@@ -10,6 +10,7 @@ import {
   addSelectedIngredient,
   removeSelectedIngredient,
   reorderSelectedIngredients,
+  reset as resetIngredients,
   setBun,
 } from "../../services/slices/selectedIngredientsSlice";
 import InnerIngredient from "./InnerIngredient";
@@ -54,6 +55,7 @@ const BurgerConstructor = () => {
   useEffect(() => {
     if (isOrderLoaded && !isModal) {
       showModal();
+      dispatch(resetIngredients());
       return;
     }
     if (isOrderLoadingError) {
@@ -231,7 +233,9 @@ const BurgerConstructor = () => {
         ref={dropIngredientTarget}
       >
         <div className={styles.selectedIngredientsContainer}>
-          {bun ? (
+          {isOrderLoading ? (
+            <div className={styles.loader} />
+          ) : bun ? (
             <>
               {burgerTop}
               {burgerInner}

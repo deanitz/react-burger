@@ -17,6 +17,10 @@ const selectedIngredientsSlice = createSlice({
   name: "selectedIngredients",
   initialState,
   reducers: {
+    reset: (state) => {
+      state.bun = initialState.bun;
+      state.inner = initialState.inner;
+    },
     setBun: (state, action: PayloadAction<Ingredient>) => {
       state.bun = action.payload;
     },
@@ -60,6 +64,7 @@ const selectedIngredientsSlice = createSlice({
 });
 
 export const {
+  reset,
   addSelectedIngredient,
   removeSelectedIngredient,
   reorderSelectedIngredients,
