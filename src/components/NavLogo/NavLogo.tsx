@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { ROUTE_ROOT } from "../../utils/routes";
 
 const NavLogo = () => (
-  <NavLink to={ROUTE_ROOT} end>
+  <NavLink to={ROUTE_ROOT} end data-testid="nav-link">
     <Logo />
   </NavLink>
 );
