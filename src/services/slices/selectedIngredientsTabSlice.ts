@@ -5,7 +5,7 @@ interface ISelectedIngredientsTabState {
   value: Nullable<string>;
 }
 
-const initialState: ISelectedIngredientsTabState = {
+export const initialState: ISelectedIngredientsTabState = {
   value: null,
 };
 
