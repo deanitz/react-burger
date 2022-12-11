@@ -8,7 +8,7 @@ interface ISelectedIngredientsState {
   inner: Ingredient[];
 }
 
-const initialState: ISelectedIngredientsState = {
+export const initialState: ISelectedIngredientsState = {
   bun: null,
   inner: [],
 };
