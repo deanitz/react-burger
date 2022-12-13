@@ -54,11 +54,14 @@
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
-    "fetch-mock": "^9.11.0",
     "gh-pages": "^4.0.0",
     "jest": "^27.5.1",
+    "jest-fetch-mock": "^3.0.3",
     "prettier": "2.7.1",
     "react-test-renderer": "^18.2.0",
     "redux-mock-store": "^1.5.4"
+  },
+  "jest": {
+    "resetMocks": false
   }
 }

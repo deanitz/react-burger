@@ -1,4 +1,4 @@
-import selectedIngredientsTab, {
+import reducer, {
   initialState,
   setSelectedTab,
 } from "./selectedIngredientsTabSlice";
@@ -20,7 +20,7 @@ describe("Проверка selectedIngredientsTabSlice", () => {
 
   beforeEach(() => {
     store = configureStore({
-      reducer: selectedIngredientsTab,
+      reducer: reducer,
       initStore,
     });
   });
