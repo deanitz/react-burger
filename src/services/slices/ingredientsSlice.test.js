@@ -4,10 +4,14 @@ enableFetchMocks();
 import reducer, { initialState, fetchIngredients } from "./ingredientsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import fetchMock from "jest-fetch-mock";
+import { API_URL } from "../burgerApi";
+
+const logService = require("../logService");
+jest.mock("../logService");
 
 const initStore = initialState;
 
-const url = "https://norma.nomoreparties.space/api/ingredients";
+const url = `${API_URL}/ingredients`;
 
 const testDataIngredients = [
   {
@@ -54,7 +58,7 @@ const testDataIngredients = [
   },
 ];
 
-const testData = {
+const testResponse = {
   success: true,
   data: testDataIngredients,
 };
@@ -73,6 +77,8 @@ describe("Проверка ingredientsSlice", () => {
       reducer: reducer,
       initStore,
     });
+
+    logService.logError = jest.fn();
   });
 
   afterEach(() => {
@@ -85,7 +91,7 @@ describe("Проверка ingredientsSlice", () => {
   });
 
   it("Загружает ингредиенты в state", async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(testData));
+    fetchMock.mockResponseOnce(JSON.stringify(testResponse));
 
     const { getState } = store;
 
@@ -96,7 +102,7 @@ describe("Проверка ingredientsSlice", () => {
   });
 
   it("Не загружает ингредиенты в state и переходит в состояние ошибки при ошибке fetch", async () => {
-    fetchMock.mockRejectOnce("Контролируемая ошибка при тестировании");
+    fetchMock.mockRejectOnce("Ошибка");
 
     const { getState } = store;
 

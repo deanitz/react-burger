@@ -16,7 +16,7 @@ import {
 } from "../types/utilityTypes";
 import { getRefreshToken, storeTokens } from "../utils/localStorageUtils";
 
-const API_URL = "https://norma.nomoreparties.space/api";
+export const API_URL = "https://norma.nomoreparties.space/api";
 
 const checkResponse = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
