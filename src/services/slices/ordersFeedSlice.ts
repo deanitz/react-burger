@@ -10,7 +10,7 @@ interface IOrdersFeedState {
   totalToday: number;
 }
 
-const initialState: IOrdersFeedState = {
+export const initialState: IOrdersFeedState = {
   status: WebsocketStatus.OFFLINE,
   connectionError: "",
   orders: [],

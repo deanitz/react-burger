@@ -14,9 +14,6 @@ import { createOrderStorageMiddleware } from "../middleware/orderStorageMiddlewa
 const localStorageUtils = require("../../utils/localStorageUtils");
 jest.mock("../../utils/localStorageUtils");
 
-const logService = require("../logService");
-jest.mock("../logService");
-
 const orderStorageMiddleware = createOrderStorageMiddleware();
 
 const initStore = initialState;
@@ -65,7 +62,6 @@ describe("Проверка orderDetailsSlice", () => {
     });
 
     localStorageUtils.storeOrders = jest.fn();
-    logService.logError = jest.fn();
   });
 
   afterEach(() => {

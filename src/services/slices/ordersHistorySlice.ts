@@ -8,7 +8,7 @@ interface IOrdersHistoryState {
   orders: Array<OrderData>;
 }
 
-const initialState: IOrdersHistoryState = {
+export const initialState: IOrdersHistoryState = {
   status: WebsocketStatus.OFFLINE,
   connectionError: "",
   orders: [],
