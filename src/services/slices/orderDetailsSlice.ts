@@ -1,23 +1,15 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { OrderData, OrdersMessageData } from "../../types/dataTypes";
-import { storeOrders as storeOrdersInLocalStorage } from "../../utils/localStorageUtils";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { OrderData } from "../../types/dataTypes";
 
 interface IOrderDetailsState {
   orderData?: OrderData;
   isOrderLoaded: boolean;
 }
 
-const initialState: IOrderDetailsState = {
+export const initialState: IOrderDetailsState = {
   orderData: undefined,
   isOrderLoaded: false,
 };
-
-export const storeOrders = createAsyncThunk(
-  "orderData/storeOrders",
-  (data: OrdersMessageData) => {
-    storeOrdersInLocalStorage(data);
-  }
-);
 
 const orderDataSlice = createSlice({
   name: "orderData",
