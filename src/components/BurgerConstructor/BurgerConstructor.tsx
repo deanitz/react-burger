@@ -206,7 +206,7 @@ const BurgerConstructor = () => {
       innerIngredients && innerIngredients.length ? (
         <div
           className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
-          data-testId="burger-inner"
+          data-testid="burger-inner"
         >
           {innerIngredients.map((innerIngredient) => (
             <InnerIngredient

@@ -48,7 +48,10 @@ const IngredientItem = ({ item, count }: IngredientItemProps) => {
           <span className="mr-1">{item.price}</span>
           <CurrencyIcon type="primary" />
         </p>
-        <p className={`text text_type_main-default ${styles.name}`}>
+        <p
+          className={`text text_type_main-default ${styles.name}`}
+          data-testid="ingredient-name"
+        >
           {item.name}
         </p>
         {Boolean(count) && <Counter count={count} size="default" />}
