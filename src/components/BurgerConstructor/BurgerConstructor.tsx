@@ -167,8 +167,7 @@ const BurgerConstructor = () => {
   const burgerTop = useMemo(
     () =>
       bun && (
-        <div className="ml-8"
-            data-testid="burger-top">
+        <div className="ml-8" data-testid="burger-top">
           <ConstructorElement
             type="top"
             isLocked={true}
@@ -184,8 +183,7 @@ const BurgerConstructor = () => {
   const burgerBottom = useMemo(
     () =>
       bun && (
-        <div className="ml-8"
-        data-testid="burger-bottom">
+        <div className="ml-8" data-testid="burger-bottom">
           <ConstructorElement
             type="bottom"
             isLocked={true}
