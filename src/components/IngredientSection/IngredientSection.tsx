@@ -27,7 +27,7 @@ const IngredientSection = forwardRef(
     };
 
     return (
-      <section>
+      <section data-testid={`ingredient-section_${name}`}>
         <h2 className="text text_type_main-medium mb-6" ref={ref}>
           {name}
         </h2>

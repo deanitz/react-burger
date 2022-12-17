@@ -167,7 +167,8 @@ const BurgerConstructor = () => {
   const burgerTop = useMemo(
     () =>
       bun && (
-        <div className="ml-8">
+        <div className="ml-8"
+            data-testid="burger-top">
           <ConstructorElement
             type="top"
             isLocked={true}
@@ -183,7 +184,8 @@ const BurgerConstructor = () => {
   const burgerBottom = useMemo(
     () =>
       bun && (
-        <div className="ml-8">
+        <div className="ml-8"
+        data-testid="burger-bottom">
           <ConstructorElement
             type="bottom"
             isLocked={true}
@@ -206,6 +208,7 @@ const BurgerConstructor = () => {
       innerIngredients && innerIngredients.length ? (
         <div
           className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
+          data-testId="burger-inner"
         >
           {innerIngredients.map((innerIngredient) => (
             <InnerIngredient
@@ -231,6 +234,7 @@ const BurgerConstructor = () => {
       <section
         className={`${styles.burgerConstructor} mt-25 mb-25`}
         ref={dropIngredientTarget}
+        data-testid="drop-ingredient-target"
       >
         <div className={styles.selectedIngredientsContainer}>
           {isOrderLoading ? (

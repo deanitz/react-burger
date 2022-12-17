@@ -35,6 +35,7 @@ const IngredientItem = ({ item, count }: IngredientItemProps) => {
       <div
         className={`${styles.ingredientItem} ${isDrag ? styles.dragging : ""}`}
         ref={dragRef}
+        data-testid="draggable-ingredient"
       >
         <img
           className="ml-4 mr-4"
