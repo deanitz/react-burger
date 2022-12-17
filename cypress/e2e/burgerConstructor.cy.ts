@@ -1,30 +1,17 @@
-import { cy, it } from "local-cypress";
+import { cy, Cypress, it } from "local-cypress";
 
-describe("Страница конструктора", () => {
+describe("Тесты страницы конструктора", () => {
   it("открывается локально", () => {
     cy.visit("localhost:3000");
   });
 
-  it("работает перетягивание булки и внутренних ингредиентов в конструктор", () => {
+  it("работает перетаскивание булки и внутренних ингредиентов в конструктор", () => {
     cy.visit("localhost:3000");
 
     const dataTransfer = new DataTransfer();
 
-    cy.get("[data-testid=ingredient-section_Булки]", { withinSubject: null })
-      .first()
-      .get('[class^="IngredientItem_ingredientItem"]', { withinSubject: null })
-      .first()
-      .trigger("dragstart", {
-        dataTransfer,
-      });
-
-    cy.get('[data-testid="drop-ingredient-target"]').trigger("drop", {
-      dataTransfer,
-    });
-
     cy.get(
-      '[data-testid=ingredient-section_Соусы] [class^="IngredientItem_ingredientItem"]',
-      { withinSubject: null }
+      '[data-testid="ingredient-section_Булки"] [class^="IngredientItem_ingredientItem"]'
     )
       .first()
       .trigger("dragstart", {
@@ -35,14 +22,70 @@ describe("Страница конструктора", () => {
       dataTransfer,
     });
 
-    cy.get('[data-testid="burger-top"]').first().should("exist");
+    cy.get(
+      '[data-testid="ingredient-section_Соусы"] [class^="IngredientItem_ingredientItem"]'
+    )
+      .first()
+      .trigger("dragstart", {
+        dataTransfer,
+      });
 
-    cy.get('[data-testid="burger-bottom"]').first().should("exist");
+    cy.get('[data-testid="drop-ingredient-target"]').trigger("drop", {
+      dataTransfer,
+    });
+
+    cy.get('[data-testid="burger-top"]').should("exist");
+
+    cy.get('[data-testid="burger-bottom"]').should("exist");
 
     cy.get(
       '[data-testid="burger-inner"] [class^="InnerIngredient_innerIngredientContainer"]'
+    ).should("exist");
+  });
+
+  it(
+    "не работает перетаскивание булки и внутренних ингредиентов" +
+      " в конструктор, если в нем еще нет булки",
+    () => {
+      cy.visit("localhost:3000");
+
+      const dataTransfer = new DataTransfer();
+
+      cy.get(
+        '[data-testid="ingredient-section_Соусы"] [class^="IngredientItem_ingredientItem"]'
+      )
+        .first()
+        .trigger("dragstart", {
+          dataTransfer,
+        });
+
+      cy.get('[data-testid="drop-ingredient-target"]').trigger("drop", {
+        dataTransfer,
+      });
+
+      cy.get('[data-testid="burger-top"]').should("not.exist");
+      cy.get('[data-testid="burger-bottom"]').should("not.exist");
+      cy.get(
+        '[data-testid="burger-inner"] [class^="InnerIngredient_innerIngredientContainer"]'
+      ).should("not.exist");
+    }
+  );
+
+  it("перетаскивание другой булки заменяет текущую булку в конструкторе", () => {
+    cy.visit("localhost:3000");
+
+    const dataTransfer = new DataTransfer();
+
+    cy.get(
+      '[data-testid="ingredient-section_Булки"] [class^="IngredientItem_ingredientItem"]'
     )
       .first()
-      .should("exist");
+      .trigger("dragstart", {
+        dataTransfer,
+      });
+
+    cy.get('[data-testid="drop-ingredient-target"]').trigger("drop", {
+      dataTransfer,
+    });
   });
 });
