@@ -9,7 +9,7 @@ import reducer, {
   resetLogin,
   resetLogout,
 } from "./authSlice";
-import { configureStore } from "@reduxjs/toolkit";
+import { AnyAction, configureStore } from "@reduxjs/toolkit";
 import fetchMock from "jest-fetch-mock";
 import { API_URL } from "../burgerApi";
 
@@ -47,12 +47,12 @@ const logoutResponse = {
 };
 
 describe("Проверка authSlice", () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = configureStore({
       reducer: reducer,
-      initStore,
+      preloadedState: initStore,
     });
 
     localStorageUtils.storeTokens = jest.fn();
@@ -94,7 +94,7 @@ describe("Проверка authSlice", () => {
     });
 
     it("Задает состояние ошибки login в state и не обновляет токены в localStorage при ошибке", async () => {
-      fetchMock.mockRejectOnce("Ошибка");
+      fetchMock.mockRejectOnce(new Error("Ошибка"));
 
       const { getState } = store;
 
@@ -165,7 +165,7 @@ describe("Проверка authSlice", () => {
     });
 
     it("Задает состояние ошибки logout в state и сбрасывает токены в localStorage при ошибке", async () => {
-      fetchMock.mockRejectOnce("Ошибка");
+      fetchMock.mockRejectOnce(new Error("Ошибка"));
 
       const { getState } = store;
 
@@ -236,7 +236,7 @@ describe("Проверка authSlice", () => {
     });
 
     it("Задает состояние ошибки register в state и не обновляет токены в localStorage при ошибке", async () => {
-      fetchMock.mockRejectOnce("Ошибка");
+      fetchMock.mockRejectOnce(new Error("Ошибка"));
 
       const { getState } = store;
 

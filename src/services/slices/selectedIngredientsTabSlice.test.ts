@@ -11,17 +11,17 @@ const storeWithBun = {
   value: IngredientTypes.bun,
 };
 
-const storeWithNull = {
-  value: null,
+const storeWithSauce = {
+  value: IngredientTypes.sauce,
 };
 
 describe("Проверка selectedIngredientsTabSlice", () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = configureStore({
       reducer: reducer,
-      initStore,
+      preloadedState: initStore,
     });
   });
 
@@ -32,11 +32,11 @@ describe("Проверка selectedIngredientsTabSlice", () => {
     expect(getState()).toStrictEqual(storeWithBun);
   });
 
-  it("Задает выбранному табу значение null", async () => {
+  it("Задает выбранному табу новое значение", async () => {
     const { getState } = store;
     expect(getState()).toStrictEqual(initStore);
     store.dispatch(setSelectedTab(IngredientTypes.bun));
-    store.dispatch(setSelectedTab(null));
-    expect(getState()).toStrictEqual(storeWithNull);
+    store.dispatch(setSelectedTab(IngredientTypes.sauce));
+    expect(getState()).toStrictEqual(storeWithSauce);
   });
 });

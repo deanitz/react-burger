@@ -7,11 +7,11 @@ import reducer, {
   setBun,
 } from "./selectedIngredientsSlice";
 import { configureStore } from "@reduxjs/toolkit";
-import { IngredientTypes } from "../../types/dataTypes";
+import { Ingredient, IngredientTypes, OrderData } from "../../types/dataTypes";
 
 const initStore = initialState;
 
-const testBun = {
+const testBun: Ingredient = {
   _id: "_id1",
   name: "Тестовая булка",
   type: IngredientTypes.bun,
@@ -24,9 +24,26 @@ const testBun = {
   image_mobile: "image_mobile_url",
   image_large: "image_large_url",
   __v: 100,
+  uniqueId: "uniqueId1",
 };
 
-const testSauce = {
+const testOtherBun: Ingredient = {
+  _id: "_idOther",
+  name: "Тестовая булка иная",
+  type: IngredientTypes.bun,
+  proteins: 1,
+  fat: 2,
+  carbohydrates: 3,
+  calories: 4,
+  price: 123,
+  image: "image_url",
+  image_mobile: "image_mobile_url",
+  image_large: "image_large_url",
+  __v: 100,
+  uniqueId: "uniqueIdOther",
+};
+
+const testSauce: Ingredient = {
   _id: "_id2",
   name: "Тестовый соус",
   type: IngredientTypes.sauce,
@@ -39,9 +56,10 @@ const testSauce = {
   image_mobile: "image_mobile_url",
   image_large: "image_large_url",
   __v: 101,
+  uniqueId: "uniqueId2",
 };
 
-const testMain = {
+const testMainShape = {
   _id: "_id3",
   name: "Тестовая котлета",
   type: IngredientTypes.main,
@@ -56,7 +74,12 @@ const testMain = {
   __v: 102,
 };
 
-const testDraggable = {
+const testMain: Ingredient = {
+  ...testMainShape,
+  uniqueId: "uniqueId3",
+};
+
+const testDraggable: Ingredient = {
   _id: "_id4",
   name: "Тестовый чеснок",
   type: IngredientTypes.main,
@@ -69,10 +92,15 @@ const testDraggable = {
   image_mobile: "image_mobile_url",
   image_large: "image_large_url",
   __v: 103,
+  uniqueId: "uniqueId4",
 };
 
 const storeWithBun = {
   bun: testBun,
+};
+
+const storeWithOtherBun = {
+  bun: testOtherBun,
 };
 
 const storeWithBunAndSauce = {
@@ -81,12 +109,12 @@ const storeWithBunAndSauce = {
 };
 
 describe("Проверка selectedIngredientsSlice", () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = configureStore({
       reducer: reducer,
-      initStore,
+      preloadedState: initStore,
     });
   });
 
@@ -103,13 +131,13 @@ describe("Проверка selectedIngredientsSlice", () => {
     expect(getState()).toMatchObject(storeWithBun);
   });
 
-  it("setBun задает bun null", async () => {
+  it("setBun меняет bun", async () => {
     const { getState } = store;
 
     store.dispatch(setBun(testBun));
-    store.dispatch(setBun(null));
+    store.dispatch(setBun(testOtherBun));
 
-    expect(getState()).toMatchObject(initStore);
+    expect(getState()).toMatchObject(storeWithOtherBun);
   });
 
   it("reset сбрасывает состояние до начального", async () => {
@@ -140,8 +168,8 @@ describe("Проверка selectedIngredientsSlice", () => {
   it("addSelectedIngredient добавляет ингредиентам uniqueId", async () => {
     const { getState } = store;
 
-    store.dispatch(addSelectedIngredient(testMain));
-    store.dispatch(addSelectedIngredient(testMain));
+    store.dispatch(addSelectedIngredient(testMainShape));
+    store.dispatch(addSelectedIngredient(testMainShape));
 
     const firstInnerIngredient = getState().inner[0];
     const secondInnerIngredient = getState().inner[1];

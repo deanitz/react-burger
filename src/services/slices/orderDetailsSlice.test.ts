@@ -10,6 +10,7 @@ import { loadOrder, saveOrders } from "../actions/orderStorageActions";
 import { configureStore } from "@reduxjs/toolkit";
 import fetchMock from "jest-fetch-mock";
 import { createOrderStorageMiddleware } from "../middleware/orderStorageMiddleware";
+import { OrderStatuses } from "../../types/dataTypes";
 
 const localStorageUtils = require("../../utils/localStorageUtils");
 jest.mock("../../utils/localStorageUtils");
@@ -21,7 +22,7 @@ const initStore = initialState;
 const orderData1 = {
   _id: "63976a5a99a25c001cd68b84",
   ingredients: ["60d3b41abdacab0026a733c6", "60d3b41abdacab0026a733cd"],
-  status: "done",
+  status: OrderStatuses.done,
   name: "Люминесцентный фалленианский антарианский краторный экзо-плантаго spicy минеральный астероидный бессмертный space альфа-сахаридный метеоритный био-марсианский традиционный-галактический бургер",
   createdAt: "2022-12-12T17:52:26.792Z",
   updatedAt: "2022-12-12T17:52:27.182Z",
@@ -37,7 +38,7 @@ const orderData2 = {
     "60d3b41abdacab0026a733cc",
     "60d3b41abdacab0026a733c7",
   ],
-  status: "done",
+  status: OrderStatuses.pending,
   name: "Space spicy флюоресцентный бургер",
   createdAt: "2022-12-12T17:47:39.484Z",
   updatedAt: "2022-12-12T17:47:39.842Z",
@@ -51,14 +52,14 @@ const ordersMessageData = {
 };
 
 describe("Проверка orderDetailsSlice", () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = configureStore({
-      middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(orderStorageMiddleware),
+      middleware: ((getDefaultMiddleware: any) =>
+        getDefaultMiddleware().concat(orderStorageMiddleware)) as any,
       reducer: reducer,
-      initStore,
+      preloadedState: initStore,
     });
 
     localStorageUtils.storeOrders = jest.fn();

@@ -7,16 +7,17 @@ import reducer, {
   wsMessage,
   connect,
   disconnect,
-} from "./ordersFeedSlice";
+} from "./ordersHistorySlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { WebsocketStatus } from "../../types/utilityTypes";
+import { OrderStatuses } from "../../types/dataTypes";
 
 const initStore = initialState;
 
 const orderData1 = {
   _id: "63976a5a99a25c001cd68b84",
   ingredients: ["60d3b41abdacab0026a733c6", "60d3b41abdacab0026a733cd"],
-  status: "done",
+  status: OrderStatuses.done,
   name: "Люминесцентный фалленианский антарианский краторный экзо-плантаго spicy минеральный астероидный бессмертный space альфа-сахаридный метеоритный био-марсианский традиционный-галактический бургер",
   createdAt: "2022-12-12T17:52:26.792Z",
   updatedAt: "2022-12-12T17:52:27.182Z",
@@ -32,7 +33,7 @@ const orderData2 = {
     "60d3b41abdacab0026a733cc",
     "60d3b41abdacab0026a733c7",
   ],
-  status: "done",
+  status: OrderStatuses.pending,
   name: "Space spicy флюоресцентный бургер",
   createdAt: "2022-12-12T17:47:39.484Z",
   updatedAt: "2022-12-12T17:47:39.842Z",
@@ -48,12 +49,12 @@ const ordersMessageData = {
 const errorMessage = "Ошибка";
 
 describe("Проверка ordersFeedSlice", () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = configureStore({
       reducer: reducer,
-      initStore,
+      preloadedState: initStore,
     });
   });
 
@@ -109,15 +110,13 @@ describe("Проверка ordersFeedSlice", () => {
 
     expect(getState()).toMatchObject({
       orders: ordersMessageData.orders,
-      total: ordersMessageData.total,
-      totalToday: ordersMessageData.totalToday,
     });
   });
 
   it("содержит action connect", async () => {
     const wsUrl = "wsUrl";
     const expectedAction = {
-      type: "ORDERS_FEED_CONNECT",
+      type: "ORDERS_HISTORY_CONNECT",
       payload: wsUrl,
     };
     expect(connect(wsUrl)).toStrictEqual(expectedAction);
@@ -125,7 +124,7 @@ describe("Проверка ordersFeedSlice", () => {
 
   it("содержит action disconnect", async () => {
     const expectedAction = {
-      type: "ORDERS_FEED_DISCONNECT",
+      type: "ORDERS_HISTORY_DISCONNECT",
     };
     expect(disconnect()).toEqual(expectedAction);
   });

@@ -12,12 +12,12 @@ const storeWithInfo2 = {
 };
 
 describe("Проверка profileTextSlice", () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = configureStore({
       reducer: reducer,
-      initStore,
+      preloadedState: initStore,
     });
   });
 

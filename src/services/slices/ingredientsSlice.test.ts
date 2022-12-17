@@ -70,12 +70,12 @@ const storeWithData = {
 };
 
 describe("Проверка ingredientsSlice", () => {
-  let store;
+  let store: any;
 
   beforeEach(() => {
     store = configureStore({
       reducer: reducer,
-      initStore,
+      preloadedState: initStore,
     });
 
     logService.logError = jest.fn();
@@ -102,7 +102,7 @@ describe("Проверка ingredientsSlice", () => {
   });
 
   it("Не загружает ингредиенты в state и переходит в состояние ошибки при ошибке fetch", async () => {
-    fetchMock.mockRejectOnce("Ошибка");
+    fetchMock.mockRejectOnce(new Error("Ошибка"));
 
     const { getState } = store;
 
