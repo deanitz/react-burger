@@ -10,6 +10,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import fetchMock from "jest-fetch-mock";
 import { API_URL } from "../burgerApi";
 
+const localStorageUtils = require("../../utils/localStorageUtils");
+jest.mock("../../utils/localStorageUtils");
+
 const logService = require("../logService");
 jest.mock("../logService");
 
@@ -24,7 +27,7 @@ const testRequest = {
     "id ингредиента 3",
     "id ингредиента 1",
   ],
-}
+};
 
 const testResponse = {
   success: true,
@@ -58,6 +61,7 @@ describe("Проверка orderSlice", () => {
       preloadedState: initStore,
     });
 
+    localStorageUtils.getAccessToken = jest.fn();
     logService.logError = jest.fn();
   });
 
@@ -79,6 +83,7 @@ describe("Проверка orderSlice", () => {
 
     expect(getState()).toStrictEqual(storeWithData);
     expect(fetchMock).toBeCalledWith(url, expect.anything());
+    expect(localStorageUtils.getAccessToken).toBeCalled();
   });
 
   it("Не загружает ингредиенты в state и переходит в состояние ошибки при ошибке fetch", async () => {

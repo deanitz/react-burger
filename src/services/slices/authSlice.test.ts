@@ -9,7 +9,7 @@ import reducer, {
   resetLogin,
   resetLogout,
 } from "./authSlice";
-import { AnyAction, configureStore } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import fetchMock from "jest-fetch-mock";
 import { API_URL } from "../burgerApi";
 

@@ -21,7 +21,7 @@ interface IProfileState {
   };
 }
 
-const initialState: IProfileState = {
+export const initialState: IProfileState = {
   getUserInfo: {
     info: null,
     loading: false,
