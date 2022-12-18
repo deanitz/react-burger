@@ -5,7 +5,13 @@ export type ModalOverlayProps = {
 };
 
 const ModalOverlay = ({ onClose }: ModalOverlayProps) => {
-  return <div className={styles.modalOverlay} onClick={onClose} />;
+  return (
+    <div
+      className={styles.modalOverlay}
+      onClick={onClose}
+      data-testid="modal-overlay"
+    />
+  );
 };
 
 export default ModalOverlay;

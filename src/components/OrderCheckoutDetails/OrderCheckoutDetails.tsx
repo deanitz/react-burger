@@ -6,7 +6,10 @@ export type OrderCheckoutDetailsProps = { orderNumber?: string | number };
 
 const OrderCheckoutDetails = ({ orderNumber }: OrderCheckoutDetailsProps) => {
   return (
-    <div className={styles.orderModalContentContainer}>
+    <div
+      className={styles.orderModalContentContainer}
+      data-testid="order-checkout-details"
+    >
       <h1
         className={`${styles.orderModalNumber} text text_type_digits-large ml-15 mr-15`}
       >

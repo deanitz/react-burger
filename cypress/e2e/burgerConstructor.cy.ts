@@ -11,9 +11,13 @@ const mainSelector =
   '[data-testid="ingredient-section_Начинки"] [class^="IngredientItem_ingredientItem"]';
 const topBunTextSelector =
   '[data-testid="burger-top"] [class^="constructor-element__text"]';
-const burgerInnerIngredientsContainerSelector = '[data-testid="burger-inner"]';
+const constructorInnerIngredientsContainerExternalSelector =
+  '[data-testid="burger-inner"]';
+const constructorInnerIngredientsContainerInternalSelector =
+  '[data-testid="burger-inner"] [class^="InnerIngredient_innerIngredientContainer"]';
 const ingredientNameInListSelector = '[data-testid="ingredient-name"]';
-const ingredientNameInBurgerSelector = '[class^="constructor-element__text"]';
+const ingredientNameInConstructorSelector =
+  '[class^="constructor-element__text"]';
 
 const fillConstructorWithIngredients = () => {
   // перетаскиваем булку
@@ -22,9 +26,7 @@ const fillConstructorWithIngredients = () => {
   cy.get("@buns")
     .first()
     .within(() => {
-      cy.get(ingredientNameInListSelector)
-        .invoke("text")
-        .as("firstBunName");
+      cy.get(ingredientNameInListSelector).invoke("text").as("firstBunName");
     });
 
   cy.get("@buns").first().trigger("dragstart", {
@@ -78,13 +80,24 @@ const fillConstructorWithIngredients = () => {
     dataTransfer,
   });
 
-  cy.get(burgerInnerIngredientsContainerSelector)
+  cy.get(constructorInnerIngredientsContainerExternalSelector)
     .children()
     .should("have.length", 3);
 };
 
+const ACCESS_TOKEN = "ACCESS_TOKEN";
+const REFRESH_TOKEN = "REFRESH_TOKEN";
+const clearLoginInformation = () => {
+  localStorage.removeItem(ACCESS_TOKEN);
+  localStorage.removeItem(REFRESH_TOKEN);
+};
+
+const testEmail = "deanitz@gmail.com";
+const testPassword = "11111111";
+
 describe("Тесты страницы конструктора", () => {
   beforeEach(() => {
+    clearLoginInformation();
     cy.visit("localhost:3000");
     dataTransfer = new DataTransfer();
   });
@@ -115,9 +128,9 @@ describe("Тесты страницы конструктора", () => {
 
       cy.get('[data-testid="burger-bottom"]').should("exist");
 
-      cy.get(
-        '[data-testid="burger-inner"] [class^="InnerIngredient_innerIngredientContainer"]'
-      ).should("exist");
+      cy.get(constructorInnerIngredientsContainerInternalSelector).should(
+        "exist"
+      );
     });
 
     it(
@@ -135,9 +148,9 @@ describe("Тесты страницы конструктора", () => {
 
         cy.get('[data-testid="burger-top"]').should("not.exist");
         cy.get('[data-testid="burger-bottom"]').should("not.exist");
-        cy.get(
-          '[data-testid="burger-inner"] [class^="InnerIngredient_innerIngredientContainer"]'
-        ).should("not.exist");
+        cy.get(constructorInnerIngredientsContainerInternalSelector).should(
+          "not.exist"
+        );
       }
     );
   });
@@ -176,24 +189,27 @@ describe("Тесты страницы конструктора", () => {
 
     it("перетаскивание внутренних ингредиентов добавляет их конструктор", () => {
       cy.get("@main1").then((main1) => {
-        cy.get(burgerInnerIngredientsContainerSelector)
+        cy.get(constructorInnerIngredientsContainerExternalSelector)
           .children()
           .first()
           .within(() => {
-            cy.get(ingredientNameInBurgerSelector).should("have.text", main1);
+            cy.get(ingredientNameInConstructorSelector).should(
+              "have.text",
+              main1
+            );
           });
       });
     });
 
     it("перетаскивание ингредиентов в конструкторе изменяет их порядок, сверху вниз", () => {
-      cy.get(burgerInnerIngredientsContainerSelector)
+      cy.get(constructorInnerIngredientsContainerExternalSelector)
         .children()
         .eq(0)
         .trigger("dragstart", {
           dataTransfer,
         });
 
-      cy.get(burgerInnerIngredientsContainerSelector)
+      cy.get(constructorInnerIngredientsContainerExternalSelector)
         .children()
         .eq(1)
         .trigger("drop", {
@@ -201,24 +217,27 @@ describe("Тесты страницы конструктора", () => {
         });
 
       cy.get("@main0").then((main0) => {
-        cy.get(burgerInnerIngredientsContainerSelector)
+        cy.get(constructorInnerIngredientsContainerExternalSelector)
           .children()
           .first()
           .within(() => {
-            cy.get(ingredientNameInBurgerSelector).should("have.text", main0);
+            cy.get(ingredientNameInConstructorSelector).should(
+              "have.text",
+              main0
+            );
           });
       });
     });
 
     it("перетаскивание ингредиентов в конструкторе изменяет их порядок, снизу вверх", () => {
-      cy.get(burgerInnerIngredientsContainerSelector)
+      cy.get(constructorInnerIngredientsContainerExternalSelector)
         .children()
         .eq(2)
         .trigger("dragstart", {
           dataTransfer,
         });
 
-      cy.get(burgerInnerIngredientsContainerSelector)
+      cy.get(constructorInnerIngredientsContainerExternalSelector)
         .children()
         .eq(0)
         .trigger("drop", {
@@ -226,11 +245,14 @@ describe("Тесты страницы конструктора", () => {
         });
 
       cy.get("@sauce1").then((sauce1) => {
-        cy.get(burgerInnerIngredientsContainerSelector)
+        cy.get(constructorInnerIngredientsContainerExternalSelector)
           .children()
           .first()
           .within(() => {
-            cy.get(ingredientNameInBurgerSelector).should("have.text", sauce1);
+            cy.get(ingredientNameInConstructorSelector).should(
+              "have.text",
+              sauce1
+            );
           });
       });
     });
@@ -238,7 +260,7 @@ describe("Тесты страницы конструктора", () => {
     it("нажатие иконки удаления ингредиента удаляет его из списка", () => {
       [...Array(2)].forEach((_) =>
         cy
-          .get(burgerInnerIngredientsContainerSelector)
+          .get(constructorInnerIngredientsContainerExternalSelector)
           .children()
           .first()
           .within(() => {
@@ -247,11 +269,14 @@ describe("Тесты страницы конструктора", () => {
       );
 
       cy.get("@sauce1").then((sauce1) => {
-        cy.get(burgerInnerIngredientsContainerSelector)
+        cy.get(constructorInnerIngredientsContainerExternalSelector)
           .children()
           .first()
           .within(() => {
-            cy.get(ingredientNameInBurgerSelector).should("have.text", sauce1);
+            cy.get(ingredientNameInConstructorSelector).should(
+              "have.text",
+              sauce1
+            );
           });
       });
     });
@@ -261,67 +286,109 @@ describe("Тесты страницы конструктора", () => {
     beforeEach(fillConstructorWithIngredients);
 
     it("неавторизованный пользователь не может отправить заказ", () => {
-      const confirmShown = cy.stub().as("confirmShown")
-      cy.on('window:confirm', confirmShown);
+      const confirmShown = cy.stub().as("confirmShown");
+      cy.on("window:confirm", confirmShown);
 
       cy.contains("button", "Оформить заказ").click();
 
-      cy.get("@confirmShown")
-        .should("have.been.calledOnceWith", "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?")
+      cy.get("@confirmShown").should(
+        "have.been.calledOnceWith",
+        "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?"
+      );
     });
 
     it("неавторизованный пользователь может выбрать перенаправление на страницу логина", () => {
-      const confirmShown = cy.stub().as("confirmShown")
-      confirmShown.onFirstCall().returns(true)
-      cy.on('window:confirm', confirmShown);
+      const confirmShown = cy.stub().as("confirmShown");
+      confirmShown.onFirstCall().returns(true);
+      cy.on("window:confirm", confirmShown);
 
       cy.contains("button", "Оформить заказ").click();
 
-      cy.get("@confirmShown")
-        .should("have.been.calledOnceWith", "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?")
+      cy.get("@confirmShown").should(
+        "have.been.calledOnceWith",
+        "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?"
+      );
 
-        cy.location().should((loc) => {
-        expect(loc.pathname).to.eq('/login')
-        });
+      cy.location().should((loc) => {
+        expect(loc.pathname).to.eq("/login");
+      });
     });
 
     it("неавторизованный пользователь может НЕ выбрать перенаправление на страницу логина", () => {
-      const confirmShown = cy.stub().as("confirmShown")
-      confirmShown.onFirstCall().returns(false)
-      cy.on('window:confirm', confirmShown);
+      const confirmShown = cy.stub().as("confirmShown");
+      confirmShown.onFirstCall().returns(false);
+      cy.on("window:confirm", confirmShown);
 
       cy.contains("button", "Оформить заказ").click();
 
-      cy.get("@confirmShown")
-        .should("have.been.calledOnceWith", "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?")
+      cy.get("@confirmShown").should(
+        "have.been.calledOnceWith",
+        "Чтобы совершить заказ, нужно войти в систему. Перейти на страницу входа?"
+      );
 
-        cy.location().should((loc) => {
-        expect(loc.pathname).to.eq('/')
-        });
+      cy.location().should((loc) => {
+        expect(loc.pathname).to.eq("/");
+      });
     });
   });
 
   describe("отправка заказа c авторизацией", () => {
     beforeEach(fillConstructorWithIngredients);
 
-    it("после авторизации пользователь перенаправляется на главную страницу", () => {
-      
+    it("после авторизации пользователь перенаправляется на страницу профиля", () => {
+      cy.contains("Личный кабинет").click();
+
+      cy.location().should((loc) => {
+        expect(loc.pathname).to.eq("/login");
+      });
+
+      cy.get('input[name="email"]').type(`${testEmail}`);
+      cy.get('input[name="password"]').type(`${testPassword}`);
+
+      cy.contains("Войти").click();
+
+      cy.location().should((loc) => {
+        expect(loc.pathname).to.eq("/profile");
+      });
     });
 
     it("авторизованный пользователь может отправить заказ", () => {
-      
-    });
+      cy.contains("Личный кабинет").click();
 
-    it("после отправки заказа кнопка отправки недоступна до момента ответа от сервера", () => {
-      
-    });
+      cy.location().should((loc) => {
+        expect(loc.pathname).to.eq("/login");
+      });
 
-    it("после отправки заказа и ответа от сервера открывается модальное окно с деталями заказа", () => {
-      
-    });
+      cy.get('input[name="email"]').type(`${testEmail}`);
+      cy.get('input[name="password"]').type(`${testPassword}`);
 
-    it("после отправки заказа и ответа от сервера конструктор очищается", () => {
-      
+      cy.contains("Войти").click();
+
+      cy.contains("Конструктор").click();
+
+      cy.contains("Оформить заказ").as("buttonSendOrder");
+      cy.get("@buttonSendOrder").should("be.enabled");
+      cy.get("@buttonSendOrder").click();
+
+      // после отправки заказа кнопка отправки недоступна до момента ответа от сервера
+      cy.get("@buttonSendOrder").should("be.disabled");
+
+      // после отправки заказа и ответа от сервера открывается модальное окно с деталями заказа
+      cy.get('[data-testid="order-checkout-details"]', {
+        timeout: 30000,
+      }).should("exist");
+      cy.get('[data-testid="modal-overlay"]')
+        .should("exist")
+        .click({ force: true });
+
+      // после отправки заказа и ответа от сервера конструктор очищается
+      cy.get('[data-testid="burger-top"]').should("not.exist");
+
+      cy.get('[data-testid="burger-bottom"]').should("not.exist");
+
+      cy.get(constructorInnerIngredientsContainerInternalSelector).should(
+        "not.exist"
+      );
     });
   });
 });
