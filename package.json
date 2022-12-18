@@ -34,7 +34,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "cyopen": "cypress open",
-    "cyrun": "cypress run"
+    "cyrun": "cypress run",
+    "deploy-yacloud": "npm run build && scp -i c:\\Users\\Deanit\\yandex-react-burger -pr E:\\PROJECTS\\Yandex.Practicum\\react-burger\\build deanit@158.160.47.243:~/react-burger"
   },
   "eslintConfig": {
     "extends": [
