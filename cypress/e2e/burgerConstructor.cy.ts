@@ -153,6 +153,22 @@ describe("Тесты страницы конструктора", () => {
         );
       }
     );
+
+    it(
+      "по клику на ингредиенте открывается модальное окно с деталями ингредиента, " +
+        "по нажатию на кнопку закрытия оно закрывается",
+      () => {
+        cy.get(mainSelector).first().click();
+
+        cy.contains("Детали ингредиента").should("exist");
+
+        cy.get('[data-testid="modal-close-button"]').should("exist");
+
+        cy.get('[data-testid="modal-close-button"]').children().first().click();
+
+        cy.contains("Детали ингредиента").should("not.exist");
+      }
+    );
   });
 
   describe("конструктор с ингредиентами", () => {
