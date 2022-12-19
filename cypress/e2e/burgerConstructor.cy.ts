@@ -158,9 +158,24 @@ describe("Тесты страницы конструктора", () => {
       "по клику на ингредиенте открывается модальное окно с деталями ингредиента, " +
         "по нажатию на кнопку закрытия оно закрывается",
       () => {
+        cy.get(mainSelector)
+          .first()
+          .within(() => {
+            cy.get(ingredientNameInListSelector)
+              .invoke("text")
+              .as("mainName");
+          });
+
         cy.get(mainSelector).first().click();
 
         cy.contains("Детали ингредиента").should("exist");
+
+        cy.get("@mainName").then((mainName) => {
+          cy.get('[data-testid="modal-ingredient-details-name"]').should(
+            "contain.text",
+            mainName
+          );
+        });
 
         cy.get('[data-testid="modal-close-button"]').should("exist");
 

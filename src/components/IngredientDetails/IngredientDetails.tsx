@@ -34,7 +34,12 @@ const IngredientDetails = () => {
         src={item.image_large}
         alt={`изображение ингредиента "${item.name}"`}
       />
-      <p className="text text_type_main-medium mt-4 mb-8">{item.name}</p>
+      <p
+        className="text text_type_main-medium mt-4 mb-8"
+        data-testid="modal-ingredient-details-name"
+      >
+        {item.name}
+      </p>
       <div className={styles.ingredientDetailsPropertiesContainer}>
         <IngredientPropertyItem name="Калории, ккал" value={item.calories} />
         <IngredientPropertyItem name="Белки, г" value={item.proteins} />
