@@ -10,6 +10,7 @@ import {
   addSelectedIngredient,
   removeSelectedIngredient,
   reorderSelectedIngredients,
+  reset as resetIngredients,
   setBun,
 } from "../../services/slices/selectedIngredientsSlice";
 import InnerIngredient from "./InnerIngredient";
@@ -54,6 +55,7 @@ const BurgerConstructor = () => {
   useEffect(() => {
     if (isOrderLoaded && !isModal) {
       showModal();
+      dispatch(resetIngredients());
       return;
     }
     if (isOrderLoadingError) {
@@ -165,7 +167,7 @@ const BurgerConstructor = () => {
   const burgerTop = useMemo(
     () =>
       bun && (
-        <div className="ml-8">
+        <div className="ml-8" data-testid="burger-top">
           <ConstructorElement
             type="top"
             isLocked={true}
@@ -181,7 +183,7 @@ const BurgerConstructor = () => {
   const burgerBottom = useMemo(
     () =>
       bun && (
-        <div className="ml-8">
+        <div className="ml-8" data-testid="burger-bottom">
           <ConstructorElement
             type="bottom"
             isLocked={true}
@@ -204,6 +206,7 @@ const BurgerConstructor = () => {
       innerIngredients && innerIngredients.length ? (
         <div
           className={`${styles.innerIngredientsListContainer} custom-scroll mt-4 mb-4`}
+          data-testid="burger-inner"
         >
           {innerIngredients.map((innerIngredient) => (
             <InnerIngredient
@@ -229,9 +232,12 @@ const BurgerConstructor = () => {
       <section
         className={`${styles.burgerConstructor} mt-25 mb-25`}
         ref={dropIngredientTarget}
+        data-testid="drop-ingredient-target"
       >
         <div className={styles.selectedIngredientsContainer}>
-          {bun ? (
+          {isOrderLoading ? (
+            <div className={styles.loader} />
+          ) : bun ? (
             <>
               {burgerTop}
               {burgerInner}

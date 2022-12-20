@@ -24,7 +24,7 @@ export const TYPE_CONSTRUCTOR_INNER_INGREDIENT = "constructorInnerIngredient";
 
 export type IngredientType = "bun" | "sauce" | "main";
 
-type IngredientShape = {
+export type IngredientShape = {
   _id: string;
   name: string;
   type: IngredientType;

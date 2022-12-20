@@ -4,7 +4,7 @@ interface IProfileTextState {
   info: string;
 }
 
-const initialState: IProfileTextState = {
+export const initialState: IProfileTextState = {
   info: "",
 };
 

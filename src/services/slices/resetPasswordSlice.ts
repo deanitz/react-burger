@@ -20,7 +20,7 @@ interface IResetPasswordState {
   };
 }
 
-const initialState: IResetPasswordState = {
+export const initialState: IResetPasswordState = {
   reset: {
     success: null,
     loading: false,

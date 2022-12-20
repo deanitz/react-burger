@@ -11,7 +11,7 @@ interface IOrderState {
   orderInfoError: boolean;
 }
 
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
   orderInfo: null,
   orderInfoLoading: false,
   orderInfoError: false,

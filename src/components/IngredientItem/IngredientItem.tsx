@@ -35,6 +35,7 @@ const IngredientItem = ({ item, count }: IngredientItemProps) => {
       <div
         className={`${styles.ingredientItem} ${isDrag ? styles.dragging : ""}`}
         ref={dragRef}
+        data-testid="draggable-ingredient"
       >
         <img
           className="ml-4 mr-4"
@@ -47,7 +48,10 @@ const IngredientItem = ({ item, count }: IngredientItemProps) => {
           <span className="mr-1">{item.price}</span>
           <CurrencyIcon type="primary" />
         </p>
-        <p className={`text text_type_main-default ${styles.name}`}>
+        <p
+          className={`text text_type_main-default ${styles.name}`}
+          data-testid="ingredient-name"
+        >
           {item.name}
         </p>
         {Boolean(count) && <Counter count={count} size="default" />}

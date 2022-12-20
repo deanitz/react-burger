@@ -11,7 +11,10 @@ const ModalHeader: FC<ModalHeaderProps> = ({ children, onClose }) => {
   return (
     <section className={styles.headerContainer}>
       <div className={styles.childrenContainer}>{children}</div>
-      <div className={`${styles.closeButtonContainer} ml-9`}>
+      <div
+        className={`${styles.closeButtonContainer} ml-9`}
+        data-testid="modal-close-button"
+      >
         <CloseIcon type="primary" onClick={onClose} />
       </div>
     </section>

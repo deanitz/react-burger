@@ -31,7 +31,7 @@ interface ILoginState {
   };
 }
 
-const initialState: ILoginState = {
+export const initialState: ILoginState = {
   login: {
     success: null,
     loading: false,

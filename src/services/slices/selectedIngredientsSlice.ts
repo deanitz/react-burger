@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Ingredient } from "../../types/dataTypes";
+import { Ingredient, IngredientShape } from "../../types/dataTypes";
 import { Nullable } from "../../types/utilityTypes";
 import { addUniqueId } from "../../utils/dataUtils";
 
@@ -8,7 +8,7 @@ interface ISelectedIngredientsState {
   inner: Ingredient[];
 }
 
-const initialState: ISelectedIngredientsState = {
+export const initialState: ISelectedIngredientsState = {
   bun: null,
   inner: [],
 };
@@ -17,10 +17,14 @@ const selectedIngredientsSlice = createSlice({
   name: "selectedIngredients",
   initialState,
   reducers: {
+    reset: (state) => {
+      state.bun = initialState.bun;
+      state.inner = initialState.inner;
+    },
     setBun: (state, action: PayloadAction<Ingredient>) => {
       state.bun = action.payload;
     },
-    addSelectedIngredient: (state, action: PayloadAction<Ingredient>) => {
+    addSelectedIngredient: (state, action: PayloadAction<IngredientShape>) => {
       const uniqueItem = addUniqueId(action.payload);
       state.inner.unshift(uniqueItem);
     },
@@ -60,6 +64,7 @@ const selectedIngredientsSlice = createSlice({
 });
 
 export const {
+  reset,
   addSelectedIngredient,
   removeSelectedIngredient,
   reorderSelectedIngredients,
